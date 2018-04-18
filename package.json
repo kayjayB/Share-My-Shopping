@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "tape ./test/*.js",
     "start": "node index"
   },
   "author": "",
@@ -14,8 +14,6 @@
     "express": "^4.16.2"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "mocha": "^5.1.0",
-    "mocha-jshint": "^2.3.1"
+    "tape": "^4.9.0"
   }
 }
