@@ -27,3 +27,13 @@ test("Adding a shopping list item to an empty list increases the size of the lis
     t.equal(sizeArray, 1);
     t.end();
 });
+
+test("When an item is added to a shopping list, the  original item is equal to the item in the shopping list", function(t) {
+    let item = "First Item";
+    let shoppingList = [];
+
+    shoppingList.push(item);
+
+    t.equal(shoppingList[0], item);
+    t.end();
+});
