@@ -1,5 +1,5 @@
 module.exports = {
-	"extends": "eslint:recommended",
+    "extends": "eslint:recommended",
     "env": {
         "es6": true,
         "amd": true,
@@ -13,8 +13,8 @@ module.exports = {
         "tape"
     ],
     "globals": {
-    	"window": true,
-    	"document": true
+        "window": true,
+        "document": true
     },
     "rules": {
         "tape/assertion-message": ["off", "always"],
@@ -35,5 +35,6 @@ module.exports = {
         "no-empty": "off",
         "no-useless-escape": "off",
         "no-control-regex": "off",
+        "no-unused-vars": "off",
     }
 };
