@@ -1,6 +1,9 @@
 module.exports = {
+	"extends": "eslint:recommended",
     "env": {
         "es6": true,
+        "amd": true,
+        "node": true,
     },
     "parserOptions": {
         "ecmaVersion": 7,
@@ -9,6 +12,10 @@ module.exports = {
     "plugins": [
         "tape"
     ],
+    "globals": {
+    	"window": true,
+    	"document": true
+    },
     "rules": {
         "tape/assertion-message": ["off", "always"],
         "tape/max-asserts": ["off", 5],
@@ -24,5 +31,9 @@ module.exports = {
         "tape/use-t-well": "error",
         "tape/use-t": "error",
         "tape/use-test": "error",
+        "no-console": "off",
+        "no-empty": "off",
+        "no-useless-escape": "off",
+        "no-control-regex": "off",
     }
 };
