@@ -23,8 +23,8 @@ test("Adding a shopping list item to an empty list increases the size of the lis
 
     shoppingList.push(item);
     let sizeArray = shoppingList.length;
-
-    t.equal(sizeArray, 1);
+    let expectedSize = 1;
+    t.equal(sizeArray, expectedSize);
     t.end();
 });
 
