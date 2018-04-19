@@ -2,7 +2,9 @@ let shoppingList = [];
 
 function addItem() {
     let item = document.getElementById("ShoppingListItem").value;
+
     shoppingList.push(item);
-    console.log(shoppingList[0])
+
+    // Clear input text field once the item has been saved to the array
     document.getElementById("ShoppingListItem").value = "";
 }
