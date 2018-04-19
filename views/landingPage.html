@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/cdn/css/landingPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="/cdn/libraries/jquery.js"></script>
+    <script src="/cdn/scripts/landingPage.js"></script>
 </head>
 
 <body style="background-color: #f6f6f6;">
@@ -60,11 +61,11 @@
                 <div class="row centered">
                     <div class="col-md-4 col-md-offset-2">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Item" autocomplete="off" id="Item" placeholder="Item">
+                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item">
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn main-btn">Submit</button>
+                        <button type="button" onclick="addItem()">Submit</button>
                     </div>
                 </div>
                 <div class="row">
