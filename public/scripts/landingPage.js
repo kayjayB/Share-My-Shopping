@@ -46,26 +46,27 @@ function addItem() {
         container.removeChild(container.firstChild);
     }
 
-    // Create the cards and append the card to the parent element
-    let cardDiv = document.createElement("div");
-    cardDiv.className = "card";
-    cardDiv.id = "list-entry";
-
-    let headerElement = document.createElement("h4");
-    headerElement.id = "shoppingList";
-
-    let headerText = document.createTextNode(shoppingList[0]);
-
-    let paragraphElement = document.createElement("p2");
-    paragraphElement.id = "shoppingListCategory";
-
-    let paragraphText = document.createTextNode(shoppingListCategory[0]);
-
-    headerElement.appendChild(headerText);
-    paragraphElement.appendChild(paragraphText);
-
-    cardDiv.appendChild(headerElement);
-    cardDiv.appendChild(paragraphElement);
-
-    container.appendChild(cardDiv);
+    for(let i =0; i < shoppingList.length; i++){
+        let cardDiv = document.createElement("div");
+        cardDiv.className = "card";
+        cardDiv.id = "list-entry";
+    
+        let headerElement = document.createElement("h4");
+        headerElement.id = "shoppingList";
+    
+        let headerText = document.createTextNode(shoppingList[i]);
+    
+        let paragraphElement = document.createElement("p2");
+        paragraphElement.id = "shoppingListCategory";
+    
+        let paragraphText = document.createTextNode(shoppingListCategory[i]);
+    
+        headerElement.appendChild(headerText);
+        paragraphElement.appendChild(paragraphText);
+    
+        cardDiv.appendChild(headerElement);
+        cardDiv.appendChild(paragraphElement);
+    
+        container.appendChild(cardDiv);
+    }
 }
