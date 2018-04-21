@@ -61,12 +61,12 @@
                 <div class="row centered">
                     <div class="col-md-5 col-md-offset-3">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item">
+                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item" oninput="toggleButton()">
                             <input type="text" class="form-control" name="Category/Aisle" autocomplete="off" id="ShoppingListCategory" value="" placeholder="Category/Aisle">
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <button type="button" class="btn main-btn" onclick="addItem()">Submit</button>
+                        <button type="button" class="btn main-btn" onclick="addItem()" disabled="true" id="SubmitButton">Submit</button>
 
                     </div>
                 </div>

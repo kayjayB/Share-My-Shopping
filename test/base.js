@@ -43,8 +43,9 @@ test("An empty category list has a length of 0", function(t) {
     let shoppingListCategory = [];
 
     let numElements = shoppingListCategory.length;
+    let emptySize = 0;
 
-    t.equal(numElements, 0);
+    t.equal(numElements, emptySize);
     t.end();
 });
 
