@@ -3,7 +3,7 @@ var express = require("express");
 var mainRouter = express.Router();
 var mysql = require('mysql');
 
-let connection = function () {
+let connnect_config = function () {
 	// Process the environment variable defining the MySQL connection parameters
 	let str = process.env.MYSQLCONNSTR_localdb
 	let reg = str.match(/Database=(.+?);Data Source=(.+?):(.+?);User Id = (.+?); Password = (.+) /)
@@ -24,6 +24,7 @@ let connection = function () {
 	return mysql.createConnection(auth)
 }
 
+let connection = connnect_config();
 
 connection.connect((err) => {
 	if (err) throw err;
