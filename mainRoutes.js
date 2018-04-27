@@ -38,7 +38,8 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function (err) {
 		connection.query('CREATE TABLE IF NOT EXISTS items('
 			+ 'id INT NOT NULL AUTO_INCREMENT,'
 			+ 'PRIMARY KEY(id),'
-			+ 'name VARCHAR(50)'
+			+ 'name VARCHAR(50),'
+			+ 'category VARCHAR(50)'
 			+ ')', function (err) {
 				if (err) throw err;
 			});
@@ -50,7 +51,7 @@ mainRouter.get('/', function (req, res) {
 });
 
 mainRouter.get('/items', function (req, res) {
-		connection.query('SELECT name FROM items', req.body,
+	connection.query('SELECT * FROM items', req.body,
 		function (err, result) {
 			if (err) throw err;
 			res.send(result);
