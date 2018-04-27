@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <button type="button" class="btn main-btn" onclick="addItem()" disabled="true" id="SubmitButton" style="background-color: Transparent">
+                        <button type="button" class="btn main-btn" onclick="storeItem();addItem('none')" disabled="true" id="SubmitButton" style="background-color: Transparent">
                             <i class="fa fa-plus-square fa-4x" style="color:#40e0d0"></i>
                         </button>
 
@@ -76,9 +76,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
-                        <ul class="form-group" id="list-container">
-                            
-                        </ul>
+                        <ul class="form-group" id="list-container"></ul>
                     </div>
                 </div>
             </form>
