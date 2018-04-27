@@ -6,15 +6,12 @@ var mysql = require('mysql');
 let connnect_config = function () {
 	// Process the environment variable defining the MySQL connection parameters
 	let str = process.env.MYSQLCONNSTR_localdb
-	console.log('str: ' + str)
 	let reg = str.split(';');
-	console.log('reg: ' + reg)
 	let database = reg[0].split('=')[1]
 	let source = reg[1].split('=')[1]
 	let [host, port] = source.split(':')
 	let user = reg[2].split('=')[1]
 	let password = reg[3].split('=')[1]
-	console.log('database: ' + database + ' source: ' + source + ' host: ' + host + ' port: ' + port + ' user: ' + user + ' pass: ' + password)
 
 	// Create the connection and return
 	let auth = {
