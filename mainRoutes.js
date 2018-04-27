@@ -6,7 +6,9 @@ var mysql = require('mysql');
 let connnect_config = function () {
 	// Process the environment variable defining the MySQL connection parameters
 	let str = process.env.MYSQLCONNSTR_localdb
+	console.log('str: ' + str);
 	let reg = str.match(/Database=(.+?);Data Source=(.+?):(.+?);User Id = (.+?); Password = (.+) /)
+	console.log('reg: ' + reg);
 	let database = reg[1]
 	let host = reg[2]
 	let port = reg[3]
