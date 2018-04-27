@@ -35,14 +35,17 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function (err) {
 	if (err) throw err;
 	connection.query('USE list_db', function (err) {
 		if (err) throw err;
-		connection.query('CREATE TABLE IF NOT EXISTS items('
-			+ 'id INT NOT NULL AUTO_INCREMENT,'
-			+ 'PRIMARY KEY(id),'
-			+ 'name VARCHAR(50),'
-			+ 'category VARCHAR(50)'
-			+ ')', function (err) {
-				if (err) throw err;
-			});
+		connection.query('DROP TABLE IF EXISTS items', function (err) {
+			if (err) throw err;
+			connection.query('CREATE TABLE IF NOT EXISTS items('
+				+ 'id INT NOT NULL AUTO_INCREMENT,'
+				+ 'PRIMARY KEY(id),'
+				+ 'name VARCHAR(50),'
+				+ 'category VARCHAR(50)'
+				+ ')', function (err) {
+					if (err) throw err;
+				});
+		});
 	});
 });
 
