@@ -1,6 +1,24 @@
 let shoppingList = [];
 let shoppingListCategory = [];
 
+$(document).ready(function () {
+    $.ajax({
+        url: "/items",
+        type: "GET",
+        contentType: "application/json",
+        async: true,
+        success: function (resp) {
+            let nameArray = (resp);
+            let result = nameArray.map(function (a) { return a.name; });
+
+            for (let i = 0; i < result.length; i++){
+                let itemName = result[i];
+                addItem(itemName);
+            }
+        }
+    });
+});
+
 function toggleButton() {
 
     // Check that text is added to the field before it can be submitted
@@ -14,10 +32,13 @@ function toggleButton() {
     }
 }
 
+function addItem(name) {
 
-function addItem() {
+    let item = name;
 
-    let item = document.getElementById("ShoppingListItem").value;
+    if (item == "none"){
+        item = document.getElementById("ShoppingListItem").value;
+    }
     let category = document.getElementById("ShoppingListCategory").value;
  
     // Check that the category is not empty, if so assign a default value (This default is not added 
@@ -69,4 +90,21 @@ function addItem() {
     
         container.appendChild(cardDiv);
     }
+}
+
+function storeItem() {
+    var payload = {
+        name: document.getElementById("ShoppingListItem").value
+    };
+
+    $.ajax({
+        url: "/items",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function (data) {
+            console.log(data.responseText);
+        }
+    });
 }
