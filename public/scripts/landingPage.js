@@ -9,11 +9,13 @@ $(document).ready(function () {
         async: true,
         success: function (resp) {
             let nameArray = (resp);
-            let result = nameArray.map(function (a) { return a.name; });
+            let names = nameArray.map(function (a) { return a.name; });
+            let categories = nameArray.map(function (a) { return a.category; });
 
-            for (let i = 0; i < result.length; i++){
-                let itemName = result[i];
-                addItem(itemName);
+            for (let i = 0; i < names.length; i++){
+                let item_name = names[i];
+                let item_category = categories[i];
+                addItem(item_name, item_category);
             }
         }
     });
@@ -32,23 +34,30 @@ function toggleButton() {
     }
 }
 
-function addItem(name) {
+function addItem(name, category) {
 
-    let item = name;
+    let item_name = name;
+    let item_category = category;
 
-    if (item == "none"){
-        item = document.getElementById("ShoppingListItem").value;
+    if (item_name == "none"){
+        item_name = document.getElementById("ShoppingListItem").value;
     }
-    let category = document.getElementById("ShoppingListCategory").value;
+
+    if (item_category == "none"){
+        item_category = document.getElementById("ShoppingListCategory").value;
+    }
  
     // Check that the category is not empty, if so assign a default value (This default is not added 
     // to the card but the arrays should still be the same lemgth)
-    if(category.length == 0) {
-        category = " "
+    if (item_category == null){
+        item_category = " "
+    }
+    else if(item_category.length == 0) {
+        item_category = " "
     }
 
-    shoppingList.push(item);
-    shoppingListCategory.push(category);
+    shoppingList.push(item_name);
+    shoppingListCategory.push(item_category);
 
     // Clear input text field once the item has been saved to the array
     document.getElementById("ShoppingListItem").value = "";
@@ -94,7 +103,8 @@ function addItem(name) {
 
 function storeItem() {
     var payload = {
-        name: document.getElementById("ShoppingListItem").value
+        name: document.getElementById("ShoppingListItem").value,
+        category: document.getElementById("ShoppingListCategory").value
     };
 
     $.ajax({
