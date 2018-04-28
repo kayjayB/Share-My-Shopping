@@ -3,28 +3,35 @@ var express = require("express");
 var mainRouter = express.Router();
 var mysql = require('mysql');
 
-let connnect_config = function () {
-	// Process the environment variable defining the MySQL connection parameters
-	let str = process.env.MYSQLCONNSTR_localdb
-	let reg = str.split(';');
-	let database = reg[0].split('=')[1]
-	let source = reg[1].split('=')[1]
-	let [host, port] = source.split(':')
-	let user = reg[2].split('=')[1]
-	let password = reg[3].split('=')[1]
+let connection = mysql.createConnection({
+	host: 'localhost',
+	user: 'root',
+	port: 3306,
+	password: '',
+});
 
-	// Create the connection and return
-	let auth = {
-		host: host,
-		user: user,
-		password: password,
-		database: database,
-		port: parseInt(port)
-	}
-	return mysql.createConnection(auth)
-}
+// let connnect_config = function () {
+// 	// Process the environment variable defining the MySQL connection parameters
+// 	let str = process.env.MYSQLCONNSTR_localdb
+// 	let reg = str.split(';');
+// 	let database = reg[0].split('=')[1]
+// 	let source = reg[1].split('=')[1]
+// 	let [host, port] = source.split(':')
+// 	let user = reg[2].split('=')[1]
+// 	let password = reg[3].split('=')[1]
 
-let connection = connnect_config();
+// 	// Create the connection and return
+// 	let auth = {
+// 		host: host,
+// 		user: user,
+// 		password: password,
+// 		database: database,
+// 		port: parseInt(port)
+// 	}
+// 	return mysql.createConnection(auth)
+// }
+
+// let connection = connnect_config();
 
 connection.connect((err) => {
 	if (err) throw err;
