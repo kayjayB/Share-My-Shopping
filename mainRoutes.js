@@ -71,6 +71,15 @@ mainRouter.post('/items', function (req, res) {
 	);
 });
 
+mainRouter.post('/edititem', function (req, res) {
+	connection.query('UPDATE items SET name = ? WHERE id = ?', [req.body.name, req.body.id],
+		function (err, result) {
+			if (err) throw err;
+			//res.send('Item edited in database with ID: ' + result.insertId);
+		}
+	);
+});
+
 mainRouter.get("/about", function(req, res){
 	res.sendFile(path.join(__dirname, "views", "about.html"));
 });
