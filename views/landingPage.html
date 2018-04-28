@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/cdn/css/landingPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="/cdn/libraries/jquery.js"></script>
+    <script src="/cdn/libraries/bootstrap.min.js"></script>
     <script src="/cdn/scripts/landingPage.js"></script>
 </head>
 
@@ -31,20 +32,27 @@
                 <div class="row centered">
                     <div class="col-md-5 col-md-offset-3">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item"
-                                oninput="toggleButton()" onkeypress="submitOnEnter(event)">
+                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item" oninput="toggleButton()" onkeypress="submitOnEnter(event)">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Category/Aisle" autocomplete="off" disabled="true" id="ShoppingListCategory"
-                                value="" placeholder="Category/Aisle" onkeypress="submitOnEnter(event)">
+                            <input type="text" class="form-control" name="Category/Aisle" autocomplete="off" disabled="true" id="ShoppingListCategory" value="" placeholder="Category/Aisle" onkeypress="submitOnEnter(event)">
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <button type="button" class="btn main-btn" onclick="storeItem();addItem('none','none')" disabled="true" id="SubmitButton"
-                            style="background-color: Transparent">
+                        <button type="button" class="btn main-btn" onclick="storeItem();addItem('none','none')" disabled="true" id="SubmitButton" style="background-color: Transparent">
                             <i class="fa fa-plus-square fa-4x" style="color:#40e0d0"></i>
                         </button>
-
+                    </div>
+                    <div class="col-md-2 col-md-offset-1">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown">Share
+                                    <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li>Use this link to share your shopping:
+                                    <a href="#"></a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
