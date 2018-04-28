@@ -23,14 +23,16 @@ $(document).ready(function () {
 
 function toggleButton() {
 
-    // Check that text is added to the field before it can be submitted
+    // Check that text is added to the field before category can be added and item can be submitted
     let item = document.getElementById("ShoppingListItem").value;
 
     if(item.length == 0) {
         document.getElementById("SubmitButton").disabled = true;
+        document.getElementById("ShoppingListCategory").disabled = true;
     }
     else {
         document.getElementById("SubmitButton").disabled = false;
+        document.getElementById("ShoppingListCategory").disabled = false;
     }
 }
 
@@ -65,6 +67,7 @@ function addItem(name, category) {
 
     // Disable the button again for no input
     document.getElementById("SubmitButton").disabled = true;
+    document.getElementById("ShoppingListCategory").disabled = true;
 
     // Get the element that will contain the cards
     let container = document.getElementById('list-container')
@@ -76,28 +79,37 @@ function addItem(name, category) {
         container.removeChild(container.firstChild);
     }
 
-    for(let i =0; i < shoppingList.length; i++){
+    for(let i = 0; i < shoppingList.length; i++){
+        
         let cardDiv = document.createElement("div");
         cardDiv.className = "card";
         cardDiv.id = "list-entry";
     
-        let headerElement = document.createElement("h4");
-        headerElement.id = "shoppingList";
+        let itemElement = document.createElement("h4");
+        itemElement.id = "shoppingList";
     
-        let headerText = document.createTextNode(shoppingList[i]);
+        let itemName = document.createTextNode(shoppingList[i]);
     
-        let paragraphElement = document.createElement("p2");
-        paragraphElement.id = "shoppingListCategory";
+        let categoryElement = document.createElement("p2");
+        categoryElement.id = "shoppingListCategory";
     
-        let paragraphText = document.createTextNode(shoppingListCategory[i]);
+        let categoryName = document.createTextNode(shoppingListCategory[i]);
     
-        headerElement.appendChild(headerText);
-        paragraphElement.appendChild(paragraphText);
+        itemElement.appendChild(itemName);
+        categoryElement.appendChild(categoryName);
     
-        cardDiv.appendChild(headerElement);
-        cardDiv.appendChild(paragraphElement);
+        cardDiv.appendChild(itemElement);
+        cardDiv.appendChild(categoryElement);
     
         container.appendChild(cardDiv);
+    }
+}
+
+// allows user to submit an item on press of the enter button
+function submitOnEnter(e) {
+    if(e.keyCode === 13){ // makes sure that enter is the button being pressed
+        storeItem();
+        addItem('none','none');
     }
 }
 
