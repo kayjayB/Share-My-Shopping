@@ -3,6 +3,7 @@ var express = require("express");
 var mainRouter = express.Router();
 var mysql = require('mysql');
 var url = require('url');
+
 let connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -62,30 +63,27 @@ mainRouter.get('/', function(req, res) {
 });
 
 mainRouter.get('/items/:tokens', function(req, res) {
-	if (req.params.tokens) {
-		var tokens = req.params.tokens;
-		console.log("token in DB is" + tokens);
-		connection.query('SELECT * FROM items WHERE token = ' + tokens, req.body,
-			function(err, result) {
-				if (err) throw err;
-				console.log("DB entries are:" + result);
-				res.send(result);
-			}
-		);
-	}
-	else {
-		let result = [];
-		console.log("im empty");
-		res.send(result);
-	}
+    if (req.params.tokens) {
+        var tokens = req.params.tokens;
+        connection.query('SELECT * FROM items WHERE token = ' + tokens, req.body,
+            function(err, result) {
+                if (err) throw err;
+                res.send(result);
+                console.log(result)
+            }
+        );
+    } else {
+        let result = [];
+        console.log("im empty");
+        res.send(result);
+    }
 
 });
 
 mainRouter.get('/token', function(req, res) {
     connection.query('SELECT token FROM items', req.body,
         function(err, result) {
-			if (err) throw err;
-			console.log(result)
+            if (err) throw err;
             res.send(result);
         }
     );

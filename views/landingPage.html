@@ -30,7 +30,12 @@
         <div class="row">
             <form role="form" id="contact-form" class="contact-form">
                 <div class="row centered">
-                    <div class="col-md-5 col-md-offset-3">
+                    <div class="col-md-2">
+                        <p>Enter the link to the shopping list you wish to view</p>
+                        <input type="text" id="viewListFromLink"> </input>
+                        <button type="button" class="btn main-btn" onclick="viewList()"> View</button>
+                    </div>
+                    <div class="col-md-5 col-md-offset-1">
                         <div class="form-group">
                             <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item" oninput="toggleButton()" onkeypress="submitOnEnter(event)">
                         </div>
@@ -45,11 +50,12 @@
                     </div>
                     <div class="col-md-2 col-md-offset-1">
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=printURL()>Share
+                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=getToken()>Share
                                     <span class="caret"></span></button>
                             <ul class="dropdown-menu">
                                 <li>Use this link to share your shopping:
-                                    <a id="sharingLink"> </a>
+                                    <input type="text" id="sharingLink" readonly=""> </input>
+                                    <button type="button" class="btn main-btn" onclick="copyLink()"> Copy link</button>
                                 </li>
                             </ul>
                         </div>
@@ -65,4 +71,4 @@
     </div>
 </body>
 
-</html>
+</html

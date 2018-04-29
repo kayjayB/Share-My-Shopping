@@ -9,6 +9,7 @@ var token = 0123456;
 //         return tokenURL;
 // }
 
+<<<<<<< HEAD
 
 $(document).ready(function() {
     // let tokenURL = findURL();
@@ -32,11 +33,12 @@ $(document).ready(function() {
     });
 });
 
+=======
+>>>>>>> User is able to obtain a link and then paste it into a text box. On submit, the shopping list with that link is displayed. TODO: the list is duplicating for some reason.
 function makeEditable(ID, value) {
     // make a field editable
     document.getElementById(ID).setAttribute("contenteditable", value)
 }
-
 
 function toggleButton() {
     // Check that text is added to the field before category can be added and item can be submitted
@@ -189,7 +191,7 @@ function storeItem() {
     var payload = {
         name: document.getElementById("ShoppingListItem").value,
         category: document.getElementById("ShoppingListCategory").value,
-        token: "0123456",
+        token: "0123456", // Must be changed when multiple lists are added
     };
     console.log(payload);
     $.ajax({
@@ -223,7 +225,7 @@ function generateToken() {
     return randomString;
 }
 
-function printURL() {
+function printURL(tokenDB) {
     // let q = url.parse(req.url, true);
     // let baseURL = q.origin;
     // let tokenDB = getToken();
@@ -233,15 +235,8 @@ function printURL() {
         linkContainer.removeChild(linkContainer.firstChild);
     }
 
-    let tokenDB = getToken();
-    print("token should be here")
-
-    let baseURL = "/items"
-    let resultURL = baseURL + "/" + tokenDB;
-
-    linkContainer.href = resultURL;
-    linkText = document.createTextNode(resultURL);
-    linkContainer.appendChild(linkText);
+    let resultURL = tokenDB;
+    document.getElementById("sharingLink").value = resultURL;
 
 }
 
@@ -254,8 +249,49 @@ function getToken() {
         success: function(resp) {
             let tokenArray = (resp);
             let token = tokenArray.map(function(a) { return a.token; });
-            console.log("Token is: " + token);
-            return token[0]; // Return the first token, since all the tokens are the same
+            if (token[0] === undefined)
+                printURL(""); // Print empty string
+            else
+                printURL(token[0]); // Only the first token is needed since all tokens in the list are the same
         }
     });
 };
+
+function copyLink() {
+    var copyText = document.getElementById("sharingLink");
+    copyText.select();
+    document.execCommand("Copy");
+    //alert("Copied the text: " + copyText.value);
+}
+
+function viewList() {
+    var link = document.getElementById("viewListFromLink").value;
+    console.log(link);
+    $.ajax({
+        url: "/items/" + link.toString(),
+        type: "GET",
+        contentType: "application/json",
+        async: true,
+        success: function(resp) {
+            let nameArray = (resp);
+            let names = nameArray.map(function(a) { return a.name; });
+            let categories = nameArray.map(function(a) { return a.category; });
+
+            for (let i = 0; i < names.length; i++) {
+                let item_name = names[i];
+                let item_category = categories[i];
+                addItem(item_name, item_category);
+            }
+            if (names.length == 0) {
+                removeList();
+            }
+        }
+    });
+}
+
+function removeList() {
+    let container = document.getElementById('list-container')
+    while (container.hasChildNodes()) {
+        container.removeChild(container.firstChild);
+    }
+}
