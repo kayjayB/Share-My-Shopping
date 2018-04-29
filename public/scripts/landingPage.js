@@ -138,6 +138,8 @@ function addItem(name, category) {
     
         let categoryElement = document.createElement("p2");
         categoryElement.id = "shoppingListCategory_" + i.toString();
+
+        categoryElement.setAttribute("onmouseover", "makeEditable(id, true)");
     
         let categoryName = document.createTextNode(shoppingListCategory[i]);
     
