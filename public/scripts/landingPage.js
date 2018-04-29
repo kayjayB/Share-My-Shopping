@@ -69,11 +69,27 @@ function editItem(itemID) {
     document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
+function editCategory(itemID) {
+
+    let ID = itemID.toString().split("_")[1];
+    shoppingListCategory[ID] = document.getElementById(itemID.toString()).innerHTML;
+    console.log(shoppingListCategory[ID]);
+    document.getElementById(itemID).setAttribute("contenteditable", "false")
+}
+
 function submitChangesOnEnter(e, ID) {
     // when editing, changes can be submitted using enter key
     if(e.keyCode === 13) 
     { 
         editItem(ID);
+    }
+}
+
+function submitCategoryChangesOnEnter(e, ID) {
+    // when editing, changes can be submitted using enter key
+    if(e.keyCode === 13) 
+    { 
+        editCategory(ID);
     }
 }
 
@@ -93,10 +109,10 @@ function addItem(name, category) {
     // Check that the category is not empty, if so assign a default value (This default is not added 
     // to the card but the arrays should still be the same lemgth)
     if (item_category == null){
-        item_category = " "
+        item_category = "None"
     }
     else if(item_category.length == 0) {
-        item_category = " "
+        item_category = "None"
     }
 
     shoppingList.push(item_name);
@@ -140,6 +156,8 @@ function addItem(name, category) {
         categoryElement.id = "shoppingListCategory_" + i.toString();
 
         categoryElement.setAttribute("onmouseover", "makeEditable(id, true)");
+        categoryElement.setAttribute("onfocusout", "editCategory(id)");
+        categoryElement.setAttribute("onkeydown", "submitCategoryChangesOnEnter(event, id)");
     
         let categoryName = document.createTextNode(shoppingListCategory[i]);
     
