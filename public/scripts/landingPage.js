@@ -264,8 +264,18 @@ function copyLink() {
     //alert("Copied the text: " + copyText.value);
 }
 
+function toggleLinkSubmit() {
+    var link = document.getElementById("viewListFromLink").value;
+
+    if (link.length === 0) {
+        document.getElementById("navigateToLink").disabled = true;
+    } else
+        document.getElementById("navigateToLink").disabled = false;
+}
+
 function viewList() {
     var link = document.getElementById("viewListFromLink").value;
+    removeList();
     console.log(link);
     $.ajax({
         url: "/items/" + link.toString(),
@@ -276,7 +286,6 @@ function viewList() {
             let nameArray = (resp);
             let names = nameArray.map(function(a) { return a.name; });
             let categories = nameArray.map(function(a) { return a.category; });
-
             for (let i = 0; i < names.length; i++) {
                 let item_name = names[i];
                 let item_category = categories[i];
@@ -290,8 +299,11 @@ function viewList() {
 }
 
 function removeList() {
-    let container = document.getElementById('list-container')
-    while (container.hasChildNodes()) {
-        container.removeChild(container.firstChild);
+    let listContainer = document.getElementById('list-container')
+    shoppingList = [];
+    shoppingListCategory = [];
+    while (listContainer.hasChildNodes()) {
+        listContainer.removeChild(listContainer.firstChild);
+        console.log("removing");
     }
 }

@@ -32,8 +32,9 @@
                 <div class="row centered">
                     <div class="col-md-2">
                         <p>Enter the link to the shopping list you wish to view</p>
-                        <input type="text" id="viewListFromLink"> </input>
-                        <button type="button" class="btn main-btn" onclick="viewList()"> View</button>
+                        <input type="text" id="viewListFromLink" value=""> </input>
+                        <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
+                        <button type="button" class="btn main-btn" onclick="viewList()" id="navigateToLink"> View</button>
                     </div>
                     <div class="col-md-5 col-md-offset-1">
                         <div class="form-group">

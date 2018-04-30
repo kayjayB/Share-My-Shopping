@@ -65,7 +65,7 @@ mainRouter.get('/', function(req, res) {
 mainRouter.get('/items/:tokens', function(req, res) {
     if (req.params.tokens) {
         var tokens = req.params.tokens;
-        connection.query('SELECT * FROM items WHERE token = ' + tokens, req.body,
+        connection.query("SELECT * FROM items WHERE token = " + tokens, req.body,
             function(err, result) {
                 if (err) throw err;
                 res.send(result);
