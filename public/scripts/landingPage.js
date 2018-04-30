@@ -39,9 +39,7 @@ function submitEditedItem(ID) {
         contentType: "application/json",
         processData: false,
         data: JSON.stringify(payload),
-        complete: function(data) {
-            console.log(data.responseText);
-        }
+        complete: function(data) {}
     });
 }
 
