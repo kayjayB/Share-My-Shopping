@@ -1,13 +1,6 @@
 let shoppingList = [];
 let shoppingListCategory = [];
-var token = 0123456;
-
-// function findURL() {
-//         let q = url.parse(req.url, true);
-//         let tokenURL = q.pathname;
-
-//         return tokenURL;
-// }
+// var token = 0123456;
 
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
@@ -67,7 +60,7 @@ function editCategory(itemID) {
     document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
-function submitChangesOnEnter(e, ID) {
+function submitNameChangesOnEnter(e, ID) {
     let enterKey = 13;
     if (e.keyCode === enterKey) {
         editItem(ID);
@@ -78,6 +71,15 @@ function submitCategoryChangesOnEnter(e, ID) {
     let enterKey = 13;
     if (e.keyCode === enterKey) {
         editCategory(ID);
+    }
+}
+
+// allows user to submit an item on press of the enter button
+function saveItemOnEnter(e) {
+    let enterKey = 13;
+    if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
+        storeItem();
+        addItem('none', 'none');
     }
 }
 
@@ -133,9 +135,8 @@ function addItem(name, category) {
         itemElement.id = "shoppingList_" + i.toString();
 
         itemElement.setAttribute("onmouseover", "makeEditable(id, true)");
-        //itemElement.setAttribute("onmouseout", "makeEditable(id, false)")
         itemElement.setAttribute("onfocusout", "editItem(id)");
-        itemElement.setAttribute("onkeydown", "submitChangesOnEnter(event, id)");
+        itemElement.setAttribute("onkeydown", "submitNameChangesOnEnter(event, id)");
 
         let itemName = document.createTextNode(shoppingList[i]);
 
@@ -155,14 +156,6 @@ function addItem(name, category) {
         cardDiv.appendChild(categoryElement);
 
         container.appendChild(cardDiv);
-    }
-}
-
-// allows user to submit an item on press of the enter button
-function submitOnEnter(e) {
-    if (e.keyCode === 13) { // makes sure that enter is the button being pressed
-        storeItem();
-        addItem('none', 'none');
     }
 }
 
@@ -200,15 +193,11 @@ function generateToken() {
     for (var i = 1; i < stringLength; i++) {
         var randomNumber = Math.ceil(Math.random() * stringArray.length) - 1;
         randomString = randomString + stringArray[randomNumber];
-    };
+    }
     return randomString;
 }
 
 function printURL(tokenDB) {
-    // let q = url.parse(req.url, true);
-    // let baseURL = q.origin;
-    // let tokenDB = getToken();
-
     let linkContainer = document.getElementById('sharingLink');
     while (linkContainer.hasChildNodes()) {
         linkContainer.removeChild(linkContainer.firstChild);
@@ -234,7 +223,7 @@ function getToken() {
                 printURL(token[0]); // Only the first token is needed since all tokens in the list are the same
         }
     });
-};
+}
 
 function copyLink() {
     var copyText = document.getElementById("sharingLink");
