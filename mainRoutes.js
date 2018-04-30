@@ -3,11 +3,11 @@ var express = require("express");
 var mainRouter = express.Router();
 var mysql = require('mysql');
 
-let connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-});
+// let connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'password',
+// });
 
 let connnect_config = function() {
     // Process the environment variable defining the MySQL connection parameters
@@ -32,10 +32,10 @@ let connnect_config = function() {
 
 let connection = connnect_config();
 
-// connection.connect((err) => {
-//     if (err) throw err;
-//     console.log('Connected!');
-// });
+connection.connect((err) => {
+    if (err) throw err;
+    console.log('Connected!');
+});
 
 connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
     if (err) throw err;
