@@ -30,6 +30,7 @@ function submitEditedItem(ID) {
     var payload = {
         id: index.toString(),
         name: shoppingList[ID],
+        category: shoppingListCategory[ID],
     };
 
     $.ajax({
@@ -57,6 +58,7 @@ function editCategory(itemID) {
 
     let ID = itemID.toString().split("_")[1];
     shoppingListCategory[ID] = document.getElementById(itemID.toString()).innerHTML;
+    submitEditedItem(ID);
     document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
@@ -257,19 +259,21 @@ function viewList() {
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
-                removeList();
-                for (let i = 0; i < names.length; i++) {
-                    let item_name = names[i];
-                    let item_category = categories[i];
-                    addItem(item_name, item_category);
-                }
-                if (names.length == 0) {
+                if (names.length === 0) {
                     alert("No shopping list found");
-                    // document.getElementById("viewListFromLink").value = "";
+                    document.getElementById("viewListFromLink").value = "";
+                } else if (names.length !== 0) {
+                    removeList();
+                    for (let i = 0; i < names.length; i++) {
+                        let item_name = names[i];
+                        let item_category = categories[i];
+                        addItem(item_name, item_category);
+                    }
+                    document.getElementById("viewListFromLink").value = "";
                 }
             }
         });
-        document.getElementById("viewListFromLink").value = "";
+
     } else {
         alert("Token should only contain numbers");
         document.getElementById("viewListFromLink").value = "";
