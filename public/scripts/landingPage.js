@@ -73,21 +73,20 @@ function editCategory(itemID) {
 
     let ID = itemID.toString().split("_")[1];
     shoppingListCategory[ID] = document.getElementById(itemID.toString()).innerHTML;
-    console.log(shoppingListCategory[ID]);
     document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
 function submitChangesOnEnter(e, ID) {
-    // when editing, changes can be submitted using enter key
-    if(e.keyCode === 13) 
+    let enterKey = e.keyCode;
+    if(enterKey === 13) 
     { 
         editItem(ID);
     }
 }
 
 function submitCategoryChangesOnEnter(e, ID) {
-    // when editing, changes can be submitted using enter key
-    if(e.keyCode === 13) 
+    let enterKey = e.keyCode;
+    if(enterKey === 13) 
     { 
         editCategory(ID);
     }
