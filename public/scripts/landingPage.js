@@ -9,32 +9,11 @@ var token = 0123456;
 //         return tokenURL;
 // }
 
-<<<<<<< HEAD
-
 $(document).ready(function() {
-    // let tokenURL = findURL();
-    // token = generateToken(); // Generate one token for the duration of the loading
-    $.ajax({
-        url: "/items" + "/" + "0123456", // Creating a temp token to ensure that the request works
-        type: "GET",
-        contentType: "application/json",
-        async: true,
-        success: function(resp) {
-            let nameArray = (resp);
-            let names = nameArray.map(function(a) { return a.name; });
-            let categories = nameArray.map(function(a) { return a.category; });
-
-            for (let i = 0; i < names.length; i++) {
-                let item_name = names[i];
-                let item_category = categories[i];
-                addItem(item_name, item_category);
-            }
-        }
-    });
+    document.getElementById("viewListFromLink").value = "";
 });
 
-=======
->>>>>>> User is able to obtain a link and then paste it into a text box. On submit, the shopping list with that link is displayed. TODO: the list is duplicating for some reason.
+
 function makeEditable(ID, value) {
     // make a field editable
     document.getElementById(ID).setAttribute("contenteditable", value)
@@ -89,15 +68,15 @@ function editCategory(itemID) {
 }
 
 function submitChangesOnEnter(e, ID) {
-    let enterKey = e.keyCode;
-    if (enterKey === 13) {
+    let enterKey = 13;
+    if (e.keyCode === enterKey) {
         editItem(ID);
     }
 }
 
 function submitCategoryChangesOnEnter(e, ID) {
-    let enterKey = e.keyCode;
-    if (enterKey === 13) {
+    let enterKey = 13;
+    if (e.keyCode === enterKey) {
         editCategory(ID);
     }
 }
@@ -118,9 +97,9 @@ function addItem(name, category) {
     // Check that the category is not empty, if so assign a default value (This default is not added 
     // to the card but the arrays should still be the same lemgth)
     if (item_category == null) {
-        item_category = "None"
+        item_category = "Category/Aisle";
     } else if (item_category.length == 0) {
-        item_category = "None"
+        item_category = "Category/Aisle";
     }
 
     shoppingList.push(item_name);
@@ -275,27 +254,38 @@ function toggleLinkSubmit() {
 
 function viewList() {
     var link = document.getElementById("viewListFromLink").value;
-    removeList();
-    console.log(link);
-    $.ajax({
-        url: "/items/" + link.toString(),
-        type: "GET",
-        contentType: "application/json",
-        async: true,
-        success: function(resp) {
-            let nameArray = (resp);
-            let names = nameArray.map(function(a) { return a.name; });
-            let categories = nameArray.map(function(a) { return a.category; });
-            for (let i = 0; i < names.length; i++) {
-                let item_name = names[i];
-                let item_category = categories[i];
-                addItem(item_name, item_category);
-            }
-            if (names.length == 0) {
+
+    if (link.match(/^[0-9]+$/) != null) {
+
+        removeList();
+        console.log(link);
+        $.ajax({
+            url: "/items/" + link.toString(),
+            type: "GET",
+            contentType: "application/json",
+            async: true,
+            success: function(resp) {
+                let nameArray = (resp);
+                let names = nameArray.map(function(a) { return a.name; });
+                let categories = nameArray.map(function(a) { return a.category; });
                 removeList();
+                for (let i = 0; i < names.length; i++) {
+                    let item_name = names[i];
+                    let item_category = categories[i];
+                    addItem(item_name, item_category);
+                }
+                if (names.length == 0) {
+                    removeList();
+                    alert("No shopping list found");
+                    // document.getElementById("viewListFromLink").value = "";
+                }
             }
-        }
-    });
+        });
+        document.getElementById("viewListFromLink").value = "";
+    } else {
+        alert("Token should only contain numbers");
+        document.getElementById("viewListFromLink").value = "";
+    }
 }
 
 function removeList() {
