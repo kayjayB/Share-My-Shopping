@@ -68,7 +68,6 @@ mainRouter.get('/items/:tokens', function(req, res) {
             function(err, result) {
                 if (err) throw err;
                 res.send(result);
-                console.log(result)
             }
         );
     } else {
@@ -98,10 +97,9 @@ mainRouter.post('/items', function(req, res) {
 });
 
 mainRouter.post('/edititem', function(req, res) {
-    connection.query('UPDATE items SET name = ? WHERE id = ?', [req.body.name, req.body.id],
+    connection.query('UPDATE items SET name = ?, category = ? WHERE id = ?', [req.body.name, req.body.category, req.body.id],
         function(err, result) {
             if (err) throw err;
-            //res.send('Item edited in database with ID: ' + result.insertId);
         }
     );
 });
