@@ -264,7 +264,6 @@ function viewList() {
                     addItem(item_name, item_category);
                 }
                 if (names.length == 0) {
-                    removeList();
                     alert("No shopping list found");
                     // document.getElementById("viewListFromLink").value = "";
                 }
