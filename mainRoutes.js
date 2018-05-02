@@ -9,28 +9,28 @@ let connection = mysql.createConnection({
     password: 'password',
 });
 
-let connnect_config = function() {
-    // Process the environment variable defining the MySQL connection parameters
-    let str = process.env.MYSQLCONNSTR_localdb
-    let reg = str.split(';');
-    let database = reg[0].split('=')[1]
-    let source = reg[1].split('=')[1]
-    let [host, port] = source.split(':')
-    let user = reg[2].split('=')[1]
-    let password = reg[3].split('=')[1]
+// let connnect_config = function() {
+//     // Process the environment variable defining the MySQL connection parameters
+//     let str = process.env.MYSQLCONNSTR_localdb
+//     let reg = str.split(';');
+//     let database = reg[0].split('=')[1]
+//     let source = reg[1].split('=')[1]
+//     let [host, port] = source.split(':')
+//     let user = reg[2].split('=')[1]
+//     let password = reg[3].split('=')[1]
 
-    // Create the connection and return
-    let auth = {
-        host: host,
-        user: user,
-        password: password,
-        database: database,
-        port: parseInt(port)
-    }
-    return mysql.createConnection(auth)
-}
+//     // Create the connection and return
+//     let auth = {
+//         host: host,
+//         user: user,
+//         password: password,
+//         database: database,
+//         port: parseInt(port)
+//     }
+//     return mysql.createConnection(auth)
+// }
 
-let connection = connnect_config();
+// let connection = connnect_config();
 
 connection.connect((err) => {
     if (err) throw err;
@@ -68,6 +68,7 @@ mainRouter.get('/items/:tokens', function(req, res) {
         connection.query("SELECT * FROM items WHERE token = " + tokens, req.body,
             function(err, result) {
                 if (err) throw err;
+                // console.log("Edited reponse is: " + result.completed);
                 res.send(result);
             }
         );

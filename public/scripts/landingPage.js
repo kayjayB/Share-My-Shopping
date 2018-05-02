@@ -87,15 +87,15 @@ function saveItemOnEnter(e) {
     let enterKey = 13;
     if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
         storeItem();
-        addItem('none', 'none');
+        addItem('none', 'none', false);
     }
 }
 
-function addItem(name, category) {
+function addItem(name, category, status) {
 
     let item_name = name;
     let item_category = category;
-
+    let initialCompletionStatus = status;
     if (item_name == "none") {
         item_name = document.getElementById("ShoppingListItem").value;
     }
@@ -103,7 +103,6 @@ function addItem(name, category) {
     if (item_category == "none") {
         item_category = document.getElementById("ShoppingListCategory").value;
     }
-
     // Check that the category is not empty, if so assign a default value (This default is not added 
     // to the card but the arrays should still be the same lemgth)
     if (item_category == null) {
@@ -114,7 +113,6 @@ function addItem(name, category) {
 
     shoppingList.push(item_name);
     shoppingListCategory.push(item_category);
-    let initialCompletionStatus = false
 
     itemCompletionStatus.push(initialCompletionStatus);
     // Clear input text field once the item has been saved to the array
@@ -165,7 +163,12 @@ function addItem(name, category) {
         let checkboxDiv = document.createElement("div");
         let checkBox = document.createElement("input");
         checkBox.type = "checkbox";
-        checkBox.checked = itemCompletionStatus[i];
+        if (itemCompletionStatus[i] == 0) {
+            checkBox.checked = false;
+        } else if (itemCompletionStatus[i] == 1) {
+            checkBox.checked = true;
+        }
+        console.log("Completion status initially" + itemCompletionStatus[i])
         checkBox.id = "purchaseStatus_" + i.toString();
 
         checkBox.setAttribute("onclick", "editPurchaseStatus(id)");
@@ -281,6 +284,8 @@ function viewList() {
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
+                let purchaseStatus = nameArray.map(function(a) { return a.completed; });
+                console.log("Status is: " + purchaseStatus);
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
@@ -289,7 +294,13 @@ function viewList() {
                     for (let i = 0; i < names.length; i++) {
                         let item_name = names[i];
                         let item_category = categories[i];
-                        addItem(item_name, item_category);
+                        let item_status = purchaseStatus[i];
+                        if (item_status === 0) {
+                            item_status = false;
+                        } else if (item_status === 1) {
+                            item_status = true;
+                        }
+                        addItem(item_name, item_category, item_status);
                     }
                     document.getElementById("viewListFromLink").value = "";
                 }
