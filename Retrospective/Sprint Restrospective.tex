@@ -47,6 +47,7 @@ Start time: 19:00
 	\item A branch was merged before suggested changes were made
 	\item Poor communication when developer required assistance
 	\item Only unit tests were implemented 
+	\item Unsuccessful configuration of coveralls
 \end{enumerate}
 
 \subsubsection*{What needs improvement:}
@@ -61,4 +62,46 @@ Start time: 19:00
 \subsubsection*{Velocity:}
 Each developer story was assigned an effort rating between 1 and 10. Using these efforts, the sprint velocity was calculated to be 49. The ideal velocity for the next sprint is therefore 49.
 
+\section*{SPRINT 2}
+\subsection*{Attendees:}
+Kayla-Jade Butkow, Jared Ping, Lara Timm, Matt van Rooyen
+
+\subsection*{Agenda:} 
+To critically analyse the sprint and calculate the sprint velocity.
+
+\subsection*{Minutes of meeting:}
+Start date: 01/05/2018 \\
+Start time: 19:00
+
+\subsubsection*{What went right:}
+\begin{enumerate}
+	\item All developer stories assigned to the sprint were completed
+	\item We met our expected deadlines, both individually and as a team
+	\item Collaborative work was performed smoothly
+	\item Minimal variation between developers 
+	\item The use of daily stand-ups to track sprint progress
+	\item Current sprint velocity is very close to previous velocity
+	\item Choice to set up local databases has (and will in future) sped up the time taken for database related operations to be tested
+	\item The wiki for the repository is being well utilised by the team and has assisted in remedying issues and streamlining processes
+\end{enumerate}
+
+\subsubsection*{What went wrong:}
+\begin{enumerate}
+	\item Violation of trunk based development regarding a single merge into master. Pull request was not opened, and as such there was no opportunity for the team to review. These changes were reverted, and the correct process was followed. However, for a short period of time, unmoderated changes were deployed.
+	\item Lots of time was consumed by setting up local databases
+	\item Unsuccessful configuration of coveralls
+	\item Issues with configuring web service to connect to database
+	\item Sprint board required further iteration to cater for correctly sliced developer stories
+\end{enumerate}
+
+\subsubsection*{What needs improvement:}
+\begin{enumerate}
+	\item Selenium needs to be implemented to allow for integration and acceptance tests
+	\item Code coverage must be tested using Coveralls
+	\item A development deployment environment should be used for pre-release testing. This will prevent production downtime
+	\item Comprehensive tests required to adhere to the testing pyramid
+\end{enumerate}
+
+\subsubsection*{Velocity:}
+The velocity for this sprint was 47. 
 \end{document}
