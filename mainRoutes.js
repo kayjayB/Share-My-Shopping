@@ -3,34 +3,34 @@ var express = require("express");
 var mainRouter = express.Router();
 var mysql = require('mysql');
 
-// let connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'password',
-// });
+let connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+});
 
-let connnect_config = function() {
-    // Process the environment variable defining the MySQL connection parameters
-    let str = process.env.MYSQLCONNSTR_localdb
-    let reg = str.split(';');
-    let database = reg[0].split('=')[1]
-    let source = reg[1].split('=')[1]
-    let [host, port] = source.split(':')
-    let user = reg[2].split('=')[1]
-    let password = reg[3].split('=')[1]
+// let connnect_config = function() {
+//     // Process the environment variable defining the MySQL connection parameters
+//     let str = process.env.MYSQLCONNSTR_localdb
+//     let reg = str.split(';');
+//     let database = reg[0].split('=')[1]
+//     let source = reg[1].split('=')[1]
+//     let [host, port] = source.split(':')
+//     let user = reg[2].split('=')[1]
+//     let password = reg[3].split('=')[1]
 
-    // Create the connection and return
-    let auth = {
-        host: host,
-        user: user,
-        password: password,
-        database: database,
-        port: parseInt(port)
-    }
-    return mysql.createConnection(auth)
-}
+//     // Create the connection and return
+//     let auth = {
+//         host: host,
+//         user: user,
+//         password: password,
+//         database: database,
+//         port: parseInt(port)
+//     }
+//     return mysql.createConnection(auth)
+// }
 
-let connection = connnect_config();
+// let connection = connnect_config();
 
 connection.connect((err) => {
     if (err) throw err;
@@ -48,7 +48,8 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                 'PRIMARY KEY(id),' +
                 'name VARCHAR(50),' +
                 'category VARCHAR(50),' +
-                'token VARCHAR(50)' +
+                'token VARCHAR(50),' +
+                'completed VARCHAR(50)' +
                 ')',
                 function(err) {
                     if (err) throw err;
