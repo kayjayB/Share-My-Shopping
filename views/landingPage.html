@@ -11,7 +11,7 @@
     <script src="/cdn/scripts/landingPage.js"></script>
 </head>
 
-<body style="background-color: #f6f6f6;">
+<body>
     <div>
         <nav class="navbar navbar-default">
             <div class="container">
@@ -36,8 +36,21 @@
         <div class="row">
             <form role="form" id="contact-form" class="contact-form">
                 <div class="row centered">
-                    <div class="col-md-2">
-                        <p>Enter the link to the shopping list you wish to view</p>
+                    <div class="col-md-2 token-container">
+                        <div class="dropdown">
+                            <p>Click the button below to save your shopping list</p>
+                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=getToken()>Save List
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>Use this token to access your shopping list:
+                                    <input type="text" id="sharingLink" readonly=""> </input>
+                                    <button type="button" class="btn main-btn" onclick="copyLink()"> Copy link</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <hr class="hr-style">
+                        <p class="search-token-text">Enter the token for the shopping list you wish to view</p>
                         <input type="text" id="viewListFromLink" value=""> </input>
                         <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
                         <button type="button" class="btn main-btn" onclick="viewList()" id="navigateToLink"> View</button>
@@ -56,16 +69,6 @@
                         </button>
                     </div>
                     <div class="col-md-2 col-md-offset-1">
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=getToken()>Share
-                                    <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li>Use this link to share your shopping:
-                                    <input type="text" id="sharingLink" readonly=""> </input>
-                                    <button type="button" class="btn main-btn" onclick="copyLink()"> Copy link</button>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
                 <div class="row">
