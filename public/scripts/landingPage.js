@@ -229,6 +229,7 @@ function copyLink() {
     var copyText = document.getElementById("sharingLink");
     copyText.select();
     document.execCommand("Copy");
+    console.log(getToken());
     //alert("Copied the text: " + copyText.value);
 }
 
@@ -286,4 +287,24 @@ function removeList() {
         listContainer.removeChild(listContainer.firstChild);
         console.log("removing");
     }
+}
+
+function shareEmail() {
+    var payload = {
+        token: "0123456",
+        email: document.getElementById("email-share").value,
+    };
+    console.log(payload);
+
+    $.ajax({
+        url: "/share",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function (data) {
+            console.log(data.responseText);
+        }
+    });
+
 }

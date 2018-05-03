@@ -68,7 +68,13 @@
                             <i class="fa fa-plus-square fa-4x" style="color:#40e0d0"></i>
                         </button>
                     </div>
-                    <div class="col-md-2 col-md-offset-1">
+                    <div class="col-md-2 col-md-offset-1 email-container">
+                        <p class="email-share-text">Enter the email which you want to share your shopping list with:</p>
+                        <input type="text" id="email-share" value=""> </input>
+                        <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
+                        <button type="button" class="btn main-btn" onclick="shareEmail()" id="navigateToLink">Share</button>
+                        <hr class="hr-style">
+                        <ul class="email-list"></ul>
                     </div>
                 </div>
                 <div class="row">

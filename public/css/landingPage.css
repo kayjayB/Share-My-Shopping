@@ -1,3 +1,7 @@
+body{
+    font-family: monospace;
+}
+
 .navbar-default {
     background-color: #40e0d0;
     -webkit-box-shadow: 0px 7px 10px 3px rgba(202,227,230,1);
@@ -9,9 +13,18 @@
     padding: 15px;
     background-color: #e8e8e8;
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 22px 8px rgba(0,0,0,0.33);
-    -moz-box-shadow: 0px 0px 22px 8px rgba(0,0,0,0.33);
-    box-shadow: 0px 0px 22px 8px rgba(0,0,0,0.33);
+    -webkit-box-shadow: 0px 0px 22px 4px rgba(0,0,0,0.33);
+    -moz-box-shadow: 0px 0px 22px 4px rgba(0,0,0,0.33);
+    box-shadow: 0px 0px 22px 4px rgba(0,0,0,0.33);
+}
+
+.email-container{
+    padding: 15px;
+    background-color: #e8e8e8;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 22px 4px rgba(0,0,0,0.33);
+    -moz-box-shadow: 0px 0px 22px 4px rgba(0,0,0,0.33);
+    box-shadow: 0px 0px 22px 4px rgba(0,0,0,0.33);
 }
 
 .main{
@@ -47,6 +60,10 @@ hr.hr-style {
 
 .search-token-text{
     margin-top: 40px;
+}
+
+.email-share-text{
+    
 }
 
 #list-container {
