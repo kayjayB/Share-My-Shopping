@@ -8,7 +8,6 @@ $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
     document.getElementById("overlay").style.display = "block";
     token = generateToken();
-    //loadExisitingShoppingList();
 });
 
 function loadExisitingShoppingList() {
