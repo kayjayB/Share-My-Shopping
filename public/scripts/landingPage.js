@@ -323,3 +323,18 @@ function removeList() {
         console.log("removing");
     }
 }
+
+function clearDB() {
+    console.log("Im deleting stuff")
+    var payload = {};
+    $.ajax({
+        url: "/delete",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {
+            removeList();
+        }
+    });
+}

@@ -110,4 +110,12 @@ mainRouter.get("/about", function(req, res) {
     res.sendFile(path.join(__dirname, "views", "about.html"));
 });
 
+mainRouter.post('/delete', function(req, res) {
+    connection.query('TRUNCATE items', req.body,
+        function(err, result) {
+            if (err) throw err;
+        }
+    );
+});
+
 module.exports = mainRouter;

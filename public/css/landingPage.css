@@ -68,6 +68,10 @@
     border: none;
 }
 
+#deleteButton {
+    pointer-events: none;
+}
+
 
 /* .sidenav {
     height: 100%;
