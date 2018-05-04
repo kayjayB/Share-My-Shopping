@@ -7,6 +7,11 @@
     float: right;
 }
 
+.navbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 #list-container {
     margin-top: 50px;
     padding: 10% 15%;

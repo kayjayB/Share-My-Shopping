@@ -53,6 +53,8 @@ function submitEditedItem(ID) {
         name: shoppingList[ID],
         category: shoppingListCategory[ID],
         completed: itemCompletionStatus[ID],
+        arrayIndex: index.toString(),
+        token: token
     };
     $.ajax({
         url: "/edititem",
@@ -241,13 +243,15 @@ function addItem(name, category, status, quantity) {
 function storeItem() {
     let completedStatus = false;
     let quantity_value = document.getElementById("ShoppingListQuantity").value;
+    let listIndex = shoppingList.length + 1; // Add 1 because the new item hasn't been added yet 
     if (quantity_value.match(/^[0-9]+$/) != null) {
         var payload = {
             name: document.getElementById("ShoppingListItem").value,
             category: document.getElementById("ShoppingListCategory").value,
             quantity: quantity_value,
             token: token,
-            completed: completedStatus
+            completed: completedStatus,
+            arrayIndex: listIndex
         };
 
         $.ajax({
