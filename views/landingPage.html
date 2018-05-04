@@ -14,23 +14,26 @@
 <body style="background-color: #f6f6f6;">
     <div>
         <nav class="navbar navbar-default">
-            <div class="row centered">
-                <div class="navbar-header col-md-4 col-md-offset-4" style="padding-left:20ex">
-                    <a href="#">
-                        <i class="fa fa-shopping-cart fa-4x fa-pull-left"></i>
-                    </a>
-                    <a class="navbar-brand" id="site-title" href="#">SHARE MY SHOPPING</a>
-                </div>
-                <div class="sidenav pull-right">
-                    <a href="#" class="load-small pull-right" onclick="loadExisitingShoppingList()" id="">
-                        <i class="fa fa-list-alt" aria-hidden="true"></i> Load
-                    </a>
-                    <a href="#" class="load-small pull-right" onclick="newShoppingList()" id="">
-                        <i class="fa fa-shopping-cart"></i> Create
-                    </a>
-                </div>
+            <!-- <div class="row centered"> -->
+            <div class="navbar-header col-md-1 col-md-offset-3" style="padding-left:20ex">
+                <a href="#">
+                    <i class="fa fa-shopping-cart fa-4x"></i>
+                </a>
             </div>
-        </nav>
+            <div class="navbar-header col-md-3" style="padding-left:5ex">
+                <a class="navbar-brand" id="site-title" href="#">SHARE MY SHOPPING</a>
+            </div>
+            <!-- </div> -->
+            <div class="sidenav pull-right">
+                <a href="#" class="load-small pull-right" onclick="loadExisitingShoppingList()" id="loadList">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> Load
+                </a>
+                <a href="#" class="load-small pull-right" onclick="newShoppingList()" id="createList">
+                    <i class="fa fa-shopping-cart"></i> Create
+                </a>
+            </div>
+    </div>
+    </nav>
     </div>
     <div id="overlay">
         <div class="container" id="text">
@@ -59,7 +62,7 @@
             <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
             <button type="button" class="loadButton" onclick="viewList()" id="navigateToLink"> View</button>
             <p></p>
-            <button type="button" class="loadButton" onclick="cancel()" id="navigateToLink"> Cancel</button>
+            <button type="button" class="loadButton" onclick="cancel()" id="cancel"> Cancel</button>
         </div>
     </div>
     <div class="container main">
@@ -71,7 +74,7 @@
                         <input type="text" id="viewListFromLink" value=""> </input>
                         <button type="button" class="btn main-btn" onclick="viewList()" id="navigateToLink"> View</button>
                     </div> -->
-                    <div class="col-md-5 col-md-offset-1">
+                    <div class="col-md-5 col-md-offset-3">
                         <div class="form-group">
                             <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item" oninput="toggleButton()" onkeypress="saveItemOnEnter(event)">
                         </div>
@@ -89,7 +92,7 @@
                     </div>
                     <div class="col-md-2 col-md-offset-1">
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=getToken()>Share
+                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=getToken() id="shareDropdown">Share
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
