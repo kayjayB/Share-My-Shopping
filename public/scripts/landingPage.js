@@ -1,5 +1,6 @@
 let shoppingList = [];
 let shoppingListCategory = [];
+let shoppingListQuantity = [];
 // var token = 0123456;
 
 $(document).ready(function() {
@@ -19,9 +20,11 @@ function toggleButton() {
     if (item.length == 0) {
         document.getElementById("SubmitButton").disabled = true;
         document.getElementById("ShoppingListCategory").disabled = true;
+        document.getElementById("ShoppingListQuantity").disabled = true;
     } else {
         document.getElementById("SubmitButton").disabled = false;
         document.getElementById("ShoppingListCategory").disabled = false;
+        document.getElementById("ShoppingListQuantity").disabled = false;
     }
 }
 
@@ -79,14 +82,15 @@ function saveItemOnEnter(e) {
     let enterKey = 13;
     if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
         storeItem();
-        addItem('none', 'none');
+        addItem('none', 'none', 0);
     }
 }
 
-function addItem(name, category) {
+function addItem(name, category, quantity) {
 
     let item_name = name;
     let item_category = category;
+    let item_quantity = quantity;
 
     if (item_name == "none") {
         item_name = document.getElementById("ShoppingListItem").value;
@@ -94,6 +98,10 @@ function addItem(name, category) {
 
     if (item_category == "none") {
         item_category = document.getElementById("ShoppingListCategory").value;
+    }
+
+    if (item_quantity === 0) {
+        item_quantity = document.getElementById("ShoppingListQuantity").value;
     }
 
     // Check that the category is not empty, if so assign a default value (This default is not added 
@@ -104,16 +112,25 @@ function addItem(name, category) {
         item_category = "Category/Aisle";
     }
 
+    if (item_quantity == null) {
+        item_quantity = 1;
+    } else if (item_quantity.length == 0) {
+        item_quantity = 1;
+    }
+
     shoppingList.push(item_name);
     shoppingListCategory.push(item_category);
+    shoppingListQuantity.push(item_quantity);
 
     // Clear input text field once the item has been saved to the array
     document.getElementById("ShoppingListItem").value = "";
     document.getElementById("ShoppingListCategory").value = "";
+    document.getElementById("ShoppingListQuantity").value = "";
 
     // Disable the button again for no input
     document.getElementById("SubmitButton").disabled = true;
     document.getElementById("ShoppingListCategory").disabled = true;
+    document.getElementById("ShoppingListQuantity").disabled = true;
 
     // Get the element that will contain the cards
     let container = document.getElementById('list-container')
@@ -131,8 +148,9 @@ function addItem(name, category) {
         cardDiv.className = "card";
         cardDiv.id = "list-entry_" + i.toString();
 
-        let itemElement = document.createElement("h4");
+        let itemElement = document.createElement("span");
         itemElement.id = "shoppingList_" + i.toString();
+        itemElement.className = "shoppingListItem";
 
         itemElement.setAttribute("onmouseover", "makeEditable(id, true)");
         itemElement.setAttribute("onfocusout", "editItem(id)");
@@ -140,7 +158,7 @@ function addItem(name, category) {
 
         let itemName = document.createTextNode(shoppingList[i]);
 
-        let categoryElement = document.createElement("p2");
+        let categoryElement = document.createElement("h4");
         categoryElement.id = "shoppingListCategory_" + i.toString();
 
         categoryElement.setAttribute("onmouseover", "makeEditable(id, true)");
@@ -149,10 +167,22 @@ function addItem(name, category) {
 
         let categoryName = document.createTextNode(shoppingListCategory[i]);
 
+        let quantityElement = document.createElement("span");
+        quantityElement.id = "shoppingListQuantity_" + i.toString();
+        quantityElement.className = "shoppingListQuantity";
+        let quantityAmount = document.createTextNode(shoppingListQuantity[i]);
+        let quantityMultiplier = document.createElement("span");
+        quantityMultiplier.className = "multiplier";
+        let quantityText = document.createTextNode("X");
+
         itemElement.appendChild(itemName);
         categoryElement.appendChild(categoryName);
+        quantityElement.appendChild(quantityAmount);
+        quantityMultiplier.appendChild(quantityText);
 
         cardDiv.appendChild(itemElement);
+        cardDiv.appendChild(quantityMultiplier);
+        cardDiv.appendChild(quantityElement);
         cardDiv.appendChild(categoryElement);
 
         container.appendChild(cardDiv);
@@ -163,6 +193,7 @@ function storeItem() {
     var payload = {
         name: document.getElementById("ShoppingListItem").value,
         category: document.getElementById("ShoppingListCategory").value,
+        quantity: document.getElementById("ShoppingListQuantity").value,
         token: "0123456", // Must be changed when multiple lists are added
     };
     console.log(payload);
@@ -257,6 +288,7 @@ function viewList() {
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
+                let quantities = nameArray.map(function (a) { return a.quantity; });
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
@@ -265,7 +297,8 @@ function viewList() {
                     for (let i = 0; i < names.length; i++) {
                         let item_name = names[i];
                         let item_category = categories[i];
-                        addItem(item_name, item_category);
+                        let item_quantity = quantities[i];
+                        addItem(item_name, item_category, item_quantity);
                     }
                     document.getElementById("viewListFromLink").value = "";
                 }
