@@ -21,7 +21,9 @@ function cancel() {
 }
 
 function newShoppingList() {
-    document.getElementById("secondOverlay").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    token = generateToken();
+    removeList();
 }
 
 function makeEditable(ID, value) {
@@ -375,6 +377,7 @@ function removeList() {
     shoppingList = [];
     shoppingListCategory = [];
     itemCompletionStatus = [];
+    shoppingListQuantity = [];
     while (listContainer.hasChildNodes()) {
         listContainer.removeChild(listContainer.firstChild);
     }
