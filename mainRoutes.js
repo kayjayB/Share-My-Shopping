@@ -3,11 +3,11 @@ var express = require("express");
 var mainRouter = express.Router();
 var mysql = require('mysql');
 
-let connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-});
+// let connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'password',
+// });
 
 let connnect_config = function() {
     // Process the environment variable defining the MySQL connection parameters
