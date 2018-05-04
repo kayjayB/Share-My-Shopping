@@ -48,6 +48,7 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                 'PRIMARY KEY(id),' +
                 'name VARCHAR(50),' +
                 'category VARCHAR(50),' +
+                'quantity INT(10),' +
                 'token VARCHAR(50)' +
                 ')',
                 function(err) {
