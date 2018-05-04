@@ -90,15 +90,7 @@ function submitCategoryChangesOnEnter(e, ID) {
 function saveItemOnEnter(e) {
     let enterKey = 13;
     if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
-        let quantity_value = document.getElementById("ShoppingListQuantity").value;
-        if (quantity_value.match(/^[0-9]+$/) != null) {
-            storeItem();
-            addItem('none', 'none', false, 0);
-        }
-        else{
-            alert("Token should only contain numbers");
-            document.getElementById("ShoppingListQuantity").value = "";
-        }
+        storeItem();
     }
 }
 
@@ -225,28 +217,31 @@ function addItem(name, category, status, quantity) {
 
 function storeItem() {
     let completedStatus = false;
-    var quantity_value = document.getElementById("ShoppingListQuantity").value;
-    if (quantity_value.match(/^[0-9]+$/) == null) {
-        quantity_value = 1;
+    let quantity_value = document.getElementById("ShoppingListQuantity").value;
+    if (quantity_value.match(/^[0-9]+$/) != null) {
+        var payload = {
+            name: document.getElementById("ShoppingListItem").value,
+            category: document.getElementById("ShoppingListCategory").value,
+            quantity: quantity_value,
+            token: "0123456", // Must be changed when multiple lists are added
+            completed: completedStatus
+        };
+
+        $.ajax({
+            url: "/items",
+            type: "POST",
+            contentType: "application/json",
+            processData: false,
+            data: JSON.stringify(payload),
+            complete: function (data) {
+                addItem('none', 'none', false, quantity_value);
+            }
+        });
     }
-
-    var payload = {
-        name: document.getElementById("ShoppingListItem").value,
-        category: document.getElementById("ShoppingListCategory").value,
-        quantity: quantity_value,
-        token: "0123456", // Must be changed when multiple lists are added
-        completed: completedStatus
-    };
-
-    $.ajax({
-        url: "/items",
-        type: "POST",
-        contentType: "application/json",
-        processData: false,
-        data: JSON.stringify(payload),
-        complete: function(data) {
-        }
-    });
+    else {
+        alert("Quantity should only contain numbers");
+        document.getElementById("ShoppingListQuantity").value = "";
+    }
 }
 
 // set the length of the string
