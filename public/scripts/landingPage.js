@@ -296,20 +296,21 @@ function printURL(tokenDB) {
 }
 
 function getToken() {
-    $.ajax({
-        url: "/token",
-        type: "GET",
-        contentType: "application/json",
-        async: true,
-        success: function(resp) {
-            let tokenArray = (resp);
-            let token = tokenArray.map(function(a) { return a.token; });
-            if (token[0] === undefined)
-                printURL(""); // Print empty string
-            else
-                printURL(token[0]); // Only the first token is needed since all tokens in the list are the same
-        }
-    });
+    printURL(token);
+    // $.ajax({
+    //     url: "/token",
+    //     type: "GET",
+    //     contentType: "application/json",
+    //     async: true,
+    //     success: function(resp) {
+    //         let tokenArray = (resp);
+    //         let token = tokenArray.map(function(a) { return a.token; });
+    //         if (token[0] === undefined)
+    //             printURL(""); // Print empty string
+    //         else
+    //             printURL(token[0]); // Only the first token is needed since all tokens in the list are the same
+    //     }
+    // });
 }
 
 function copyLink() {
@@ -328,13 +329,12 @@ function toggleLinkSubmit() {
 }
 
 function viewList() {
-    var link = document.getElementById("viewListFromLink").value;
+    token = document.getElementById("viewListFromLink").value;
     document.getElementById("secondOverlay").style.display = "none";
-    if (link.match(/^[0-9]+$/) != null) {
-
+    if (token.match(/^[0-9]+$/) != null) {
         removeList();
         $.ajax({
-            url: "/items/" + link.toString(),
+            url: "/items/" + token.toString(),
             type: "GET",
             contentType: "application/json",
             async: true,
