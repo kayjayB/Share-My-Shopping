@@ -1,5 +1,6 @@
 let shoppingList = [];
 let shoppingListCategory = [];
+let itemCompletionStatus = [];
 // var token = 0123456;
 
 $(document).ready(function() {
@@ -31,8 +32,8 @@ function submitEditedItem(ID) {
         id: index.toString(),
         name: shoppingList[ID],
         category: shoppingListCategory[ID],
+        completed: itemCompletionStatus[ID],
     };
-
     $.ajax({
         url: "/edititem",
         type: "POST",
@@ -60,6 +61,13 @@ function editCategory(itemID) {
     document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
+function editPurchaseStatus(itemID) {
+
+    let ID = itemID.toString().split("_")[1];
+    itemCompletionStatus[ID] = document.getElementById(itemID.toString()).checked;
+    submitEditedItem(ID);
+}
+
 function submitNameChangesOnEnter(e, ID) {
     let enterKey = 13;
     if (e.keyCode === enterKey) {
@@ -79,15 +87,15 @@ function saveItemOnEnter(e) {
     let enterKey = 13;
     if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
         storeItem();
-        addItem('none', 'none');
+        addItem('none', 'none', false);
     }
 }
 
-function addItem(name, category) {
+function addItem(name, category, status) {
 
     let item_name = name;
     let item_category = category;
-
+    let initialCompletionStatus = status;
     if (item_name == "none") {
         item_name = document.getElementById("ShoppingListItem").value;
     }
@@ -95,7 +103,6 @@ function addItem(name, category) {
     if (item_category == "none") {
         item_category = document.getElementById("ShoppingListCategory").value;
     }
-
     // Check that the category is not empty, if so assign a default value (This default is not added 
     // to the card but the arrays should still be the same lemgth)
     if (item_category == null) {
@@ -107,6 +114,7 @@ function addItem(name, category) {
     shoppingList.push(item_name);
     shoppingListCategory.push(item_category);
 
+    itemCompletionStatus.push(initialCompletionStatus);
     // Clear input text field once the item has been saved to the array
     document.getElementById("ShoppingListItem").value = "";
     document.getElementById("ShoppingListCategory").value = "";
@@ -140,7 +148,7 @@ function addItem(name, category) {
 
         let itemName = document.createTextNode(shoppingList[i]);
 
-        let categoryElement = document.createElement("p2");
+        let categoryElement = document.createElement("p");
         categoryElement.id = "shoppingListCategory_" + i.toString();
 
         categoryElement.setAttribute("onmouseover", "makeEditable(id, true)");
@@ -152,18 +160,38 @@ function addItem(name, category) {
         itemElement.appendChild(itemName);
         categoryElement.appendChild(categoryName);
 
+        let checkboxDiv = document.createElement("div");
+        let checkBox = document.createElement("input");
+        checkBox.type = "checkbox";
+        if (itemCompletionStatus[i] == 0) {
+            checkBox.checked = false;
+        } else if (itemCompletionStatus[i] == 1) {
+            checkBox.checked = true;
+        }
+        console.log("Completion status initially" + itemCompletionStatus[i])
+        checkBox.id = "purchaseStatus_" + i.toString();
+
+        checkBox.setAttribute("onclick", "editPurchaseStatus(id)");
+        let purchasedText = document.createTextNode("Purchased  ");
+        checkboxDiv.appendChild(purchasedText);
+        checkboxDiv.appendChild(checkBox);
+
         cardDiv.appendChild(itemElement);
+
         cardDiv.appendChild(categoryElement);
+        cardDiv.appendChild(checkboxDiv);
 
         container.appendChild(cardDiv);
     }
 }
 
 function storeItem() {
+    let completedStatus = false;
     var payload = {
         name: document.getElementById("ShoppingListItem").value,
         category: document.getElementById("ShoppingListCategory").value,
         token: "0123456", // Must be changed when multiple lists are added
+        completed: completedStatus
     };
     console.log(payload);
     $.ajax({
@@ -229,7 +257,6 @@ function copyLink() {
     var copyText = document.getElementById("sharingLink");
     copyText.select();
     document.execCommand("Copy");
-    //alert("Copied the text: " + copyText.value);
 }
 
 function toggleLinkSubmit() {
@@ -257,6 +284,8 @@ function viewList() {
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
+                let purchaseStatus = nameArray.map(function(a) { return a.completed; });
+                console.log("Status is: " + purchaseStatus);
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
@@ -265,7 +294,13 @@ function viewList() {
                     for (let i = 0; i < names.length; i++) {
                         let item_name = names[i];
                         let item_category = categories[i];
-                        addItem(item_name, item_category);
+                        let item_status = purchaseStatus[i];
+                        if (item_status === 0) {
+                            item_status = false;
+                        } else if (item_status === 1) {
+                            item_status = true;
+                        }
+                        addItem(item_name, item_category, item_status);
                     }
                     document.getElementById("viewListFromLink").value = "";
                 }
@@ -282,8 +317,24 @@ function removeList() {
     let listContainer = document.getElementById('list-container')
     shoppingList = [];
     shoppingListCategory = [];
+    itemCompletionStatus = [];
     while (listContainer.hasChildNodes()) {
         listContainer.removeChild(listContainer.firstChild);
         console.log("removing");
     }
+}
+
+function clearDB() {
+    console.log("Im deleting stuff")
+    var payload = {};
+    $.ajax({
+        url: "/delete",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {
+            removeList();
+        }
+    });
 }
