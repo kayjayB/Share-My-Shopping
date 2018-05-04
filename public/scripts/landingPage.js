@@ -1,5 +1,6 @@
 let shoppingList = [];
 let shoppingListCategory = [];
+let itemCompletionStatus = [];
 let shoppingListQuantity = [];
 // var token = 0123456;
 
@@ -34,8 +35,8 @@ function submitEditedItem(ID) {
         id: index.toString(),
         name: shoppingList[ID],
         category: shoppingListCategory[ID],
+        completed: itemCompletionStatus[ID],
     };
-
     $.ajax({
         url: "/edititem",
         type: "POST",
@@ -63,6 +64,13 @@ function editCategory(itemID) {
     document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
+function editPurchaseStatus(itemID) {
+
+    let ID = itemID.toString().split("_")[1];
+    itemCompletionStatus[ID] = document.getElementById(itemID.toString()).checked;
+    submitEditedItem(ID);
+}
+
 function submitNameChangesOnEnter(e, ID) {
     let enterKey = 13;
     if (e.keyCode === enterKey) {
@@ -81,15 +89,23 @@ function submitCategoryChangesOnEnter(e, ID) {
 function saveItemOnEnter(e) {
     let enterKey = 13;
     if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
-        storeItem();
-        addItem('none', 'none', 0);
+        let quantity_value = document.getElementById("ShoppingListQuantity").value;
+        if (quantity_value.match(/^[0-9]+$/) != null) {
+            storeItem();
+            addItem('none', 'none', false, 0);
+        }
+        else{
+            alert("Token should only contain numbers");
+            document.getElementById("ShoppingListQuantity").value = "";
+        }
     }
 }
 
-function addItem(name, category, quantity) {
+function addItem(name, category, status, quantity) {
 
     let item_name = name;
     let item_category = category;
+    let initialCompletionStatus = status;
     let item_quantity = quantity;
 
     if (item_name == "none") {
@@ -122,6 +138,7 @@ function addItem(name, category, quantity) {
     shoppingListCategory.push(item_category);
     shoppingListQuantity.push(item_quantity);
 
+    itemCompletionStatus.push(initialCompletionStatus);
     // Clear input text field once the item has been saved to the array
     document.getElementById("ShoppingListItem").value = "";
     document.getElementById("ShoppingListCategory").value = "";
@@ -180,23 +197,47 @@ function addItem(name, category, quantity) {
         quantityElement.appendChild(quantityAmount);
         quantityMultiplier.appendChild(quantityText);
 
+        let checkboxDiv = document.createElement("div");
+        let checkBox = document.createElement("input");
+        checkBox.type = "checkbox";
+        if (itemCompletionStatus[i] == 0) {
+            checkBox.checked = false;
+        } else if (itemCompletionStatus[i] == 1) {
+            checkBox.checked = true;
+        }
+        console.log("Completion status initially" + itemCompletionStatus[i])
+        checkBox.id = "purchaseStatus_" + i.toString();
+
+        checkBox.setAttribute("onclick", "editPurchaseStatus(id)");
+        let purchasedText = document.createTextNode("Purchased  ");
+        checkboxDiv.appendChild(purchasedText);
+        checkboxDiv.appendChild(checkBox);
+
         cardDiv.appendChild(itemElement);
         cardDiv.appendChild(quantityMultiplier);
         cardDiv.appendChild(quantityElement);
         cardDiv.appendChild(categoryElement);
+        cardDiv.appendChild(checkboxDiv);
 
         container.appendChild(cardDiv);
     }
 }
 
 function storeItem() {
+    let completedStatus = false;
+    var quantity_value = document.getElementById("ShoppingListQuantity").value;
+    if (quantity_value.match(/^[0-9]+$/) == null) {
+        quantity_value = 1;
+    }
+
     var payload = {
         name: document.getElementById("ShoppingListItem").value,
         category: document.getElementById("ShoppingListCategory").value,
-        quantity: document.getElementById("ShoppingListQuantity").value,
+        quantity: quantity_value,
         token: "0123456", // Must be changed when multiple lists are added
+        completed: completedStatus
     };
-    console.log(payload);
+
     $.ajax({
         url: "/items",
         type: "POST",
@@ -204,10 +245,8 @@ function storeItem() {
         processData: false,
         data: JSON.stringify(payload),
         complete: function(data) {
-            console.log(data.responseText);
         }
     });
-
 }
 
 // set the length of the string
@@ -260,7 +299,6 @@ function copyLink() {
     var copyText = document.getElementById("sharingLink");
     copyText.select();
     document.execCommand("Copy");
-    //alert("Copied the text: " + copyText.value);
 }
 
 function toggleLinkSubmit() {
@@ -288,6 +326,7 @@ function viewList() {
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
+                let purchaseStatus = nameArray.map(function(a) { return a.completed; });
                 let quantities = nameArray.map(function (a) { return a.quantity; });
                 if (names.length === 0) {
                     alert("No shopping list found");
@@ -297,8 +336,14 @@ function viewList() {
                     for (let i = 0; i < names.length; i++) {
                         let item_name = names[i];
                         let item_category = categories[i];
+                        let item_status = purchaseStatus[i];
                         let item_quantity = quantities[i];
-                        addItem(item_name, item_category, item_quantity);
+                        if (item_status === 0) {
+                            item_status = false;
+                        } else if (item_status === 1) {
+                            item_status = true;
+                        }
+                        addItem(item_name, item_category, item_status, item_quantity);
                     }
                     document.getElementById("viewListFromLink").value = "";
                 }
@@ -315,8 +360,24 @@ function removeList() {
     let listContainer = document.getElementById('list-container')
     shoppingList = [];
     shoppingListCategory = [];
+    itemCompletionStatus = [];
     while (listContainer.hasChildNodes()) {
         listContainer.removeChild(listContainer.firstChild);
         console.log("removing");
     }
+}
+
+function clearDB() {
+    console.log("Im deleting stuff")
+    var payload = {};
+    $.ajax({
+        url: "/delete",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {
+            removeList();
+        }
+    });
 }

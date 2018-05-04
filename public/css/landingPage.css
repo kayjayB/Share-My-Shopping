@@ -81,6 +81,10 @@
 .multiplier{
     padding: 0px 5px 5px 20px;
 }
+#deleteButton {
+    pointer-events: none;
+}
+
 
 /* .sidenav {
     height: 100%;

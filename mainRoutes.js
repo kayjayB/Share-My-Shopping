@@ -48,8 +48,9 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                 'PRIMARY KEY(id),' +
                 'name VARCHAR(50),' +
                 'category VARCHAR(50),' +
-                'quantity INT(10),' +
-                'token VARCHAR(50)' +
+                'token VARCHAR(50),' +
+                'completed VARCHAR(50),' +
+                'quantity INT(10)' +
                 ')',
                 function(err) {
                     if (err) throw err;
@@ -68,6 +69,7 @@ mainRouter.get('/items/:tokens', function(req, res) {
         connection.query("SELECT * FROM items WHERE token = " + tokens, req.body,
             function(err, result) {
                 if (err) throw err;
+                // console.log("Edited reponse is: " + result.completed);
                 res.send(result);
             }
         );
@@ -98,7 +100,7 @@ mainRouter.post('/items', function(req, res) {
 });
 
 mainRouter.post('/edititem', function(req, res) {
-    connection.query('UPDATE items SET name = ?, category = ? WHERE id = ?', [req.body.name, req.body.category, req.body.id],
+    connection.query('UPDATE items SET name = ?, category = ?, completed = ? WHERE id = ?', [req.body.name, req.body.category, req.body.completed, req.body.id],
         function(err, result) {
             if (err) throw err;
         }
@@ -107,6 +109,14 @@ mainRouter.post('/edititem', function(req, res) {
 
 mainRouter.get("/about", function(req, res) {
     res.sendFile(path.join(__dirname, "views", "about.html"));
+});
+
+mainRouter.post('/delete', function(req, res) {
+    connection.query('TRUNCATE items', req.body,
+        function(err, result) {
+            if (err) throw err;
+        }
+    );
 });
 
 module.exports = mainRouter;

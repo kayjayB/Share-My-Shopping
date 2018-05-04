@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <button type="button" class="btn main-btn" onclick="storeItem();addItem('none','none',0)" disabled="true" id="SubmitButton" style="background-color: Transparent">
+                        <button type="button" class="btn main-btn" onclick="storeItem(); addItem('none', 'none', false, 0);" disabled="true" id="SubmitButton" style="background-color: Transparent">
                             <i class="fa fa-plus-square fa-4x" style="color:#40e0d0"></i>
                         </button>
                     </div>
@@ -78,6 +78,9 @@
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn main-btn" onclick="clearDB()" id="deleteButton" style="background-color: Transparent"></button>
         </div>
     </div>
 </body>
