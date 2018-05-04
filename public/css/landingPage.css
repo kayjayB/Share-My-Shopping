@@ -95,39 +95,53 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
     cursor: pointer;
 }
 
-#text{
+#secondOverlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#text {
     position: absolute;
-    height:380px;
-    width:340px;
-    border:5px solid #c8c7c5;
-    border-radius:10px;
-    text-align:center;
+    height: 380px;
+    width: 340px;
+    border: 5px solid #c8c7c5;
+    border-radius: 10px;
+    text-align: center;
     top: 50%;
     left: 50%;
     font-size: 50px;
     background-color: #f8f8f8;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
 }
 
 .loadButton {
     color: #40e0d0;
     background-color: #f8f8f8;
-    border:solid #c8c7c5;
-    border-radius:10px;
+    border: solid #c8c7c5;
+    border-radius: 10px;
     font-size: 30px;
-    width:300px;
+    width: 300px;
 }
 
 .load-small {
     border: none;
     font-size: 20px;
-    width:150px;
+    width: 150px;
     text-align: center
 }
 
@@ -135,20 +149,25 @@
     background-color: #40e0d0;
     border-color: #f2f2f2;
     padding-right: 50px;
-  }
-  
-  .sidenav a {
+}
+
+.sidenav a {
     float: left;
     color: #f2f2f2;
     text-align: center;
     padding: 14px 2px;
     text-decoration: none;
-  }
-  
-  .sidenav a:hover {
+}
+
+.sidenav a:hover {
     background-color: #f2f2f2;
-    color: #40e0d0;;
-  }
+    color: #40e0d0;
+    ;
+}
+
+#viewListFromLink {
+    font-size: 20px;
+}
 
 
 /* .sidenav {
@@ -183,17 +202,3 @@
 /*
 }
 */
-
-#overlay2 {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-}

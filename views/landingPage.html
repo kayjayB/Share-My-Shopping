@@ -22,13 +22,12 @@
                     <a class="navbar-brand" id="site-title" href="#">SHARE MY SHOPPING</a>
                 </div>
                 <div class="sidenav pull-right">
-                    <a href="#" class="load-small pull-right" onclick="" id="">
-                        <i class="fa fa-list-alt" aria-hidden="true"></i>
-                        Load
+                    <a href="#" class="load-small pull-right" onclick="loadExisitingShoppingList()" id="">
+                        <i class="fa fa-list-alt" aria-hidden="true"></i> Load
                     </a>
                     <a href="#" class="load-small pull-right" onclick="" id="">
-                        <i class="fa fa-shopping-cart"></i>
-                        Create</a>
+                        <i class="fa fa-shopping-cart"></i> Create
+                    </a>
                 </div>
             </div>
         </nav>
@@ -41,7 +40,7 @@
                 Create New List
             </button>
             <p></p>
-            <button class="loadButton" onclick="off()" id="LoadListButton">
+            <button class="loadButton" onclick="loadExisitingShoppingList()" id="LoadListButton">
                 <i class="fa fa-list-alt" aria-hidden="true"></i>
                 Load Existing List </button>
         </div>
@@ -52,33 +51,35 @@
         <a href="#">Clients</a>
         <a href="#">Contact</a>
     </div> -->
-    <div id="secondOverlay"></div>
+    <div id="secondOverlay">
+        <div class="container" id="text">
+            <h2 style="padding-bottom: 30px">Enter the link of the shopping list you wish to view</h2>
+            <input type="text" id="viewListFromLink" value=""> </input>
+            <p></p>
+            <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
+            <button type="button" class="loadButton" onclick="viewList()" id="navigateToLink"> View</button>
+            <p></p>
+            <button type="button" class="loadButton" onclick="cancel()" id="navigateToLink"> Cancel</button>
+        </div>
+    </div>
     <div class="container main">
         <div class="row">
             <form role="form" id="contact-form" class="contact-form">
                 <div class="row centered">
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                         <p>Enter the link to the shopping list you wish to view</p>
                         <input type="text" id="viewListFromLink" value=""> </input>
-                        <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
                         <button type="button" class="btn main-btn" onclick="viewList()" id="navigateToLink"> View</button>
-                    </div>
+                    </div> -->
                     <div class="col-md-5 col-md-offset-1">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item"
-                                oninput="toggleButton()" onkeypress="saveItemOnEnter(event)">
+                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item" oninput="toggleButton()" onkeypress="saveItemOnEnter(event)">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Category/Aisle" autocomplete="off" disabled="true" id="ShoppingListCategory"
-                                value="" placeholder="Category/Aisle" onkeypress="saveItemOnEnter(event)">
+                            <input type="text" class="form-control" name="Category/Aisle" autocomplete="off" disabled="true" id="ShoppingListCategory" value="" placeholder="Category/Aisle" onkeypress="saveItemOnEnter(event)">
                         </div>
                         <div class="form-group">
-<<<<<<< HEAD
-                            <input type="text" class="form-control" name="Quantity" autocomplete="off" disabled="true" id="ShoppingListQuantity" value=""
-                                placeholder="Quantity" onkeypress="saveItemOnEnter(event)">
-=======
                             <input type="text" class="form-control" name="Quantity" autocomplete="off" disabled="true" id="ShoppingListQuantity" value="" placeholder="Quantity" onkeypress="saveItemOnEnter(event)">
->>>>>>> Overlay for accessing existing shopping list
                         </div>
                     </div>
                     <div class="col-md-1">

@@ -8,40 +8,20 @@ $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
     document.getElementById("overlay").style.display = "block";
     token = generateToken();
-    loadExisitingShoppingList();
+    //loadExisitingShoppingList();
 });
 
 function loadExisitingShoppingList() {
-    let overlayElement = document.createElement("div");
-    overlayElement.id = "overlay2";
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("secondOverlay").style.display = "block";
+}
 
-    let text = document.createElement("p")
-    let quantityText = document.createTextNode("Enter the link to the shopping list you wish to view");
-    text.appendChild(quantityText);
-    let inputBox = document.createElement("input");
-    inputBox.type = "text";
-    inputBox.id = "viewListFromLink";
-    inputBox.value = "";
-
-    let enterButton = document.createElement("button");
-    enterButton.type = "button";
-    enterButton.classList = "btn main-btn";
-    enterButton.id = "navigateToLink";
-    let buttonText = document.createTextNode(" View");
-    enterButton.appendChild(buttonText);
-    enterButton.setAttribute("onclick", "viewList()");
-
-    let overLayPosition = document.getElementById("secondOverlay");
-    overlayElement.appendChild(text);
-    overlayElement.appendChild(inputBox);
-    overlayElement.appendChild(enterButton);
-    overLayPosition.appendChild(overlayElement);
-    document.getElementById("overlay2").style.display = "block";
-
+function cancel() {
+    document.getElementById("secondOverlay").style.display = "none";
 }
 
 function newShoppingList() {
-
+    document.getElementById("secondOverlay").style.display = "none";
 }
 
 function makeEditable(ID, value) {
