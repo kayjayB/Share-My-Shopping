@@ -34,7 +34,6 @@ let connection = connnect_config();
 
 connection.connect((err) => {
     if (err) throw err;
-    console.log('Connected!');
 });
 
 connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
@@ -49,7 +48,8 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                 'name VARCHAR(50),' +
                 'category VARCHAR(50),' +
                 'token VARCHAR(50),' +
-                'completed VARCHAR(50)' +
+                'completed VARCHAR(50),' +
+                'quantity INT(10)' +
                 ')',
                 function(err) {
                     if (err) throw err;
@@ -68,13 +68,11 @@ mainRouter.get('/items/:tokens', function(req, res) {
         connection.query("SELECT * FROM items WHERE token = " + tokens, req.body,
             function(err, result) {
                 if (err) throw err;
-                // console.log("Edited reponse is: " + result.completed);
                 res.send(result);
             }
         );
     } else {
         let result = [];
-        console.log("im empty");
         res.send(result);
     }
 
