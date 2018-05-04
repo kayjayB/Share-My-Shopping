@@ -4,16 +4,12 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 import time
 import unittest
-from selenium.webdriver.firefox.options import Options
 
 
 class WebPageTesting(unittest.TestCase):
 	def setUp(self):
 
-		self.opts = Options()
-		self.opts.set_headless()
-		assert self.opts.headless  # operating in headless mode
-		self.browser = webdriver.Chrome(options=self.opts)
+		self.browser = webdriver.Chrome()
 		self.browser.get("http://127.0.0.1:3000")
 
 	def test_add_item(self):
