@@ -14,17 +14,37 @@
 <body style="background-color: #f6f6f6;">
     <div>
         <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="row centered">
-                    <div class="navbar-header col-md-4 col-md-offset-4">
-                        <a href="#">
-                            <i class="fa fa-shopping-cart fa-4x fa-pull-left"></i>
-                        </a>
-                        <a class="navbar-brand" id="site-title" style="padding-left:20px" href="#">SHARE MY SHOPPING</a>
-                    </div>
+            <div class="row centered">
+                <div class="navbar-header col-md-4 col-md-offset-4" style="padding-left:20ex">
+                    <a href="#">
+                        <i class="fa fa-shopping-cart fa-4x fa-pull-left"></i>
+                    </a>
+                    <a class="navbar-brand" id="site-title" href="#">SHARE MY SHOPPING</a>
+                </div>
+                <div class="sidenav pull-right">
+                    <a href="#" class="load-small pull-right" onclick="" id="">
+                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                        Load
+                    </a>
+                    <a href="#" class="load-small pull-right" onclick="" id="">
+                        <i class="fa fa-shopping-cart"></i>
+                        Create</a>
                 </div>
             </div>
         </nav>
+    </div>
+    <div id="overlay">
+        <div class="container" id="text">
+            <h1 style="padding-bottom: 30px">Welcome to Share My Shopping</h1>
+            <button class="loadButton" onclick="off()" id="CreateListButton">
+                <i class="fa fa-shopping-cart"></i>
+                Create New List
+            </button>
+            <p></p>
+            <button class="loadButton" onclick="off()" id="LoadListButton">
+                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                Load Existing List </button>
+        </div>
     </div>
     <!-- <div class="sidenav">
         <a href="#">About</a>
@@ -44,14 +64,16 @@
                     </div>
                     <div class="col-md-5 col-md-offset-1">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item" oninput="toggleButton()" onkeypress="saveItemOnEnter(event)">
+                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item"
+                                oninput="toggleButton()" onkeypress="saveItemOnEnter(event)">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Category/Aisle" autocomplete="off" disabled="true" id="ShoppingListCategory" value="" placeholder="Category/Aisle" onkeypress="saveItemOnEnter(event)">
+                            <input type="text" class="form-control" name="Category/Aisle" autocomplete="off" disabled="true" id="ShoppingListCategory"
+                                value="" placeholder="Category/Aisle" onkeypress="saveItemOnEnter(event)">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Quantity" autocomplete="off" disabled="true" id="ShoppingListQuantity"
-                                value="" placeholder="Quantity" onkeypress="saveItemOnEnter(event)">
+                            <input type="text" class="form-control" name="Quantity" autocomplete="off" disabled="true" id="ShoppingListQuantity" value=""
+                                placeholder="Quantity" onkeypress="saveItemOnEnter(event)">
                         </div>
                     </div>
                     <div class="col-md-1">
@@ -62,7 +84,8 @@
                     <div class="col-md-2 col-md-offset-1">
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=getToken()>Share
-                                    <span class="caret"></span></button>
+                                <span class="caret"></span>
+                            </button>
                             <ul class="dropdown-menu">
                                 <li>Use this link to share your shopping:
                                     <input type="text" id="sharingLink" readonly=""> </input>

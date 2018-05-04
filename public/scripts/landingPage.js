@@ -6,6 +6,7 @@ let shoppingListQuantity = [];
 
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
+    document.getElementById("overlay").style.display = "block";
 });
 
 
@@ -371,4 +372,12 @@ function clearDB() {
             removeList();
         }
     });
+}
+
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
 }
