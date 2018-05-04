@@ -238,7 +238,7 @@ function storeItem() {
         });
     }
     else {
-        alert("Token should only contain numbers");
+        alert("Quantity should only contain numbers");
         document.getElementById("ShoppingListQuantity").value = "";
     }
 }
