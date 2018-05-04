@@ -15,6 +15,8 @@ class WebPageTesting(unittest.TestCase):
 		self.browser.get("http://127.0.0.1:3000")
 
 	def test_add_item(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		elem = self.browser.find_element_by_id('ShoppingListItem')
@@ -24,6 +26,8 @@ class WebPageTesting(unittest.TestCase):
 		assert self.browser.find_element_by_id("shoppingList_0").text == "Apple"
 
 	def test_mark_as_completed(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		elem = self.browser.find_element_by_id('ShoppingListItem')
@@ -37,6 +41,8 @@ class WebPageTesting(unittest.TestCase):
 
 # Test that multiple items can be marked as completed
 	def test_multiple_items_can_be_marked_as_completed(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		newItem = self.browser.find_element_by_id('ShoppingListItem')
@@ -60,6 +66,8 @@ class WebPageTesting(unittest.TestCase):
 # Test that one item can be marked as completed without changing the completion status of 
 # the other items
 	def test_one_item_can_be_marked_as_completed_in_isolation(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		newItem = self.browser.find_element_by_id('ShoppingListItem')
@@ -81,6 +89,8 @@ class WebPageTesting(unittest.TestCase):
 
 	# Test that the completion status of an item is stored and kept when the page is reloaded
 	def test_completion_status_is_persistent(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		newItem = self.browser.find_element_by_id('ShoppingListItem')
@@ -104,6 +114,8 @@ class WebPageTesting(unittest.TestCase):
 
 	# Test that the completion status of multiple items are stored and kept when the page is reloaded
 	def test_completion_status_of_multiple_items_are_persistent(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		newItem = self.browser.find_element_by_id('ShoppingListItem')
@@ -134,6 +146,8 @@ class WebPageTesting(unittest.TestCase):
 
 # Test that the completion status of multiple items are stored and kept when the page is reloaded
 	def test_completion_status_of_multiple_items_with_different_completion_statuses_are_persistent(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		newItem = self.browser.find_element_by_id('ShoppingListItem')
@@ -164,6 +178,8 @@ class WebPageTesting(unittest.TestCase):
 		assert checkBoxReloaded2.is_selected() == False
 
 	def test_add_item_quantity(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		elem = self.browser.find_element_by_id('ShoppingListItem')
@@ -175,6 +191,8 @@ class WebPageTesting(unittest.TestCase):
 		assert self.browser.find_element_by_id("shoppingListQuantity_0").text == "123"
 
 	def test_add_item_quantity_and_verify_that_quantity_is_stored_in_database_and_rendered_on_page_after_reload(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		elem = self.browser.find_element_by_id('ShoppingListItem')
@@ -184,10 +202,12 @@ class WebPageTesting(unittest.TestCase):
 		button = self.browser.find_element_by_id('SubmitButton')
 		button.click()
 		loadFromToken = self.browser.find_element_by_id('viewListFromLink')
- 		loadFromToken.send_keys("0123456")
+		loadFromToken.send_keys("0123456")
 		assert self.browser.find_element_by_id("shoppingListQuantity_0").text == "123"
 
 	def test_add_item_quantity_for_multiple_items(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		elem = self.browser.find_element_by_id('ShoppingListItem')
@@ -206,6 +226,8 @@ class WebPageTesting(unittest.TestCase):
 		assert self.browser.find_element_by_id("shoppingListQuantity_1").text == "1234"
 
 	def test_add_item_quantity_for_multiple_items_and_verify_that_quantity_is_stored_in_database_and_rendered_on_page_after_reload(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
 		delete.send_keys("\n")
 		elem = self.browser.find_element_by_id('ShoppingListItem')
@@ -223,7 +245,7 @@ class WebPageTesting(unittest.TestCase):
 		assert self.browser.find_element_by_id("shoppingListQuantity_0").text == "123"
 		assert self.browser.find_element_by_id("shoppingListQuantity_1").text == "1234"
 		loadFromToken = self.browser.find_element_by_id('viewListFromLink')
- 		loadFromToken.send_keys("0123456")
+		loadFromToken.send_keys("0123456")
 		assert self.browser.find_element_by_id("shoppingListQuantity_0").text == "123"
 		assert self.browser.find_element_by_id("shoppingListQuantity_1").text == "1234"
 
