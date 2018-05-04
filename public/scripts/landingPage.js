@@ -205,7 +205,6 @@ function addItem(name, category, status, quantity) {
         } else if (itemCompletionStatus[i] == 1) {
             checkBox.checked = true;
         }
-        console.log("Completion status initially" + itemCompletionStatus[i])
         checkBox.id = "purchaseStatus_" + i.toString();
 
         checkBox.setAttribute("onclick", "editPurchaseStatus(id)");
@@ -316,7 +315,6 @@ function viewList() {
     if (link.match(/^[0-9]+$/) != null) {
 
         removeList();
-        console.log(link);
         $.ajax({
             url: "/items/" + link.toString(),
             type: "GET",
@@ -363,12 +361,10 @@ function removeList() {
     itemCompletionStatus = [];
     while (listContainer.hasChildNodes()) {
         listContainer.removeChild(listContainer.firstChild);
-        console.log("removing");
     }
 }
 
 function clearDB() {
-    console.log("Im deleting stuff")
     var payload = {};
     $.ajax({
         url: "/delete",
