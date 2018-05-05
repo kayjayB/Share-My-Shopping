@@ -62,7 +62,7 @@
             <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
             <button type="button" class="loadButton" onclick="viewList()" id="navigateToLink"> View</button>
             <p></p>
-            <button type="button" class="loadButton" onclick="cancel()" id="cancel"> Cancel</button>
+            <button type="button" class="loadButton" onclick="cancelLoadList()" id="cancel"> Cancel</button>
         </div>
     </div>
     <div class="container main">
@@ -92,7 +92,7 @@
                     </div>
                     <div class="col-md-2 col-md-offset-1">
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=getToken() id="shareDropdown">Share
+                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=printURL() id="shareDropdown">Share
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">

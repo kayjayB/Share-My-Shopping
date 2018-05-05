@@ -15,7 +15,7 @@ function loadExisitingShoppingList() {
     document.getElementById("secondOverlay").style.display = "block";
 }
 
-function cancel() {
+function cancelLoadList() {
     document.getElementById("secondOverlay").style.display = "none";
 }
 
