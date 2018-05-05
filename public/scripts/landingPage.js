@@ -287,34 +287,17 @@ function generateToken() {
     return randomString;
 }
 
-function printURL(tokenDB) {
+function printURL() {
     let linkContainer = document.getElementById('sharingLink');
     while (linkContainer.hasChildNodes()) {
         linkContainer.removeChild(linkContainer.firstChild);
     }
 
-    let resultURL = tokenDB;
+    let resultURL = token;
     document.getElementById("sharingLink").value = resultURL;
 
 }
 
-function getToken() {
-    printURL(token);
-    // $.ajax({
-    //     url: "/token",
-    //     type: "GET",
-    //     contentType: "application/json",
-    //     async: true,
-    //     success: function(resp) {
-    //         let tokenArray = (resp);
-    //         let token = tokenArray.map(function(a) { return a.token; });
-    //         if (token[0] === undefined)
-    //             printURL(""); // Print empty string
-    //         else
-    //             printURL(token[0]); // Only the first token is needed since all tokens in the list are the same
-    //     }
-    // });
-}
 
 function copyLink() {
     var copyText = document.getElementById("sharingLink");
