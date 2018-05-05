@@ -2,13 +2,28 @@ let shoppingList = [];
 let shoppingListCategory = [];
 let itemCompletionStatus = [];
 let shoppingListQuantity = [];
-// var token = 0123456;
+var token;
 
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
     document.getElementById("overlay").style.display = "block";
+    token = generateToken();
 });
 
+function loadExisitingShoppingList() {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("secondOverlay").style.display = "block";
+}
+
+function cancelLoadList() {
+    document.getElementById("secondOverlay").style.display = "none";
+}
+
+function newShoppingList() {
+    document.getElementById("overlay").style.display = "none";
+    token = generateToken();
+    removeList();
+}
 
 function makeEditable(ID, value) {
     // make a field editable
@@ -37,6 +52,8 @@ function submitEditedItem(ID) {
         name: shoppingList[ID],
         category: shoppingListCategory[ID],
         completed: itemCompletionStatus[ID],
+        arrayIndex: index.toString(),
+        token: token
     };
     $.ajax({
         url: "/edititem",
@@ -90,7 +107,14 @@ function submitCategoryChangesOnEnter(e, ID) {
 function saveItemOnEnter(e) {
     let enterKey = 13;
     if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
-        storeItem();
+        let quantity_value = document.getElementById("ShoppingListQuantity").value;
+        if (quantity_value.match(/^[0-9]+$/) != null) {
+            storeItem();
+            addItem('none', 'none', false, 0);
+        } else {
+            alert("Token should only contain numbers");
+            document.getElementById("ShoppingListQuantity").value = "";
+        }
     }
 }
 
@@ -218,13 +242,15 @@ function addItem(name, category, status, quantity) {
 function storeItem() {
     let completedStatus = false;
     let quantity_value = document.getElementById("ShoppingListQuantity").value;
+    let listIndex = shoppingList.length + 1; // Add 1 because the new item hasn't been added yet 
     if (quantity_value.match(/^[0-9]+$/) != null) {
         var payload = {
             name: document.getElementById("ShoppingListItem").value,
             category: document.getElementById("ShoppingListCategory").value,
             quantity: quantity_value,
-            token: "0123456", // Must be changed when multiple lists are added
-            completed: completedStatus
+            token: token,
+            completed: completedStatus,
+            arrayIndex: listIndex
         };
 
         $.ajax({
@@ -233,12 +259,11 @@ function storeItem() {
             contentType: "application/json",
             processData: false,
             data: JSON.stringify(payload),
-            complete: function (data) {
+            complete: function(data) {
                 addItem('none', 'none', false, quantity_value);
             }
         });
-    }
-    else {
+    } else {
         alert("Quantity should only contain numbers");
         document.getElementById("ShoppingListQuantity").value = "";
     }
@@ -248,7 +273,7 @@ function storeItem() {
 var stringLength = 15;
 
 // list containing characters for the random string
-var stringArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '?'];
+var stringArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 function generateToken() {
 
@@ -262,33 +287,17 @@ function generateToken() {
     return randomString;
 }
 
-function printURL(tokenDB) {
+function printURL() {
     let linkContainer = document.getElementById('sharingLink');
     while (linkContainer.hasChildNodes()) {
         linkContainer.removeChild(linkContainer.firstChild);
     }
 
-    let resultURL = tokenDB;
+    let resultURL = token;
     document.getElementById("sharingLink").value = resultURL;
 
 }
 
-function getToken() {
-    $.ajax({
-        url: "/token",
-        type: "GET",
-        contentType: "application/json",
-        async: true,
-        success: function(resp) {
-            let tokenArray = (resp);
-            let token = tokenArray.map(function(a) { return a.token; });
-            if (token[0] === undefined)
-                printURL(""); // Print empty string
-            else
-                printURL(token[0]); // Only the first token is needed since all tokens in the list are the same
-        }
-    });
-}
 
 function copyLink() {
     var copyText = document.getElementById("sharingLink");
@@ -306,13 +315,12 @@ function toggleLinkSubmit() {
 }
 
 function viewList() {
-    var link = document.getElementById("viewListFromLink").value;
-
-    if (link.match(/^[0-9]+$/) != null) {
-
+    token = document.getElementById("viewListFromLink").value;
+    document.getElementById("secondOverlay").style.display = "none";
+    if (token.match(/^[0-9]+$/) != null) {
         removeList();
         $.ajax({
-            url: "/items/" + link.toString(),
+            url: "/items/" + token.toString(),
             type: "GET",
             contentType: "application/json",
             async: true,
@@ -321,7 +329,7 @@ function viewList() {
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
                 let purchaseStatus = nameArray.map(function(a) { return a.completed; });
-                let quantities = nameArray.map(function (a) { return a.quantity; });
+                let quantities = nameArray.map(function(a) { return a.quantity; });
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
@@ -355,6 +363,7 @@ function removeList() {
     shoppingList = [];
     shoppingListCategory = [];
     itemCompletionStatus = [];
+    shoppingListQuantity = [];
     while (listContainer.hasChildNodes()) {
         listContainer.removeChild(listContainer.firstChild);
     }

@@ -49,7 +49,8 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                 'category VARCHAR(50),' +
                 'token VARCHAR(50),' +
                 'completed VARCHAR(50),' +
-                'quantity INT(10)' +
+                'quantity INT(20),' +
+                'arrayIndex INT(20)' +
                 ')',
                 function(err) {
                     if (err) throw err;
@@ -97,7 +98,7 @@ mainRouter.post('/items', function(req, res) {
 });
 
 mainRouter.post('/edititem', function(req, res) {
-    connection.query('UPDATE items SET name = ?, category = ?, completed = ? WHERE id = ?', [req.body.name, req.body.category, req.body.completed, req.body.id],
+    connection.query('UPDATE items SET name = ?, category = ?, completed = ? WHERE arrayIndex = ? AND token = ?', [req.body.name, req.body.category, req.body.completed, req.body.arrayIndex, req.body.token],
         function(err, result) {
             if (err) throw err;
         }
