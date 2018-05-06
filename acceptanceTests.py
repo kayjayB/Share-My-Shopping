@@ -11,7 +11,7 @@ class WebPageTesting(unittest.TestCase):
 	def setUp(self):
 		chrome_options = Options()
 		chrome_options.add_argument("--headless")
-		self.browser = webdriver.Chrome("/Users/KJ/Documents/Work_2018/Software Development/Group-7-Lab/chromedriver", options=chrome_options)
+		self.browser = webdriver.Chrome(options=chrome_options)
 		self.browser.get("http://127.0.0.1:3000")
 
 	def test_add_item(self):

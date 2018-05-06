@@ -111,7 +111,6 @@ function saveItemOnEnter(e) {
         let quantity_value = document.getElementById("ShoppingListQuantity").value;
         if (quantity_value.match(/^[0-9]+$/) != null) {
             storeItem();
-            //addItem('none', 'none', false, 0);
         } else {
             alert("Quantity should only contain numbers");
             document.getElementById("ShoppingListQuantity").value = "";
