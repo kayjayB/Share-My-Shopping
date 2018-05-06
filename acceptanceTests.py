@@ -335,7 +335,6 @@ class WebPageTesting(unittest.TestCase):
 		
 		time.sleep(0.1)
 		assert self.browser.find_element_by_id("shoppingList_0").text == "Apple"
-		assert self.browser.find_element_by_id("shoppingList_1").text == "Perterdeeeeeeers"
 
 	def test_add_item_to_loaded_shopping_list(self):
 		remove_overlay = self.browser.find_element_by_id("CreateListButton")
