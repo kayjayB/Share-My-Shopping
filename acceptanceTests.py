@@ -12,6 +12,8 @@ class WebPageTesting(unittest.TestCase):
 		chrome_options = Options()
 		chrome_options.add_argument("--headless")
 		self.browser = webdriver.Chrome(options=chrome_options)
+		#Lara Config
+		#self.browser = webdriver.Chrome(executable_path=r'C:/ChromeDriver/chromedriver.exe', options=chrome_options)
 		self.browser.get("http://127.0.0.1:3000")
 
 	def test_add_item(self):
@@ -472,6 +474,146 @@ class WebPageTesting(unittest.TestCase):
 		loadFromToken.send_keys(token)
 		self.browser.find_element_by_id('navigateToLink').click()
 		assert self.browser.find_element_by_id("shoppingList_0").text == "Chocolate"
+
+	# Test that an item can be deleted
+	def test_item_deletion(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		newItem = self.browser.find_element_by_id('ShoppingListItem')
+		newItem.send_keys("Astros")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(1000)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 1
+
+		button = self.browser.find_element_by_id('deleteButton_0')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 0
+
+	# Test that multiple items can be deleted
+	def test_multiple_item_deletion(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		newItem = self.browser.find_element_by_id('ShoppingListItem')
+		newItem.send_keys("Astros")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(1000)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 1
+		
+		newItem.send_keys("Smarties")
+		quant.send_keys(2000)
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_1")) == 1
+
+		button = self.browser.find_element_by_id('deleteButton_0')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 0
+		
+		assert len(self.browser.find_elements_by_id("shoppingList_1")) == 1
+		button = self.browser.find_element_by_id('deleteButton_1')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_1")) == 0
+
+	# Test that an item can be deleted and remains deleted after reloading the list
+	def test_item_deletion_persistence(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		newItem = self.browser.find_element_by_id('ShoppingListItem')
+		newItem.send_keys("Astros")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(1000)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 1
+		
+		newItem.send_keys("Smarties")
+		quant.send_keys(2000)
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_1")) == 1
+
+		button = self.browser.find_element_by_id('deleteButton_0')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 0
+
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+		time.sleep(0.1)
+		
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 1
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Smarties"
+		assert len(self.browser.find_elements_by_id("shoppingList_1")) == 0
+
+	# Test that multiple items can be deleted and remain deleted after reloading the list
+	def test_multiple_item_deletion_persistence(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		newItem = self.browser.find_element_by_id('ShoppingListItem')
+		newItem.send_keys("Astros")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(1000)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 1
+		
+		newItem.send_keys("Smarties")
+		quant.send_keys(2000)
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_1")) == 1
+		
+		newItem.send_keys("Speckled Eggs")
+		quant.send_keys(3001)
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_2")) == 1
+
+		button = self.browser.find_element_by_id('deleteButton_0')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 0
+		
+		button = self.browser.find_element_by_id('deleteButton_2')
+		button.click()
+		time.sleep(0.1)
+		assert len(self.browser.find_elements_by_id("shoppingList_2")) == 0
+
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+		time.sleep(0.1)
+		
+		assert len(self.browser.find_elements_by_id("shoppingList_0")) == 1
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Smarties"
+		assert len(self.browser.find_elements_by_id("shoppingList_1")) == 0
+		assert len(self.browser.find_elements_by_id("shoppingList_2")) == 0
 
 	def tearDown(self):
 		self.browser.close()

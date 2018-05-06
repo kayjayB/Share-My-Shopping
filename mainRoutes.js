@@ -3,10 +3,12 @@ var express = require("express");
 var mainRouter = express.Router();
 var mysql = require('mysql');
 
+// Lara Config
 // let connection = mysql.createConnection({
 //     host: 'localhost',
 //     user: 'root',
-//     password: 'password',
+//     password: '',
+//     port: 3306,
 // });
 
 let connnect_config = function() {
@@ -98,7 +100,15 @@ mainRouter.post('/items', function(req, res) {
 });
 
 mainRouter.post('/edititem', function(req, res) {
-    connection.query('UPDATE items SET name = ?, category = ?, completed = ? WHERE arrayIndex = ? AND token = ?', [req.body.name, req.body.category, req.body.completed, req.body.arrayIndex, req.body.token],
+    connection.query('UPDATE items SET name = ?, category = ?, completed = ? WHERE name = ? AND token = ?', [req.body.newName, req.body.category, req.body.completed, req.body.oldName, req.body.token],
+        function(err, result) {
+            if (err) throw err;
+        }
+    );
+});
+
+mainRouter.post('/deleteitem', function(req, res) {
+    connection.query('DELETE FROM items WHERE name = ? AND token = ?', [req.body.name, req.body.token],
         function(err, result) {
             if (err) throw err;
         }

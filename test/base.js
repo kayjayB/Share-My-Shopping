@@ -70,7 +70,7 @@ test("When a category is added to the list, the category is equal to the fist ca
     t.end();
 });
 
-test("Adding two items to an empty list increaseing the size of the list to 2", function(t) {
+test("Adding two items to an empty list increases the size of the list to 2", function(t) {
     let item1 = "First Item";
     let item2 = "Second Item";
     let shoppingList= [];
@@ -80,5 +80,20 @@ test("Adding two items to an empty list increaseing the size of the list to 2", 
     let numElements = shoppingList.length;
     let expectedSize = 2;
     t.equal(numElements, expectedSize);
+    t.end();
+});
+
+test("Deleting an item from the list reduces the list's size by 1", function(t) {
+    let item1 = "First Item";
+    let item2 = "Second Item";
+    let shoppingList= [];
+
+    shoppingList.push(item1);
+    shoppingList.push(item2);
+    let numElements = shoppingList.length;
+    let expectedSize = 2;
+    shoppingList.splice(0, 1);
+    let decreasedSize = shoppingList.length;
+    t.equal(expectedSize - 1, decreasedSize);
     t.end();
 });

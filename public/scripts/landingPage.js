@@ -46,11 +46,12 @@ function toggleButton() {
     }
 }
 
-function submitEditedItem(ID) {
+function submitEditedItem(ID, oldName) {
     var index = parseInt(ID) + 1; //make an integer so that it can be incremented
     var payload = {
         id: index.toString(),
-        name: shoppingList[ID],
+        oldName: oldName,
+        newName: shoppingList[ID],
         category: shoppingListCategory[ID],
         completed: itemCompletionStatus[ID],
         arrayIndex: index.toString(),
@@ -69,9 +70,11 @@ function submitEditedItem(ID) {
 function editItem(itemID) {
 
     let ID = itemID.toString().split("_")[1];
+    let oldName = shoppingList[ID];
+
     shoppingList[ID] = document.getElementById(itemID.toString()).innerHTML;
 
-    submitEditedItem(ID);
+    submitEditedItem(ID, oldName);
     document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
@@ -79,7 +82,7 @@ function editCategory(itemID) {
 
     let ID = itemID.toString().split("_")[1];
     shoppingListCategory[ID] = document.getElementById(itemID.toString()).innerHTML;
-    submitEditedItem(ID);
+    submitEditedItem(ID, shoppingList[ID]);
     document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
@@ -87,7 +90,7 @@ function editPurchaseStatus(itemID) {
 
     let ID = itemID.toString().split("_")[1];
     itemCompletionStatus[ID] = document.getElementById(itemID.toString()).checked;
-    submitEditedItem(ID);
+    submitEditedItem(ID, shoppingList[ID]);
 }
 
 function submitNameChangesOnEnter(e, ID) {
@@ -116,6 +119,29 @@ function saveItemOnEnter(e) {
             document.getElementById("ShoppingListQuantity").value = "";
         }
     }
+}
+
+function deleteItem(itemID) {
+    let ID = itemID.toString().split("_")[1];
+    let itemName = document.getElementById("shoppingList_"+ID).innerHTML;
+
+    var payload = {
+        name: itemName,
+        token: token
+    };
+    $.ajax({
+        url: "/deleteitem",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {}
+    });
+
+    shoppingList.splice(ID, 1);
+
+    var card = document.getElementById("list-entry_"+ID);
+    return card.parentNode.removeChild(card);
 }
 
 function addItem(name, category, status, quantity) {
@@ -229,6 +255,18 @@ function addItem(name, category, status, quantity) {
         checkboxDiv.appendChild(purchasedText);
         checkboxDiv.appendChild(checkBox);
 
+        let deleteDiv = document.createElement("div");
+        let deleteButton = document.createElement("button");
+
+        deleteButton.type = "button";
+        deleteButton.id = "deleteButton_"+i;
+        deleteButton.setAttribute("onclick", "deleteItem(id)");
+        deleteButton.className = "fa fa-times";
+        
+        deleteDiv.align = "right";
+        deleteDiv.appendChild(deleteButton);
+
+        cardDiv.appendChild(deleteDiv);
         cardDiv.appendChild(itemElement);
         cardDiv.appendChild(quantityMultiplier);
         cardDiv.appendChild(quantityElement);
