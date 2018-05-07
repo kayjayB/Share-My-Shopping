@@ -136,7 +136,7 @@ mainRouter.post('/share', function (req, res) {
     connection.query('INSERT INTO lists SET ?', req.body,
         function (err, result) {
             if (err) throw err;
-            res.send('Item added to database with ID: ' + result.insertId);
+            res.send('Item added to lists table with ID: ' + result.insertId);
         }
     );
     let msg = {
@@ -147,6 +147,16 @@ mainRouter.post('/share', function (req, res) {
         html: '<p>You can access the list <a href="https://sharemyshopping.azurewebsites.net/">here</a> using the token <strong>' + req.body.token + '</strong>',
     };
     sgMail.send(msg);
+});
+
+mainRouter.get('/share/:token', function (req, res) {
+    var token = req.params.token;
+    connection.query("SELECT email FROM lists WHERE token = " + token, req.body,
+        function (err, result) {
+            if (err) throw err;
+            res.send(result);
+        }
+    );
 });
 
 mainRouter.post('/delete', function(req, res) {

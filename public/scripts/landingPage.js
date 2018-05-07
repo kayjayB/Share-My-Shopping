@@ -363,6 +363,7 @@ function viewList() {
             contentType: "application/json",
             async: true,
             success: function(resp) {
+                loadSharedEmails();
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
@@ -407,12 +408,20 @@ function removeList() {
     }
 }
 
+function renderSharedEmail(email) {
+    let node = document.createElement("LI");
+    let textnode = document.createTextNode(email);
+    node.appendChild(textnode);
+    document.getElementById("email-list").appendChild(node); 
+}
+
 function shareEmail() {
+    let email = document.getElementById("email-share").value;
+
     var payload = {
-        token: "0123456",
-        email: document.getElementById("email-share").value,
+        token: token,
+        email: email,
     };
-    console.log(payload);
 
     $.ajax({
         url: "/share",
@@ -421,7 +430,26 @@ function shareEmail() {
         processData: false,
         data: JSON.stringify(payload),
         complete: function (data) {
-            console.log(data.responseText);
+            renderSharedEmail(email);
+        }
+    });
+}
+
+function loadSharedEmails() {
+    token = document.getElementById("viewListFromLink").value;
+    console.log("token");
+
+    $.ajax({
+        url: "/share/" + token.toString(),
+        type: "GET",
+        contentType: "application/json",
+        async: true,
+        success: function (resp) {
+            let emailArray = (resp);
+            let emails = emailArray.map(function (a) { return a.email; });
+            for (let i = 0; i < emails.length; i++) {
+                renderSharedEmail(emails[i]);
+            }
         }
     });
 }
