@@ -13,6 +13,7 @@ $(document).ready(function() {
 function loadExisitingShoppingList() {
     document.getElementById("overlay").style.display = "none";
     document.getElementById("secondOverlay").style.display = "block";
+    document.getElementById("email-list").innerHTML = "";
 }
 
 function cancelLoadList() {
@@ -437,7 +438,6 @@ function shareEmail() {
 
 function loadSharedEmails() {
     token = document.getElementById("viewListFromLink").value;
-    console.log("token");
 
     $.ajax({
         url: "/share/" + token.toString(),
