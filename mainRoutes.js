@@ -37,7 +37,6 @@ let connection = mysql.createConnection({
 
 connection.connect((err) => {
     if (err) throw err;
-    console.log('Connected!');
 });
 
 connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
@@ -51,7 +50,10 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                 'PRIMARY KEY(id),' +
                 'name VARCHAR(50),' +
                 'category VARCHAR(50),' +
-                'token VARCHAR(50)' +
+                'token VARCHAR(50),' +
+                'completed VARCHAR(50),' +
+                'quantity INT(20),' +
+                'arrayIndex INT(20)' +
                 ')',
                 function(err) {
                     if (err) throw err;
@@ -87,7 +89,6 @@ mainRouter.get('/items/:tokens', function(req, res) {
         );
     } else {
         let result = [];
-        console.log("im empty");
         res.send(result);
     }
 
@@ -112,7 +113,15 @@ mainRouter.post('/items', function(req, res) {
 });
 
 mainRouter.post('/edititem', function(req, res) {
-    connection.query('UPDATE items SET name = ?, category = ? WHERE id = ?', [req.body.name, req.body.category, req.body.id],
+    connection.query('UPDATE items SET name = ?, category = ?, completed = ? WHERE name = ? AND token = ?', [req.body.newName, req.body.category, req.body.completed, req.body.oldName, req.body.token],
+        function(err, result) {
+            if (err) throw err;
+        }
+    );
+});
+
+mainRouter.post('/deleteitem', function(req, res) {
+    connection.query('DELETE FROM items WHERE name = ? AND token = ?', [req.body.name, req.body.token],
         function(err, result) {
             if (err) throw err;
         }
@@ -138,6 +147,14 @@ mainRouter.post('/share', function (req, res) {
         html: '<p>You can access the list <a href="https://sharemyshopping.azurewebsites.net/">here</a> using the token <strong>' + req.body.token + '</strong>',
     };
     sgMail.send(msg);
+});
+
+mainRouter.post('/delete', function(req, res) {
+    connection.query('TRUNCATE items', req.body,
+        function(err, result) {
+            if (err) throw err;
+        }
+    );
 });
 
 module.exports = mainRouter;

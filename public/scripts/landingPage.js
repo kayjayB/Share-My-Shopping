@@ -1,11 +1,30 @@
 let shoppingList = [];
 let shoppingListCategory = [];
-// var token = 0123456;
+let itemCompletionStatus = [];
+let shoppingListQuantity = [];
+var token;
 
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
+    document.getElementById("overlay").style.display = "block";
+    token = generateToken();
 });
 
+function loadExisitingShoppingList() {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("secondOverlay").style.display = "block";
+}
+
+function cancelLoadList() {
+    document.getElementById("secondOverlay").style.display = "none";
+    document.getElementById("overlay").style.display = "block";
+}
+
+function newShoppingList() {
+    document.getElementById("overlay").style.display = "none";
+    token = generateToken();
+    removeList();
+}
 
 function makeEditable(ID, value) {
     // make a field editable
@@ -19,20 +38,25 @@ function toggleButton() {
     if (item.length == 0) {
         document.getElementById("SubmitButton").disabled = true;
         document.getElementById("ShoppingListCategory").disabled = true;
+        document.getElementById("ShoppingListQuantity").disabled = true;
     } else {
         document.getElementById("SubmitButton").disabled = false;
         document.getElementById("ShoppingListCategory").disabled = false;
+        document.getElementById("ShoppingListQuantity").disabled = false;
     }
 }
 
-function submitEditedItem(ID) {
+function submitEditedItem(ID, oldName) {
     var index = parseInt(ID) + 1; //make an integer so that it can be incremented
     var payload = {
         id: index.toString(),
-        name: shoppingList[ID],
+        oldName: oldName,
+        newName: shoppingList[ID],
         category: shoppingListCategory[ID],
+        completed: itemCompletionStatus[ID],
+        arrayIndex: index.toString(),
+        token: token
     };
-
     $.ajax({
         url: "/edititem",
         type: "POST",
@@ -46,9 +70,11 @@ function submitEditedItem(ID) {
 function editItem(itemID) {
 
     let ID = itemID.toString().split("_")[1];
+    let oldName = shoppingList[ID];
+
     shoppingList[ID] = document.getElementById(itemID.toString()).innerHTML;
 
-    submitEditedItem(ID);
+    submitEditedItem(ID, oldName);
     document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
@@ -56,8 +82,15 @@ function editCategory(itemID) {
 
     let ID = itemID.toString().split("_")[1];
     shoppingListCategory[ID] = document.getElementById(itemID.toString()).innerHTML;
-    submitEditedItem(ID);
+    submitEditedItem(ID, shoppingList[ID]);
     document.getElementById(itemID).setAttribute("contenteditable", "false")
+}
+
+function editPurchaseStatus(itemID) {
+
+    let ID = itemID.toString().split("_")[1];
+    itemCompletionStatus[ID] = document.getElementById(itemID.toString()).checked;
+    submitEditedItem(ID, shoppingList[ID]);
 }
 
 function submitNameChangesOnEnter(e, ID) {
@@ -78,15 +111,45 @@ function submitCategoryChangesOnEnter(e, ID) {
 function saveItemOnEnter(e) {
     let enterKey = 13;
     if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
-        storeItem();
-        addItem('none', 'none');
+        let quantity_value = document.getElementById("ShoppingListQuantity").value;
+        if (quantity_value.match(/^[0-9]+$/) != null) {
+            storeItem();
+        } else {
+            alert("Quantity should only contain numbers");
+            document.getElementById("ShoppingListQuantity").value = "";
+        }
     }
 }
 
-function addItem(name, category) {
+function deleteItem(itemID) {
+    let ID = itemID.toString().split("_")[1];
+    let itemName = document.getElementById("shoppingList_"+ID).innerHTML;
+
+    var payload = {
+        name: itemName,
+        token: token
+    };
+    $.ajax({
+        url: "/deleteitem",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {}
+    });
+
+    shoppingList.splice(ID, 1);
+
+    var card = document.getElementById("list-entry_"+ID);
+    return card.parentNode.removeChild(card);
+}
+
+function addItem(name, category, status, quantity) {
 
     let item_name = name;
     let item_category = category;
+    let initialCompletionStatus = status;
+    let item_quantity = quantity;
 
     if (item_name == "none") {
         item_name = document.getElementById("ShoppingListItem").value;
@@ -94,6 +157,10 @@ function addItem(name, category) {
 
     if (item_category == "none") {
         item_category = document.getElementById("ShoppingListCategory").value;
+    }
+
+    if (item_quantity === 0) {
+        item_quantity = document.getElementById("ShoppingListQuantity").value;
     }
 
     // Check that the category is not empty, if so assign a default value (This default is not added 
@@ -104,16 +171,26 @@ function addItem(name, category) {
         item_category = "Category/Aisle";
     }
 
+    if (item_quantity == null) {
+        item_quantity = 1;
+    } else if (item_quantity.length == 0) {
+        item_quantity = 1;
+    }
+
     shoppingList.push(item_name);
     shoppingListCategory.push(item_category);
+    shoppingListQuantity.push(item_quantity);
 
+    itemCompletionStatus.push(initialCompletionStatus);
     // Clear input text field once the item has been saved to the array
     document.getElementById("ShoppingListItem").value = "";
     document.getElementById("ShoppingListCategory").value = "";
+    document.getElementById("ShoppingListQuantity").value = "";
 
     // Disable the button again for no input
     document.getElementById("SubmitButton").disabled = true;
     document.getElementById("ShoppingListCategory").disabled = true;
+    document.getElementById("ShoppingListQuantity").disabled = true;
 
     // Get the element that will contain the cards
     let container = document.getElementById('list-container')
@@ -131,8 +208,9 @@ function addItem(name, category) {
         cardDiv.className = "card";
         cardDiv.id = "list-entry_" + i.toString();
 
-        let itemElement = document.createElement("h4");
+        let itemElement = document.createElement("span");
         itemElement.id = "shoppingList_" + i.toString();
+        itemElement.className = "shoppingListItem";
 
         itemElement.setAttribute("onmouseover", "makeEditable(id, true)");
         itemElement.setAttribute("onfocusout", "editItem(id)");
@@ -140,7 +218,7 @@ function addItem(name, category) {
 
         let itemName = document.createTextNode(shoppingList[i]);
 
-        let categoryElement = document.createElement("p2");
+        let categoryElement = document.createElement("h4");
         categoryElement.id = "shoppingListCategory_" + i.toString();
 
         categoryElement.setAttribute("onmouseover", "makeEditable(id, true)");
@@ -149,41 +227,91 @@ function addItem(name, category) {
 
         let categoryName = document.createTextNode(shoppingListCategory[i]);
 
+        let quantityElement = document.createElement("span");
+        quantityElement.id = "shoppingListQuantity_" + i.toString();
+        quantityElement.className = "shoppingListQuantity";
+        let quantityAmount = document.createTextNode(shoppingListQuantity[i]);
+        let quantityMultiplier = document.createElement("span");
+        quantityMultiplier.className = "multiplier";
+        let quantityText = document.createTextNode("X");
+
         itemElement.appendChild(itemName);
         categoryElement.appendChild(categoryName);
+        quantityElement.appendChild(quantityAmount);
+        quantityMultiplier.appendChild(quantityText);
 
+        let checkboxDiv = document.createElement("div");
+        let checkBox = document.createElement("input");
+        checkBox.type = "checkbox";
+        if (itemCompletionStatus[i] == 0) {
+            checkBox.checked = false;
+        } else if (itemCompletionStatus[i] == 1) {
+            checkBox.checked = true;
+        }
+        checkBox.id = "purchaseStatus_" + i.toString();
+
+        checkBox.setAttribute("onclick", "editPurchaseStatus(id)");
+        let purchasedText = document.createTextNode("Purchased  ");
+        checkboxDiv.appendChild(purchasedText);
+        checkboxDiv.appendChild(checkBox);
+
+        let deleteDiv = document.createElement("div");
+        let deleteButton = document.createElement("button");
+
+        deleteButton.type = "button";
+        deleteButton.id = "deleteButton_"+i;
+        deleteButton.setAttribute("onclick", "deleteItem(id)");
+        deleteButton.className = "fa fa-times";
+        
+        deleteDiv.align = "right";
+        deleteDiv.appendChild(deleteButton);
+
+        cardDiv.appendChild(deleteDiv);
         cardDiv.appendChild(itemElement);
+        cardDiv.appendChild(quantityMultiplier);
+        cardDiv.appendChild(quantityElement);
         cardDiv.appendChild(categoryElement);
+        cardDiv.appendChild(checkboxDiv);
 
         container.appendChild(cardDiv);
     }
 }
 
 function storeItem() {
-    var payload = {
-        name: document.getElementById("ShoppingListItem").value,
-        category: document.getElementById("ShoppingListCategory").value,
-        token: "0123456", // Must be changed when multiple lists are added
-    };
-    console.log(payload);
-    $.ajax({
-        url: "/items",
-        type: "POST",
-        contentType: "application/json",
-        processData: false,
-        data: JSON.stringify(payload),
-        complete: function(data) {
-            console.log(data.responseText);
-        }
-    });
+    let completedStatus = false;
+    let quantity_value = document.getElementById("ShoppingListQuantity").value;
+    let listIndex = shoppingList.length + 1; // Add 1 because the new item hasn't been added yet 
+    if (quantity_value.match(/^[0-9]+$/) != null) {
+        var payload = {
+            name: document.getElementById("ShoppingListItem").value,
+            category: document.getElementById("ShoppingListCategory").value,
+            quantity: quantity_value,
+            token: token,
+            completed: completedStatus,
+            arrayIndex: listIndex
+        };
 
+        $.ajax({
+            url: "/items",
+            type: "POST",
+            contentType: "application/json",
+            processData: false,
+            data: JSON.stringify(payload),
+            complete: function(data) {
+                addItem('none', 'none', false, quantity_value);
+            }
+        });
+    } else {
+        alert("Quantity should only contain numbers");
+        document.getElementById("ShoppingListQuantity").value = "";
+    }
 }
 
 // set the length of the string
 var stringLength = 15;
 
 // list containing characters for the random string
-var stringArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '?'];
+var stringArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 function generateToken() {
 
@@ -197,40 +325,22 @@ function generateToken() {
     return randomString;
 }
 
-function printURL(tokenDB) {
+function printURL() {
     let linkContainer = document.getElementById('sharingLink');
     while (linkContainer.hasChildNodes()) {
         linkContainer.removeChild(linkContainer.firstChild);
     }
 
-    let resultURL = tokenDB;
+    let resultURL = token;
     document.getElementById("sharingLink").value = resultURL;
 
 }
 
-function getToken() {
-    $.ajax({
-        url: "/token",
-        type: "GET",
-        contentType: "application/json",
-        async: true,
-        success: function(resp) {
-            let tokenArray = (resp);
-            let token = tokenArray.map(function(a) { return a.token; });
-            if (token[0] === undefined)
-                printURL(""); // Print empty string
-            else
-                printURL(token[0]); // Only the first token is needed since all tokens in the list are the same
-        }
-    });
-}
 
 function copyLink() {
     var copyText = document.getElementById("sharingLink");
     copyText.select();
     document.execCommand("Copy");
-    console.log(getToken());
-    //alert("Copied the text: " + copyText.value);
 }
 
 function toggleLinkSubmit() {
@@ -243,14 +353,12 @@ function toggleLinkSubmit() {
 }
 
 function viewList() {
-    var link = document.getElementById("viewListFromLink").value;
-
-    if (link.match(/^[0-9]+$/) != null) {
-
+    token = document.getElementById("viewListFromLink").value;
+    document.getElementById("secondOverlay").style.display = "none";
+    if (token.match(/^[0-9]+$/) != null) {
         removeList();
-        console.log(link);
         $.ajax({
-            url: "/items/" + link.toString(),
+            url: "/items/" + token.toString(),
             type: "GET",
             contentType: "application/json",
             async: true,
@@ -258,6 +366,8 @@ function viewList() {
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
+                let purchaseStatus = nameArray.map(function(a) { return a.completed; });
+                let quantities = nameArray.map(function(a) { return a.quantity; });
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
@@ -266,7 +376,14 @@ function viewList() {
                     for (let i = 0; i < names.length; i++) {
                         let item_name = names[i];
                         let item_category = categories[i];
-                        addItem(item_name, item_category);
+                        let item_status = purchaseStatus[i];
+                        let item_quantity = quantities[i];
+                        if (item_status === 0) {
+                            item_status = false;
+                        } else if (item_status === 1) {
+                            item_status = true;
+                        }
+                        addItem(item_name, item_category, item_status, item_quantity);
                     }
                     document.getElementById("viewListFromLink").value = "";
                 }
@@ -283,9 +400,10 @@ function removeList() {
     let listContainer = document.getElementById('list-container')
     shoppingList = [];
     shoppingListCategory = [];
+    itemCompletionStatus = [];
+    shoppingListQuantity = [];
     while (listContainer.hasChildNodes()) {
         listContainer.removeChild(listContainer.firstChild);
-        console.log("removing");
     }
 }
 
@@ -306,5 +424,26 @@ function shareEmail() {
             console.log(data.responseText);
         }
     });
+}
 
+function clearDB() {
+    var payload = {};
+    $.ajax({
+        url: "/delete",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {
+            removeList();
+        }
+    });
+}
+
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
 }
