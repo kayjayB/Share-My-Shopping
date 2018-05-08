@@ -615,6 +615,50 @@ class WebPageTesting(unittest.TestCase):
 		assert len(self.browser.find_elements_by_id("shoppingList_1")) == 0
 		assert len(self.browser.find_elements_by_id("shoppingList_2")) == 0
 
+	# Test that items can be sorted by their purchased status
+	def test_multiple_item_sort(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		newItem = self.browser.find_element_by_id('ShoppingListItem')
+		newItem.send_keys("Astros")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(1000)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		
+		newItem.send_keys("Smarties")
+		quant.send_keys(2000)
+		button.click()
+		time.sleep(0.1)
+		
+		newItem.send_keys("Speckled Eggs")
+		quant.send_keys(3001)
+		button.click()
+		time.sleep(0.1)
+		
+		assert self.browser.find_element_by_id('purchaseStatus_0').is_selected() == False
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Astros"
+		assert self.browser.find_element_by_id('purchaseStatus_1').is_selected() == False
+		assert self.browser.find_element_by_id('shoppingList_1').text == "Smarties"
+		assert self.browser.find_element_by_id('purchaseStatus_2').is_selected() == False
+		assert self.browser.find_element_by_id('shoppingList_2').text == "Speckled Eggs"
+
+		self.browser.find_element_by_id('purchaseStatus_1').click()
+		assert self.browser.find_element_by_id('purchaseStatus_1').is_selected() == True
+
+		self.browser.find_element_by_id('sortButton').click()
+		time.sleep(0.1)
+		
+		assert self.browser.find_element_by_id('purchaseStatus_0').is_selected() == False
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Astros"
+		assert self.browser.find_element_by_id('purchaseStatus_1').is_selected() == False
+		assert self.browser.find_element_by_id('shoppingList_1').text == "Speckled Eggs"
+		assert self.browser.find_element_by_id('purchaseStatus_2').is_selected() == True
+		assert self.browser.find_element_by_id('shoppingList_2').text == "Smarties"		
+
 	def tearDown(self):
 		self.browser.close()
 

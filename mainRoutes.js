@@ -81,6 +81,22 @@ mainRouter.get('/items/:tokens', function(req, res) {
 
 });
 
+mainRouter.get('/itemsordered/:token', function(req, res) {
+    if (req.params.token) {
+        var token = req.params.token;
+        connection.query("SELECT * FROM items WHERE token = " + token + " ORDER BY completed ASC", req.body,
+            function(err, result) {
+                if (err) throw err;
+                res.send(result);
+            }
+        );
+    } else {
+        let result = [];
+        res.send(result);
+    }
+
+});
+
 mainRouter.get('/token', function(req, res) {
     connection.query('SELECT token FROM items', req.body,
         function(err, result) {
