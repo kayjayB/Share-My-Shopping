@@ -192,6 +192,74 @@ function addItem(name, category, status, quantity) {
     document.getElementById("ShoppingListCategory").disabled = true;
     document.getElementById("ShoppingListQuantity").disabled = true;
 
+    renderCards();
+}
+
+function orderByPurchased()
+{
+    //token = document.getElementById("viewListFromLink").innerHTML;
+    document.getElementById("secondOverlay").style.display = "none";
+    if (token.match(/^[0-9]+$/) != null) {
+        removeList();
+
+        // $.ajax({
+        //     url: "/items",
+        //     type: "POST",
+        //     contentType: "application/json",
+        //     processData: false,
+        //     data: JSON.stringify(payload),
+        //     complete: function(data) {
+        //         addItem('none', 'none', false, quantity_value);
+        //     }
+        // });
+
+        $.ajax({
+            url: "/itemsordered/" + token.toString(),
+            type: "GET",
+            contentType: "application/json",
+            async: true,
+            success: function(resp) {
+                let nameArray = (resp);
+                let names = nameArray.map(function(a) { return a.name; });
+                let categories = nameArray.map(function(a) { return a.category; });
+                let purchaseStatus = nameArray.map(function(a) { return a.completed; });
+                let quantities = nameArray.map(function(a) { return a.quantity; });
+                if (names.length === 0) {
+                    alert("No shopping list found");
+                    document.getElementById("viewListFromLink").value = "";
+                }
+                else if (names.length != 0) {
+                    removeList();
+                    for (let i = 0; i < names.length; i++) {
+                        shoppingList.push(names[i]);
+                        shoppingListCategory.push(categories[i]);
+                        itemCompletionStatus.push(purchaseStatus[i]);
+                        shoppingListQuantity.push(quantities[i]);
+                        if (itemCompletionStatus[i] === 0) {
+                            itemCompletionStatus[i] = false;
+                        } else if (itemCompletionStatus[i] === 1) {
+                            itemCompletionStatus[i] = true;
+                        }
+                        if (shoppingListCategory[i] == null || shoppingListCategory[i].length == 0)
+                        {
+                            shoppingListCategory[i] = "Category/Aisle";
+                        }
+                        //addItem(item_name, item_category, item_status, item_quantity);
+                    }
+                    document.getElementById("viewListFromLink").value = "";
+
+                    renderCards();
+                }
+            }
+        });
+
+    } else {
+        alert("Token should only contain numbers: " + document.getElementById("viewListFromLink").innerHTML);
+        document.getElementById("viewListFromLink").value = "";
+    }
+}
+
+function renderCards() {
     // Get the element that will contain the cards
     let container = document.getElementById('list-container')
 
@@ -203,6 +271,8 @@ function addItem(name, category, status, quantity) {
     }
 
     for (let i = 0; i < shoppingList.length; i++) {
+
+        let itemColour = document.getElementById("itemColor").value;
 
         let cardDiv = document.createElement("div");
         cardDiv.className = "card";
@@ -274,6 +344,8 @@ function addItem(name, category, status, quantity) {
         cardDiv.appendChild(checkboxDiv);
 
         container.appendChild(cardDiv);
+
+        document.getElementById(cardDiv.id).style.backgroundColor = itemColour;
     }
 }
 
@@ -468,6 +540,11 @@ function clearDB() {
             removeList();
         }
     });
+}
+
+function setColor() {
+    var x = document.getElementById("listColor").value;
+    document.getElementById("list-container").style.backgroundColor = x;
 }
 
 function on() {
