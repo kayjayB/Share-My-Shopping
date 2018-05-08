@@ -204,6 +204,8 @@ function addItem(name, category, status, quantity) {
 
     for (let i = 0; i < shoppingList.length; i++) {
 
+        let itemColour = document.getElementById("itemColor").value;
+
         let cardDiv = document.createElement("div");
         cardDiv.className = "card";
         cardDiv.id = "list-entry_" + i.toString();
@@ -274,6 +276,8 @@ function addItem(name, category, status, quantity) {
         cardDiv.appendChild(checkboxDiv);
 
         container.appendChild(cardDiv);
+
+        document.getElementById(cardDiv.id).style.backgroundColor = itemColour;
     }
 }
 
@@ -419,6 +423,11 @@ function clearDB() {
             removeList();
         }
     });
+}
+
+ function setColor() {
+    var x = document.getElementById("listColor").value;
+    document.getElementById("list-container").style.backgroundColor = x;
 }
 
 function on() {

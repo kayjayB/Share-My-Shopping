@@ -143,11 +143,23 @@
     width: 300px;
 }
 
+.colorButton {
+    background-color: #40e0d0;
+    color: #fafafa;
+    border: none;
+    width: 150px;
+}
+
 .load-small {
     border: none;
     font-size: 20px;
     width: 150px;
     text-align: center
+}
+
+.textStyle{
+    font-size: 30px;
+    color: #40e0d0;
 }
 
 .sidenav {
