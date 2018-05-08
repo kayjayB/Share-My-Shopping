@@ -435,6 +435,7 @@ function viewList() {
             contentType: "application/json",
             async: true,
             success: function(resp) {
+                loadSharedEmails();
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
@@ -477,6 +478,54 @@ function removeList() {
     while (listContainer.hasChildNodes()) {
         listContainer.removeChild(listContainer.firstChild);
     }
+}
+
+function renderSharedEmail(email, ID) {
+    let node = document.createElement("LI");
+    node.id = "emailShare_" + ID.toString();
+    let textnode = document.createTextNode(email);
+    node.appendChild(textnode);
+    document.getElementById("email-list").appendChild(node); 
+}
+
+function loadSharedEmails() {
+    document.getElementById("email-list").innerHTML = "";
+
+    $.ajax({
+        url: "/share/" + token.toString(),
+        type: "GET",
+        contentType: "application/json",
+        async: true,
+        success: function (resp) {
+            let emailArray = (resp);
+            let emails = emailArray.map(function (a) { return a.email; });
+            let uniqueEmails = [...new Set(emails)]
+            for (let i = 0; i < uniqueEmails.length; i++) {
+                renderSharedEmail(uniqueEmails[i], i);
+            }
+        }
+    });
+}
+
+function shareEmail() {
+    let email = document.getElementById("email-share").value;
+    document.getElementById("email-share").value = "";
+
+    var payload = {
+        token: token,
+        email: email,
+    };
+
+    $.ajax({
+        url: "/share",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function (data) {
+            loadSharedEmails();
+        }
+    });
 }
 
 function clearDB() {

@@ -615,6 +615,102 @@ class WebPageTesting(unittest.TestCase):
 		assert len(self.browser.find_elements_by_id("shoppingList_1")) == 0
 		assert len(self.browser.find_elements_by_id("shoppingList_2")) == 0
 
+	def test_share_list_with_email_and_render_email_on_share_list(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		share_email = self.browser.find_element_by_id("email-share")
+		share_email.send_keys("test1@mail.com")
+		share_button = self.browser.find_element_by_id("share-email-button")
+		share_button.send_keys("\n")
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("emailShare_0").text == "test1@mail.com"
+
+	def test_share_list_with_email_and_verify_that_email_is_stored_in_databse_and_render_email_on_share_list(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		share_email = self.browser.find_element_by_id("email-share")
+		share_email.send_keys("test1@mail.com")
+		share_button = self.browser.find_element_by_id("share-email-button")
+		share_button.send_keys("\n")
+
+	 	self.browser.find_element_by_id('shareDropdown').click()
+	 	token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+	 	self.browser.find_element_by_id('loadList').click()
+	 	loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+	 	loadFromToken.send_keys(token)
+	 	self.browser.find_element_by_id('navigateToLink').click()
+	 	time.sleep(0.1)
+	 	assert self.browser.find_element_by_id("emailShare_0").text == "test1@mail.com"
+
+	def test_share_list_with_multiple_email_and_render_emails_on_share_list(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		share_email = self.browser.find_element_by_id("email-share")
+		share_email.send_keys("test1@mail.com")
+		share_button = self.browser.find_element_by_id("share-email-button")
+		share_button.send_keys("\n")
+		share_email = self.browser.find_element_by_id("email-share")
+		share_email.send_keys("test2@mail.com")
+		share_button = self.browser.find_element_by_id("share-email-button")
+		share_button.send_keys("\n")
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("emailShare_0").text == "test1@mail.com"
+		assert self.browser.find_element_by_id("emailShare_1").text == "test2@mail.com"
+
+	def test_share_list_with_multiple_email_and_verify_that_email_is_stored_in_databse_and_render_email_on_share_list(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		share_email = self.browser.find_element_by_id("email-share")
+		share_email.send_keys("test1@mail.com")
+		share_button = self.browser.find_element_by_id("share-email-button")
+		share_button.send_keys("\n")
+		share_email = self.browser.find_element_by_id("email-share")
+		share_email.send_keys("test2@mail.com")
+		share_button = self.browser.find_element_by_id("share-email-button")
+		share_button.send_keys("\n")
+
+	 	self.browser.find_element_by_id('shareDropdown').click()
+	 	token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+	 	self.browser.find_element_by_id('loadList').click()
+	 	loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+	 	loadFromToken.send_keys(token)
+	 	self.browser.find_element_by_id('navigateToLink').click()
+	 	time.sleep(0.1)
+	 	assert self.browser.find_element_by_id("emailShare_0").text == "test1@mail.com"
+		assert self.browser.find_element_by_id("emailShare_1").text == "test2@mail.com"
+
 	# Test that items can be sorted by their purchased status
 	def test_multiple_item_sort(self):
 		remove_overlay = self.browser.find_element_by_id("CreateListButton")

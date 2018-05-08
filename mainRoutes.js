@@ -2,13 +2,14 @@ var path = require("path");
 var express = require("express");
 var mainRouter = express.Router();
 var mysql = require('mysql');
+var sgMail = require('@sendgrid/mail');
 
-// Lara Config
+sgMail.setApiKey('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');
+
 // let connection = mysql.createConnection({
 //     host: 'localhost',
 //     user: 'root',
-//     password: '',
-//     port: 3306,
+//     password: 'password',
 // });
 
 let connnect_config = function() {
@@ -55,6 +56,18 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                 'arrayIndex INT(20)' +
                 ')',
                 function(err) {
+                    if (err) throw err;
+                });
+        });
+        connection.query('DROP TABLE IF EXISTS lists', function (err) {
+            if (err) throw err;
+            connection.query('CREATE TABLE IF NOT EXISTS lists(' +
+                'id INT NOT NULL AUTO_INCREMENT,' +
+                'PRIMARY KEY(id),' +
+                'token VARCHAR(50),' +
+                'email VARCHAR(100)' +
+                ')',
+                function (err) {
                     if (err) throw err;
                 });
         });
@@ -133,6 +146,33 @@ mainRouter.post('/deleteitem', function(req, res) {
 
 mainRouter.get("/about", function(req, res) {
     res.sendFile(path.join(__dirname, "views", "about.html"));
+});
+
+mainRouter.post('/share', function (req, res) {
+    connection.query('INSERT INTO lists SET ?', req.body,
+        function (err, result) {
+            if (err) throw err;
+            res.send('Item added to lists table with ID: ' + result.insertId);
+        }
+    );
+    let msg = {
+        to: req.body.email,
+        from: 'notifications@sharemyshopping.com',
+        subject: 'A shopping list has been shared with you',
+        text: 'text',
+        html: '<p>You can access the list <a href="https://sharemyshopping.azurewebsites.net/">here</a> using the token <strong>' + req.body.token + '</strong>',
+    };
+    sgMail.send(msg);
+});
+
+mainRouter.get('/share/:token', function (req, res) {
+    var token = req.params.token;
+    connection.query("SELECT email FROM lists WHERE token = " + token, req.body,
+        function (err, result) {
+            if (err) throw err;
+            res.send(result);
+        }
+    );
 });
 
 mainRouter.post('/delete', function(req, res) {
