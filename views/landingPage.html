@@ -104,6 +104,7 @@
                             List Colour
                             <input class="pull-right" type="color" id="itemColor" value="#fafafa">
                         </div>
+                        <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()">Sort By Purchased</button>
                     </div>
                     <div class="col-md-1">
                         <button type="button" class="btn main-btn" onclick="storeItem(); setColor();" disabled="true" id="SubmitButton" style="background-color: Transparent">
@@ -123,7 +124,6 @@
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3"></div>
                     <div class="col-md-6 col-md-offset-3">
-                        <button type="button" class="btn main-btn" id="sortButton" onclick="orderByPurchased()">Sort By Purchased</button>
                         <ul class="form-group" id="list-container"></ul>
                     </div>
                     <div class="col-md-3 col-md-offset-5">
