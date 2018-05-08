@@ -13,7 +13,6 @@ $(document).ready(function() {
 function loadExisitingShoppingList() {
     document.getElementById("overlay").style.display = "none";
     document.getElementById("secondOverlay").style.display = "block";
-    document.getElementById("email-list").innerHTML = "";
 }
 
 function cancelLoadList() {
@@ -409,15 +408,36 @@ function removeList() {
     }
 }
 
-function renderSharedEmail(email) {
+function renderSharedEmail(email, ID) {
     let node = document.createElement("LI");
+    node.id = "emailShare_" + ID.toString();
     let textnode = document.createTextNode(email);
     node.appendChild(textnode);
     document.getElementById("email-list").appendChild(node); 
 }
 
+function loadSharedEmails() {
+    document.getElementById("email-list").innerHTML = "";
+
+    $.ajax({
+        url: "/share/" + token.toString(),
+        type: "GET",
+        contentType: "application/json",
+        async: true,
+        success: function (resp) {
+            let emailArray = (resp);
+            let emails = emailArray.map(function (a) { return a.email; });
+            let uniqueEmails = [...new Set(emails)]
+            for (let i = 0; i < uniqueEmails.length; i++) {
+                renderSharedEmail(uniqueEmails[i], i);
+            }
+        }
+    });
+}
+
 function shareEmail() {
     let email = document.getElementById("email-share").value;
+    document.getElementById("email-share").value = "";
 
     var payload = {
         token: token,
@@ -431,25 +451,7 @@ function shareEmail() {
         processData: false,
         data: JSON.stringify(payload),
         complete: function (data) {
-            renderSharedEmail(email);
-        }
-    });
-}
-
-function loadSharedEmails() {
-    token = document.getElementById("viewListFromLink").value;
-
-    $.ajax({
-        url: "/share/" + token.toString(),
-        type: "GET",
-        contentType: "application/json",
-        async: true,
-        success: function (resp) {
-            let emailArray = (resp);
-            let emails = emailArray.map(function (a) { return a.email; });
-            for (let i = 0; i < emails.length; i++) {
-                renderSharedEmail(emails[i]);
-            }
+            loadSharedEmails();
         }
     });
 }

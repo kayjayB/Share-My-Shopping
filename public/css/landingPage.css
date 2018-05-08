@@ -54,7 +54,6 @@ hr.hr-style {
 
 .shareButton{
     margin-top: 5px;
-    margin-bottom: 30px;
 }
 
 .search-token-text{
@@ -110,12 +109,6 @@ hr.hr-style {
     padding: 2px 16px;
 }
 
-.shareButton {
-    background-color: #40e0d0;
-    color: #fafafa;
-    border: none;
-}
-
 .btn-primary:active:hover,
 .btn-primary.active:hover,
 .open>.dropdown-toggle.btn-primary:hover,
@@ -132,6 +125,12 @@ hr.hr-style {
 }
 
 #navigateToLink {
+    background-color: #40e0d0;
+    color: #fafafa;
+    border: none;
+}
+
+.shareButton {
     background-color: #40e0d0;
     color: #fafafa;
     border: none;

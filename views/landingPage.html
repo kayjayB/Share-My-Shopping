@@ -72,20 +72,20 @@
                     <div class="col-md-2 token-container">
                         <div class="dropdown">
                             <p>Click the button below to save your shopping list</p>
-                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=printURL()>Save List
+                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=printURL() id="shareDropdown">Save List
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
                                 <li>Use this token to access your shopping list:
                                     <input type="text" id="sharingLink" readonly=""> </input>
-                                    <button type="button" class="btn main-btn" onclick="copyLink()"> Copy link</button>
+                                    <button type="button" class="btn main-btn shareButton" onclick="copyLink()"> Copy link</button>
                                 </li>
                             </ul>
                         </div>
                         <hr class="hr-style">
                         <p class="search-token-text">Enter the token for the shopping list you wish to view</p>
                         <input type="text" id="viewListFromLink" value=""> </input>
-                        <button type="button" class="btn main-btn" onclick="viewList()" id="navigateToLink"> View</button>
+                        <button type="button" class="btn main-btn shareButton" onclick="viewList()" id="navigateToLink"> View</button>
                     </div>
                     <div class="col-md-5 col-md-offset-1">
                         <div class="form-group">
@@ -107,7 +107,7 @@
                         <p class="email-share-text">Enter the email which you want to share your shopping list with:</p>
                         <input type="text" id="email-share" value=""> </input>
                         <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
-                        <button type="button" class="btn main-btn" onclick="shareEmail()" id="navigateToLink">Share</button>
+                        <button type="button" class="btn main-btn shareButton" onclick="shareEmail()" id="share-email-button">Share</button>
                         <hr class="hr-style">
                         <p class="email-share-text">List shared with:</p>
                         <p id="email-list"></p>
