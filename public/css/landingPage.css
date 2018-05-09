@@ -48,10 +48,6 @@
     color: #ffffff;
 }
 
-#viewListFromLink {
-    width: 100%;
-}
-
 #navigateToLink {
     margin-top: 15px;
 }
@@ -166,7 +162,8 @@ hr.hr-style {
     cursor: pointer;
 }
 
-#secondOverlay {
+#secondOverlay,
+#nameOverlay {
     position: fixed;
     display: none;
     width: 100%;
@@ -243,8 +240,18 @@ hr.hr-style {
     ;
 }
 
-#viewListFromLink {
+#viewListFromLink,
+#listName {
     font-size: 20px;
+    width: 100%;
+}
+
+#printName {
+    text-align: center;
+}
+
+#list-container {
+    margin-top: 10px !important;
 }
 
 

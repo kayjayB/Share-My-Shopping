@@ -48,12 +48,19 @@
                 Load Existing List </button>
         </div>
     </div>
-    <!-- <div class="sidenav">
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
-    </div> -->
+
+    <div id="nameOverlay">
+        <div class="container" id="text">
+            <h2 style="padding-bottom: 30px">Enter the name of your shopping list</h2>
+            <input type="text" id="listName" value=""> </input>
+            <p></p>
+            <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
+            <button type="button" class="loadButton" onclick="saveListName()" id="saveListName"> Save</button>
+            <p></p>
+            <button type="button" class="loadButton" onclick="cancelAddName()" id="cancel"> Cancel</button>
+        </div>
+    </div>
+
     <div id="secondOverlay">
         <div class="container" id="text">
             <h2 style="padding-bottom: 30px">Enter the link of the shopping list you wish to view</h2>
@@ -97,7 +104,22 @@
                             List Colour
                             <input class="pull-right" type="color" id="itemColor" value="#fafafa">
                         </div>
-                        <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()">Sort By Purchased</button>
+                        <!-- <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()">Sort By Purchased</button> -->
+
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick="" id="shareDropdown">Actions
+                                    <span class="caret"></span>                   
+                            </button>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button type="button" class="btn main-btn shareButton" onclick="addListName()"> Add Shopping List Name</button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()"> Sort By Purchased</button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="col-md-1">
                         <button type="button" class="btn main-btn" onclick="storeItem(); setColor();" disabled="true" id="SubmitButton" style="background-color: Transparent">
@@ -117,7 +139,15 @@
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3"></div>
                     <div class="col-md-6 col-md-offset-3">
-                        <ul class="form-group" id="list-container"></ul>
+                        <h1 id="printName"></h1>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3"></div>
+                    <div class="col-md-6 col-md-offset-3">
+                        <ul class="form-group" id="list-container">
+                        </ul>
                     </div>
                     <div class="col-md-3 col-md-offset-5">
                         <p class="btn btn-primary colorButton">Container Color</p>
