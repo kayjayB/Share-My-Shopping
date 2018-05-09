@@ -755,6 +755,40 @@ class WebPageTesting(unittest.TestCase):
 		assert self.browser.find_element_by_id('purchaseStatus_2').is_selected() == True
 		assert self.browser.find_element_by_id('shoppingList_2').text == "Smarties"		
 
+	def test_remove_email_from_shared_list_and_verify_removed_email_is_no_longer_in_db_when_reloaded(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		share_email = self.browser.find_element_by_id("email-share")
+		share_email.send_keys("test1@mail.com")
+		share_button = self.browser.find_element_by_id("share-email-button")
+		share_button.send_keys("\n")
+		share_email = self.browser.find_element_by_id("email-share")
+		share_email.send_keys("test2@mail.com")
+		share_button = self.browser.find_element_by_id("share-email-button")
+		share_button.send_keys("\n")
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("emailShareClass_0").text == "test1@mail.com"
+		assert self.browser.find_element_by_id("emailShareClass_1").text == "test2@mail.com"
+
+		remove_email = self.browser.find_element_by_id("emailDelete_0")
+		remove_email.click()
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("emailShareClass_0").text == "test2@mail.com"
+
 	def tearDown(self):
 		self.browser.close()
 

@@ -175,6 +175,14 @@ mainRouter.get('/share/:token', function (req, res) {
     );
 });
 
+mainRouter.post('/remove-share', function (req, res) {
+    connection.query('DELETE FROM lists WHERE token = ? AND email = ?', [req.body.token, req.body.email],
+        function (err, result) {
+            if (err) throw err;
+        }
+    );
+});
+
 mainRouter.post('/delete', function(req, res) {
     connection.query('TRUNCATE items', req.body,
         function(err, result) {
