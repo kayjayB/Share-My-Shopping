@@ -3,7 +3,6 @@ var express = require("express");
 var mainRouter = express.Router();
 var mysql = require('mysql');
 var sgMail = require('@sendgrid/mail');
-var fs = require('fs')
 
 sgMail.setApiKey('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');
 
@@ -156,13 +155,7 @@ mainRouter.post('/share', function (req, res) {
             res.send('Item added to lists table with ID: ' + result.insertId);
         }
     );
-    let template;
-    fs.readFile(path.join(__dirname, "public/templates", "sendgrid.html"), 'utf8', function (err, data) {
-        if (err) {
-            return console.log(err);
-        }
-        template = data;
-    });
+
     let msg = {
         to: req.body.email,
         from: 'notifications@sharemyshopping.com',
