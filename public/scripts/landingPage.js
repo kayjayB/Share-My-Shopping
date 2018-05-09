@@ -3,10 +3,13 @@ let shoppingListCategory = [];
 let itemCompletionStatus = [];
 let shoppingListQuantity = [];
 var token;
+var dropdownText;
 
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
     document.getElementById("overlay").style.display = "block";
+    console.log("inready but why??");
+    dropdownText = "Category";
     token = generateToken();
 });
 
@@ -37,11 +40,11 @@ function toggleButton() {
 
     if (item.length == 0) {
         document.getElementById("SubmitButton").disabled = true;
-        document.getElementById("ShoppingListCategory").disabled = true;
+        document.getElementById("dropdownButton").disabled = true;
         document.getElementById("ShoppingListQuantity").disabled = true;
     } else {
         document.getElementById("SubmitButton").disabled = false;
-        document.getElementById("ShoppingListCategory").disabled = false;
+        document.getElementById("dropdownButton").disabled = false;
         document.getElementById("ShoppingListQuantity").disabled = false;
     }
 }
@@ -147,7 +150,7 @@ function deleteItem(itemID) {
 function addItem(name, category, status, quantity) {
 
     let item_name = name;
-    let item_category = category;
+    let item_category = dropdownText;
     let initialCompletionStatus = status;
     let item_quantity = quantity;
 
@@ -155,9 +158,9 @@ function addItem(name, category, status, quantity) {
         item_name = document.getElementById("ShoppingListItem").value;
     }
 
-    if (item_category == "none") {
-        item_category = document.getElementById("ShoppingListCategory").value;
-    }
+    // if (item_category == "none") {
+    //     item_category = document.getElementById("ShoppingListCategory").value;
+    // }
 
     if (item_quantity === 0) {
         item_quantity = document.getElementById("ShoppingListQuantity").value;
@@ -184,13 +187,14 @@ function addItem(name, category, status, quantity) {
     itemCompletionStatus.push(initialCompletionStatus);
     // Clear input text field once the item has been saved to the array
     document.getElementById("ShoppingListItem").value = "";
-    document.getElementById("ShoppingListCategory").value = "";
+    document.getElementById("dropdownButton").innerHTML = "Category &#11167";
+    dropdownText = "Category";
     document.getElementById("ShoppingListQuantity").value = "";
 
     // Disable the button again for no input
     document.getElementById("SubmitButton").disabled = true;
-    document.getElementById("ShoppingListCategory").disabled = true;
     document.getElementById("ShoppingListQuantity").disabled = true;
+    document.getElementById("dropdownButton").disabled = true;
 
     renderCards();
 }
@@ -202,22 +206,11 @@ function orderByPurchased()
     if (token.match(/^[0-9]+$/) != null) {
         removeList();
 
-        // $.ajax({
-        //     url: "/items",
-        //     type: "POST",
-        //     contentType: "application/json",
-        //     processData: false,
-        //     data: JSON.stringify(payload),
-        //     complete: function(data) {
-        //         addItem('none', 'none', false, quantity_value);
-        //     }
-        // });
-
         $.ajax({
             url: "/itemsordered/" + token.toString(),
             type: "GET",
             contentType: "application/json",
-            async: true,
+            async: false,
             success: function(resp) {
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
@@ -240,10 +233,10 @@ function orderByPurchased()
                         } else if (itemCompletionStatus[i] === 1) {
                             itemCompletionStatus[i] = true;
                         }
-                        if (shoppingListCategory[i] == null || shoppingListCategory[i].length == 0)
-                        {
-                            shoppingListCategory[i] = "Category/Aisle";
-                        }
+                        // if (shoppingListCategory[i] == null || shoppingListCategory[i].length == 0)
+                        // {
+                        //     shoppingListCategory[i] = "Category/Aisle";
+                        // }
                         //addItem(item_name, item_category, item_status, item_quantity);
                     }
                     document.getElementById("viewListFromLink").value = "";
@@ -257,6 +250,114 @@ function orderByPurchased()
         alert("Token should only contain numbers: " + document.getElementById("viewListFromLink").innerHTML);
         document.getElementById("viewListFromLink").value = "";
     }
+}
+
+function categoryDropdownShow(ID) {
+    if(ID.includes("_")) {
+        var index = ID.split("_")[1];
+        document.getElementById("categoryDropdown_"+index).classList.toggle("show");
+        document.getElementById(ID).innerHTML = shoppingListCategory[index] + " &#11165";
+    }
+    else
+    {
+        document.getElementById("categoryDropdown").classList.toggle("show");
+        document.getElementById("dropdownButton").innerHTML = dropdownText + " &#11165";
+    }
+}
+
+function categoryDropdownHide() {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+}
+
+window.onclick = function(e) {
+    if (!e.target.matches('.dropbtn')) 
+    {
+        if(e.target.parentNode.id.includes('categoryDropdown')) {
+
+            if(e.target.parentNode.id.includes("_")){
+                var index = e.target.parentNode.id.split("_")[1];
+                shoppingListCategory[index] = e.target.innerHTML;
+                document.getElementById("dropdownButton_"+index).innerHTML = shoppingListCategory[index] + ' &#11167';
+            }
+            else {
+                dropdownText = e.target.innerHTML
+                document.getElementById("dropdownButton").innerHTML = dropdownText + ' &#11167';
+            }
+        }
+        else {
+            document.getElementById("dropdownButton").innerHTML = dropdownText + ' &#11167';
+        }
+        categoryDropdownHide();
+    }
+  }
+
+function createCardCategoryDropdown(i) {
+    let categoryElement = document.createElement("div");
+        categoryElement.className = "dropdown";
+        categoryElement.id = "ddDiv_"+i;
+
+        let categoryElementButton = document.createElement("button");
+        categoryElementButton.className = "btn dropbtn";
+        categoryElementButton.id = "dropdownButton_"+i;
+        categoryElementButton.type = "button";
+        categoryElementButton.setAttribute("onclick", "categoryDropdownShow(id)");
+        categoryElementButton.innerHTML = shoppingListCategory[i];
+
+        let categoryElementDropdown = document.createElement("div");
+        categoryElementDropdown.className = "dropdown-content";
+        categoryElementDropdown.id = "categoryDropdown_"+i;
+
+        let dropdownItem0 = document.createElement("a");
+        let dropdownItem1 = document.createElement("a");
+        let dropdownItem2 = document.createElement("a");
+        let dropdownItem3 = document.createElement("a");
+        let dropdownItem4 = document.createElement("a");
+        let dropdownItem5 = document.createElement("a");
+        let dropdownItem6 = document.createElement("a");
+        let dropdownItem7 = document.createElement("a");
+        let dropdownItem8 = document.createElement("a");
+        
+        dropdownItem0.style.textAlign = "left";
+        dropdownItem1.style.textAlign = "left";
+        dropdownItem2.style.textAlign = "left";
+        dropdownItem3.style.textAlign = "left";
+        dropdownItem4.style.textAlign = "left";
+        dropdownItem5.style.textAlign = "left";
+        dropdownItem6.style.textAlign = "left";
+        dropdownItem7.style.textAlign = "left";
+        dropdownItem8.style.textAlign = "left";
+
+        dropdownItem0.innerHTML = "Beverages";
+        dropdownItem1.innerHTML = "Baked Goods";
+        dropdownItem2.innerHTML = "Dairy";
+        dropdownItem3.innerHTML = "Fresh Produce";
+        dropdownItem4.innerHTML = "Frozen Foods";
+        dropdownItem5.innerHTML = "Hygiene";
+        dropdownItem6.innerHTML = "Meat";
+        dropdownItem7.innerHTML = "Non-perishables";
+        dropdownItem8.innerHTML = "Other";
+
+        categoryElementDropdown.appendChild(dropdownItem0);
+        categoryElementDropdown.appendChild(dropdownItem1);
+        categoryElementDropdown.appendChild(dropdownItem2);
+        categoryElementDropdown.appendChild(dropdownItem3);
+        categoryElementDropdown.appendChild(dropdownItem4);
+        categoryElementDropdown.appendChild(dropdownItem5);
+        categoryElementDropdown.appendChild(dropdownItem6);
+        categoryElementDropdown.appendChild(dropdownItem7);
+        categoryElementDropdown.appendChild(dropdownItem8);
+
+        categoryElement.appendChild(categoryElementButton);
+        categoryElement.appendChild(categoryElementDropdown);
+
+        return categoryElement;
 }
 
 function renderCards() {
@@ -288,14 +389,41 @@ function renderCards() {
 
         let itemName = document.createTextNode(shoppingList[i]);
 
-        let categoryElement = document.createElement("h4");
-        categoryElement.id = "shoppingListCategory_" + i.toString();
+        var categoryElement = createCardCategoryDropdown(i);
 
-        categoryElement.setAttribute("onmouseover", "makeEditable(id, true)");
-        categoryElement.setAttribute("onfocusout", "editCategory(id)");
-        categoryElement.setAttribute("onkeydown", "submitCategoryChangesOnEnter(event, id)");
+        //document.getElementById("ddDiv").cloneNode(false);
+        //let categoryElementButton = document.getElementById("dropdownButton").cloneNode(true);
+        //let categoryElementDropdown = document.getElementById("categoryDropdown").cloneNode(true);
 
-        let categoryName = document.createTextNode(shoppingListCategory[i]);
+        //categoryElement.appendChild(categoryElementButton);
+        //categoryElement.appendChild(categoryElementDropdown);
+        //categoryElement.appendChild(itemElement);
+
+        // let children = document.getElementById("ddDiv").childNodes;
+
+        // children.forEach(element => {
+        //     let childElement = element.cloneNode();
+        //     let grandChildren = element.childNodes;
+
+        //     grandChildren.forEach(element2 => {
+        //         let grandchildElement = element2.cloneNode();
+        //         childElement.appendChild(grandchildElement);
+        //     });
+
+        //     categoryElement.appendChild(childElement);
+        // });
+
+        //categoryElement.id +="_"+i;
+        //categoryElement.setAttribute("disabled", "false");
+        //categoryElement.id = "shoppingListCategory_" + i.toString();
+
+        // categoryElement.setAttribute("onmouseover", "makeEditable(id, true)");
+        // categoryElement.setAttribute("onfocusout", "editCategory(id)");
+        // categoryElement.setAttribute("onkeydown", "submitCategoryChangesOnEnter(event, id)");
+
+        // let categoryName = document.createTextNode(shoppingListCategory[i]);
+
+        //categoryElement.innerHTML = shoppingListCategory[i];
 
         let quantityElement = document.createElement("span");
         quantityElement.id = "shoppingListQuantity_" + i.toString();
@@ -306,7 +434,7 @@ function renderCards() {
         let quantityText = document.createTextNode("X");
 
         itemElement.appendChild(itemName);
-        categoryElement.appendChild(categoryName);
+        //categoryElement.appendChild(categoryName);
         quantityElement.appendChild(quantityAmount);
         quantityMultiplier.appendChild(quantityText);
 
@@ -326,12 +454,12 @@ function renderCards() {
         checkboxDiv.appendChild(checkBox);
 
         let deleteDiv = document.createElement("div");
-        let deleteButton = document.createElement("button");
+        let deleteButton = document.createElement("I");
 
-        deleteButton.type = "button";
+        //deleteButton.type = "button";
         deleteButton.id = "deleteButton_"+i;
         deleteButton.setAttribute("onclick", "deleteItem(id)");
-        deleteButton.className = "fa fa-times";
+        deleteButton.className = "fa fa-times-circle";
         
         deleteDiv.align = "right";
         deleteDiv.appendChild(deleteButton);
@@ -356,7 +484,7 @@ function storeItem() {
     if (quantity_value.match(/^[0-9]+$/) != null) {
         var payload = {
             name: document.getElementById("ShoppingListItem").value,
-            category: document.getElementById("ShoppingListCategory").value,
+            category: dropdownText,
             quantity: quantity_value,
             token: token,
             completed: completedStatus,
