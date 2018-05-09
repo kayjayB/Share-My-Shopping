@@ -480,20 +480,40 @@ function removeList() {
     }
 }
 
-function removeEmail(ID) {
+function removeEmail(index, ID) {
     let element = document.getElementById(ID);
+    selector = "emailShareClass_" + index.toString();
+    email = document.getElementById(selector).textContent;
     element.parentNode.removeChild(element);
+
+    var payload = {
+        token: token,
+        email: email
+    };
+    $.ajax({
+        url: "/remove-share",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function (data) {
+            removeList();
+        }
+    });
 }
 
 function renderSharedEmail(email, ID) {
     let node = document.createElement("LI");
     node.id = "emailShare_" + ID.toString();
+    let email_node = document.createElement("SPAN");
+    email_node.id = "emailShareClass_" + ID.toString();
     let textnode = document.createTextNode(email);
     let cross_node = document.createElement("I");
     cross_node.className = "fa fa-times-circle";
-    cross_node.id = node.id;
-    cross_node.onclick = function () {removeEmail(cross_node.id);};
-    node.appendChild(textnode);
+    cross_node.id = "emailDelete_" + ID.toString();
+    cross_node.onclick = function () {removeEmail(ID.toString(), node.id);};
+    email_node.appendChild(textnode)
+    node.appendChild(email_node);
     node.appendChild(cross_node);
     document.getElementById("email-list").appendChild(node); 
 }
