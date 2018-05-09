@@ -480,11 +480,21 @@ function removeList() {
     }
 }
 
+function removeEmail(ID) {
+    let element = document.getElementById(ID);
+    element.parentNode.removeChild(element);
+}
+
 function renderSharedEmail(email, ID) {
     let node = document.createElement("LI");
     node.id = "emailShare_" + ID.toString();
     let textnode = document.createTextNode(email);
+    let cross_node = document.createElement("I");
+    cross_node.className = "fa fa-times-circle";
+    cross_node.id = node.id;
+    cross_node.onclick = function () {removeEmail(cross_node.id);};
     node.appendChild(textnode);
+    node.appendChild(cross_node);
     document.getElementById("email-list").appendChild(node); 
 }
 

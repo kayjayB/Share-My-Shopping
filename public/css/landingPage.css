@@ -15,12 +15,20 @@
 }
 
 .email-container{
+    margin-left: 75px;
+    margin-right: -75px;
     padding: 15px;
     background-color: #e8e8e8;
     border-radius: 5px;
     -webkit-box-shadow: 0px 0px 22px 4px rgba(0,0,0,0.33);
     -moz-box-shadow: 0px 0px 22px 4px rgba(0,0,0,0.33);
     box-shadow: 0px 0px 22px 4px rgba(0,0,0,0.33);
+}
+
+.fa-times-circle {
+    float: right;
+    cursor: pointer;
+    font-size: 18px !important;
 }
 
 .main{
