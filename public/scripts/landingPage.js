@@ -9,6 +9,7 @@ $(document).ready(function() {
     document.getElementById("overlay").style.display = "block";
     document.getElementById("nameOverlay").style.display = "none";
     token = generateToken();
+    document.getElementById("printName").textContent = "";
 });
 
 function loadExisitingShoppingList() {
@@ -468,6 +469,7 @@ function viewList() {
 }
 
 function removeList() {
+    document.getElementById("printName").textContent = "";
     let listContainer = document.getElementById('list-container')
     shoppingList = [];
     shoppingListCategory = [];
@@ -590,9 +592,21 @@ function addListName() {
 function saveListName() {
     let name = document.getElementById("listName").value;
     document.getElementById("nameOverlay").style.display = "none";
-    //document.getElementById("printName").value = name;
+    document.getElementById("printName").value = name;
     let printedName = document.createTextNode(name);
     document.getElementById("printName").appendChild(printedName);
+    var payload = {
+        token: token,
+        name: name,
+    };
+    $.ajax({
+        url: "/add-name",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {}
+    });
 }
 
 function cancelAddName() {

@@ -6,34 +6,34 @@ var sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey('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');
 
-// let connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'password',
-// });
+let connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+});
 
-let connnect_config = function() {
-    // Process the environment variable defining the MySQL connection parameters
-    let str = process.env.MYSQLCONNSTR_localdb
-    let reg = str.split(';');
-    let database = reg[0].split('=')[1]
-    let source = reg[1].split('=')[1]
-    let [host, port] = source.split(':')
-    let user = reg[2].split('=')[1]
-    let password = reg[3].split('=')[1]
+// let connnect_config = function() {
+//     // Process the environment variable defining the MySQL connection parameters
+//     let str = process.env.MYSQLCONNSTR_localdb
+//     let reg = str.split(';');
+//     let database = reg[0].split('=')[1]
+//     let source = reg[1].split('=')[1]
+//     let [host, port] = source.split(':')
+//     let user = reg[2].split('=')[1]
+//     let password = reg[3].split('=')[1]
 
-    // Create the connection and return
-    let auth = {
-        host: host,
-        user: user,
-        password: password,
-        database: database,
-        port: parseInt(port)
-    }
-    return mysql.createConnection(auth)
-}
+//     // Create the connection and return
+//     let auth = {
+//         host: host,
+//         user: user,
+//         password: password,
+//         database: database,
+//         port: parseInt(port)
+//     }
+//     return mysql.createConnection(auth)
+// }
 
-let connection = connnect_config();
+// let connection = connnect_config();
 
 connection.connect((err) => {
     if (err) throw err;
@@ -59,7 +59,7 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                     if (err) throw err;
                 });
         });
-        connection.query('DROP TABLE IF EXISTS lists', function (err) {
+        connection.query('DROP TABLE IF EXISTS lists', function(err) {
             if (err) throw err;
             connection.query('CREATE TABLE IF NOT EXISTS lists(' +
                 'id INT NOT NULL AUTO_INCREMENT,' +
@@ -67,7 +67,19 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                 'token VARCHAR(50),' +
                 'email VARCHAR(100)' +
                 ')',
-                function (err) {
+                function(err) {
+                    if (err) throw err;
+                });
+        });
+        connection.query('DROP TABLE IF EXISTS lists', function(err) {
+            if (err) throw err;
+            connection.query('CREATE TABLE IF NOT EXISTS listNames(' +
+                'id INT NOT NULL AUTO_INCREMENT,' +
+                'PRIMARY KEY(id),' +
+                'token VARCHAR(50),' +
+                'name VARCHAR(100)' +
+                ')',
+                function(err) {
                     if (err) throw err;
                 });
         });
@@ -148,9 +160,9 @@ mainRouter.get("/about", function(req, res) {
     res.sendFile(path.join(__dirname, "views", "about.html"));
 });
 
-mainRouter.post('/share', function (req, res) {
+mainRouter.post('/share', function(req, res) {
     connection.query('INSERT INTO lists SET ?', req.body,
-        function (err, result) {
+        function(err, result) {
             if (err) throw err;
             res.send('Item added to lists table with ID: ' + result.insertId);
         }
@@ -479,19 +491,27 @@ mainRouter.post('/share', function (req, res) {
     sgMail.send(msg);
 });
 
-mainRouter.get('/share/:token', function (req, res) {
+mainRouter.get('/share/:token', function(req, res) {
     var token = req.params.token;
     connection.query("SELECT email FROM lists WHERE token = " + token, req.body,
-        function (err, result) {
+        function(err, result) {
             if (err) throw err;
             res.send(result);
         }
     );
 });
 
-mainRouter.post('/remove-share', function (req, res) {
+mainRouter.post('/remove-share', function(req, res) {
     connection.query('DELETE FROM lists WHERE token = ? AND email = ?', [req.body.token, req.body.email],
-        function (err, result) {
+        function(err, result) {
+            if (err) throw err;
+        }
+    );
+});
+
+mainRouter.post('/add-name', function(req, res) {
+    connection.query('INSERT INTO listNames SET ?', [req.body],
+        function(err, result) {
             if (err) throw err;
         }
     );
