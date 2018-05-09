@@ -482,8 +482,8 @@ function removeList() {
 
 function removeEmail(index, ID) {
     let element = document.getElementById(ID);
-    selector = "emailShareClass_" + index.toString();
-    email = document.getElementById(selector).textContent;
+    let selector = "emailShareClass_" + index.toString();
+    let email = document.getElementById(selector).textContent;
     element.parentNode.removeChild(element);
 
     var payload = {
