@@ -8,7 +8,6 @@ var dropdownText;
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
     document.getElementById("overlay").style.display = "block";
-    console.log("inready but why??");
     dropdownText = "Category";
     token = generateToken();
 });
@@ -51,6 +50,7 @@ function toggleButton() {
 
 function submitEditedItem(ID, oldName) {
     var index = parseInt(ID) + 1; //make an integer so that it can be incremented
+    console.log("submitEdited:"+shoppingListCategory[ID]);
     var payload = {
         id: index.toString(),
         oldName: oldName,
@@ -84,9 +84,10 @@ function editItem(itemID) {
 function editCategory(itemID) {
 
     let ID = itemID.toString().split("_")[1];
-    shoppingListCategory[ID] = document.getElementById(itemID.toString()).innerHTML;
+    //shoppingListCategory[ID] = document.getElementById(itemID.toString()).innerHTML;
+    
     submitEditedItem(ID, shoppingList[ID]);
-    document.getElementById(itemID).setAttribute("contenteditable", "false")
+    //document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
 function editPurchaseStatus(itemID) {
@@ -150,7 +151,7 @@ function deleteItem(itemID) {
 function addItem(name, category, status, quantity) {
 
     let item_name = name;
-    let item_category = dropdownText;
+    let item_category = category;
     let initialCompletionStatus = status;
     let item_quantity = quantity;
 
@@ -158,9 +159,9 @@ function addItem(name, category, status, quantity) {
         item_name = document.getElementById("ShoppingListItem").value;
     }
 
-    // if (item_category == "none") {
-    //     item_category = document.getElementById("ShoppingListCategory").value;
-    // }
+    if (item_category == "none") {
+        item_category = dropdownText;
+    }
 
     if (item_quantity === 0) {
         item_quantity = document.getElementById("ShoppingListQuantity").value;
@@ -284,7 +285,9 @@ window.onclick = function(e) {
             if(e.target.parentNode.id.includes("_")){
                 var index = e.target.parentNode.id.split("_")[1];
                 shoppingListCategory[index] = e.target.innerHTML;
+
                 document.getElementById("dropdownButton_"+index).innerHTML = shoppingListCategory[index] + ' &#11167';
+                editCategory("categoryDropdown_"+index);
             }
             else {
                 dropdownText = e.target.innerHTML
