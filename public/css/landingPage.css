@@ -273,8 +273,8 @@ hr.hr-style {
 }
 
 .notesBoxWrapper textarea {
-    min-height: 50px;
-    max-height: 120px;
+    min-height: 100px;
+    max-height: 100px;
     min-width: 252px;
     width: 252px;
     max-width: 100%;
