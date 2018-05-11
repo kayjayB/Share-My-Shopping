@@ -8,8 +8,11 @@ var dropdownText;
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
     document.getElementById("overlay").style.display = "block";
+    document.getElementById("nameOverlay").style.display = "none";
     dropdownText = "Category";
     token = generateToken();
+    document.getElementById("printName").textContent = "";
+    document.getElementById("listName").value = "";
 });
 
 function loadExisitingShoppingList() {
@@ -24,6 +27,7 @@ function cancelLoadList() {
 
 function newShoppingList() {
     document.getElementById("overlay").style.display = "none";
+    document.getElementById("printName").textContent = "";
     token = generateToken();
     removeList();
 }
@@ -50,7 +54,6 @@ function toggleButton() {
 
 function submitEditedItem(ID, oldName) {
     var index = parseInt(ID) + 1; //make an integer so that it can be incremented
-    console.log("submitEdited:"+shoppingListCategory[ID]);
     var payload = {
         id: index.toString(),
         oldName: oldName,
@@ -84,10 +87,7 @@ function editItem(itemID) {
 function editCategory(itemID) {
 
     let ID = itemID.toString().split("_")[1];
-    //shoppingListCategory[ID] = document.getElementById(itemID.toString()).innerHTML;
-    
     submitEditedItem(ID, shoppingList[ID]);
-    //document.getElementById(itemID).setAttribute("contenteditable", "false")
 }
 
 function editPurchaseStatus(itemID) {
@@ -200,8 +200,7 @@ function addItem(name, category, status, quantity) {
     renderCards();
 }
 
-function orderByPurchased()
-{
+function orderByPurchased() {
     //token = document.getElementById("viewListFromLink").innerHTML;
     document.getElementById("secondOverlay").style.display = "none";
     if (token.match(/^[0-9]+$/) != null) {
@@ -221,7 +220,7 @@ function orderByPurchased()
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
-                }
+                } 
                 else if (names.length != 0) {
                     removeList();
                     for (let i = 0; i < names.length; i++) {
@@ -234,11 +233,6 @@ function orderByPurchased()
                         } else if (itemCompletionStatus[i] === 1) {
                             itemCompletionStatus[i] = true;
                         }
-                        // if (shoppingListCategory[i] == null || shoppingListCategory[i].length == 0)
-                        // {
-                        //     shoppingListCategory[i] = "Category/Aisle";
-                        // }
-                        //addItem(item_name, item_category, item_status, item_quantity);
                     }
                     document.getElementById("viewListFromLink").value = "";
 
@@ -328,26 +322,6 @@ function createCardCategoryDropdown(i) {
             dropdownItemArray[j].id = "categoryDropdown_"+i+"_Item_"+j;
         }
 
-        // let dropdownItem0 = document.createElement("a");
-        // let dropdownItem1 = document.createElement("a");
-        // let dropdownItem2 = document.createElement("a");
-        // let dropdownItem3 = document.createElement("a");
-        // let dropdownItem4 = document.createElement("a");
-        // let dropdownItem5 = document.createElement("a");
-        // let dropdownItem6 = document.createElement("a");
-        // let dropdownItem7 = document.createElement("a");
-        // let dropdownItem8 = document.createElement("a");
-        
-        // dropdownItem0.style.textAlign = "left";
-        // dropdownItem1.style.textAlign = "left";
-        // dropdownItem2.style.textAlign = "left";
-        // dropdownItem3.style.textAlign = "left";
-        // dropdownItem4.style.textAlign = "left";
-        // dropdownItem5.style.textAlign = "left";
-        // dropdownItem6.style.textAlign = "left";
-        // dropdownItem7.style.textAlign = "left";
-        // dropdownItem8.style.textAlign = "left";
-
         dropdownItemArray[0].innerHTML = "Beverages";
         dropdownItemArray[1].innerHTML = "Baked Goods";
         dropdownItemArray[2].innerHTML = "Dairy";
@@ -362,16 +336,6 @@ function createCardCategoryDropdown(i) {
         {
             categoryElementDropdown.appendChild(dropdownItemArray[j]);
         }
-
-        // categoryElementDropdown.appendChild(dropdownItem0);
-        // categoryElementDropdown.appendChild(dropdownItem1);
-        // categoryElementDropdown.appendChild(dropdownItem2);
-        // categoryElementDropdown.appendChild(dropdownItem3);
-        // categoryElementDropdown.appendChild(dropdownItem4);
-        // categoryElementDropdown.appendChild(dropdownItem5);
-        // categoryElementDropdown.appendChild(dropdownItem6);
-        // categoryElementDropdown.appendChild(dropdownItem7);
-        // categoryElementDropdown.appendChild(dropdownItem8);
 
         categoryElement.appendChild(categoryElementButton);
         categoryElement.appendChild(categoryElementDropdown);
@@ -410,40 +374,6 @@ function renderCards() {
 
         var categoryElement = createCardCategoryDropdown(i);
 
-        //document.getElementById("ddDiv").cloneNode(false);
-        //let categoryElementButton = document.getElementById("dropdownButton").cloneNode(true);
-        //let categoryElementDropdown = document.getElementById("categoryDropdown").cloneNode(true);
-
-        //categoryElement.appendChild(categoryElementButton);
-        //categoryElement.appendChild(categoryElementDropdown);
-        //categoryElement.appendChild(itemElement);
-
-        // let children = document.getElementById("ddDiv").childNodes;
-
-        // children.forEach(element => {
-        //     let childElement = element.cloneNode();
-        //     let grandChildren = element.childNodes;
-
-        //     grandChildren.forEach(element2 => {
-        //         let grandchildElement = element2.cloneNode();
-        //         childElement.appendChild(grandchildElement);
-        //     });
-
-        //     categoryElement.appendChild(childElement);
-        // });
-
-        //categoryElement.id +="_"+i;
-        //categoryElement.setAttribute("disabled", "false");
-        //categoryElement.id = "shoppingListCategory_" + i.toString();
-
-        // categoryElement.setAttribute("onmouseover", "makeEditable(id, true)");
-        // categoryElement.setAttribute("onfocusout", "editCategory(id)");
-        // categoryElement.setAttribute("onkeydown", "submitCategoryChangesOnEnter(event, id)");
-
-        // let categoryName = document.createTextNode(shoppingListCategory[i]);
-
-        //categoryElement.innerHTML = shoppingListCategory[i];
-
         let quantityElement = document.createElement("span");
         quantityElement.id = "shoppingListQuantity_" + i.toString();
         quantityElement.className = "shoppingListQuantity";
@@ -453,7 +383,6 @@ function renderCards() {
         let quantityText = document.createTextNode("X");
 
         itemElement.appendChild(itemName);
-        //categoryElement.appendChild(categoryName);
         quantityElement.appendChild(quantityAmount);
         quantityMultiplier.appendChild(quantityText);
 
@@ -475,11 +404,10 @@ function renderCards() {
         let deleteDiv = document.createElement("div");
         let deleteButton = document.createElement("I");
 
-        //deleteButton.type = "button";
         deleteButton.id = "deleteButton_"+i;
         deleteButton.setAttribute("onclick", "deleteItem(id)");
         deleteButton.className = "fa fa-times-circle";
-        
+
         deleteDiv.align = "right";
         deleteDiv.appendChild(deleteButton);
 
@@ -571,9 +499,9 @@ function toggleLinkSubmit() {
         document.getElementById("navigateToLink").disabled = false;
 }
 
-function viewList() {
+function viewList(listName) {
     token = document.getElementById("viewListFromLink").value;
-    document.getElementById("secondOverlay").style.display = "none";
+    console.log(listName)
     if (token.match(/^[0-9]+$/) != null) {
         removeList();
         $.ajax({
@@ -588,7 +516,15 @@ function viewList() {
                 let categories = nameArray.map(function(a) { return a.category; });
                 let purchaseStatus = nameArray.map(function(a) { return a.completed; });
                 let quantities = nameArray.map(function(a) { return a.quantity; });
-                if (names.length === 0) {
+                console.log(listName);
+                if (listName !== null) {
+                    console.log(listName);
+                    document.getElementById("printName").textContent = "";
+                    printListName(listName);
+                    document.getElementById("viewListFromLink").value = "";
+                    removeList();
+                }
+                if (names.length === 0 && listName === null) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
                 } else if (names.length !== 0) {
@@ -643,7 +579,7 @@ function removeEmail(index, ID) {
         contentType: "application/json",
         processData: false,
         data: JSON.stringify(payload),
-        complete: function (data) {
+        complete: function(data) {
             removeList();
         }
     });
@@ -658,11 +594,11 @@ function renderSharedEmail(email, ID) {
     let cross_node = document.createElement("I");
     cross_node.className = "fa fa-times-circle";
     cross_node.id = "emailDelete_" + ID.toString();
-    cross_node.onclick = function () {removeEmail(ID.toString(), node.id);};
+    cross_node.onclick = function() { removeEmail(ID.toString(), node.id); };
     email_node.appendChild(textnode)
     node.appendChild(email_node);
     node.appendChild(cross_node);
-    document.getElementById("email-list").appendChild(node); 
+    document.getElementById("email-list").appendChild(node);
 }
 
 function loadSharedEmails() {
@@ -673,9 +609,9 @@ function loadSharedEmails() {
         type: "GET",
         contentType: "application/json",
         async: true,
-        success: function (resp) {
+        success: function(resp) {
             let emailArray = (resp);
-            let emails = emailArray.map(function (a) { return a.email; });
+            let emails = emailArray.map(function(a) { return a.email; });
             let uniqueEmails = [...new Set(emails)]
             for (let i = 0; i < uniqueEmails.length; i++) {
                 renderSharedEmail(uniqueEmails[i], i);
@@ -699,7 +635,7 @@ function shareEmail() {
         contentType: "application/json",
         processData: false,
         data: JSON.stringify(payload),
-        complete: function (data) {
+        complete: function(data) {
             loadSharedEmails();
         }
     });
@@ -730,4 +666,61 @@ function on() {
 
 function off() {
     document.getElementById("overlay").style.display = "none";
+}
+
+function addListName() {
+    document.getElementById("nameOverlay").style.display = "block";
+}
+
+function saveListName() {
+    let name = document.getElementById("listName").value;
+    document.getElementById("nameOverlay").style.display = "none";
+    document.getElementById("printName").value = name;
+    document.getElementById("listName").value = "";
+    printListName(name);
+    var payload = {
+        token: token,
+        name: name,
+    };
+    $.ajax({
+        url: "/add-name",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {}
+    });
+}
+
+function getListName() {
+    token = document.getElementById("viewListFromLink").value;
+    document.getElementById("secondOverlay").style.display = "none";
+    document.getElementById("printName").textContent = "";
+    $.ajax({
+        url: "/name/" + token.toString(),
+        type: "GET",
+        contentType: "application/json",
+        async: true,
+        success: function(resp) {
+            let nameArray = (resp);
+            let name = nameArray.map(function(a) { return a.name; });
+
+            if (name.length === 0) {
+                name[0] = null;
+            }
+            console.log(name)
+            viewList(name[0]);
+        }
+    });
+}
+
+function cancelAddName() {
+    document.getElementById("nameOverlay").style.display = "none";
+
+}
+
+function printListName(name) {
+    document.getElementById("printName").innerHTML = "";
+    let printedName = document.createTextNode(name);
+    document.getElementById("printName").appendChild(printedName);
 }
