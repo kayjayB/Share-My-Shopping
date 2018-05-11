@@ -257,7 +257,7 @@ function categoryDropdownShow(ID) {
     if(ID.includes("_")) {
         var index = ID.split("_")[1];
         document.getElementById("categoryDropdown_"+index).classList.toggle("show");
-        document.getElementById(ID).innerHTML = shoppingListCategory[index] + " &#11165";
+        document.getElementById(ID).innerHTML = shoppingListCategory[index];
     }
     else
     {
@@ -286,7 +286,7 @@ window.onclick = function(e) {
                 var index = e.target.parentNode.id.split("_")[1];
                 shoppingListCategory[index] = e.target.innerHTML;
 
-                document.getElementById("dropdownButton_"+index).innerHTML = shoppingListCategory[index] + ' &#11167';
+                document.getElementById("dropdownButton_"+index).innerHTML = shoppingListCategory[index];
                 editCategory("categoryDropdown_"+index);
             }
             else {

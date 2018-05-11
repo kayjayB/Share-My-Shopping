@@ -84,9 +84,9 @@
                     <div class="col-md-5 col-md-offset-1">
                         <div class="form-group">
                             <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item"
-                            oninput="toggleButton()" onkeypress="saveItemOnEnter(event)">
+                            oninput="toggleButton()" onkeypress="saveItemOnEnter(event)" >
                     </div>
-                        <div class="dropdown" id = "ddDiv"> 
+                        <div class="dropdown" id = "ddDiv" > 
                         <button onclick="categoryDropdownShow(id)" id = "dropdownButton" type = "button" class="btn dropbtn" disabled = "true"> Category &#11167;</button>
                           <div id="categoryDropdown" class="dropdown-content">
                             <a>Beverages</a>
@@ -104,9 +104,8 @@
                             <input type="text" class="form-control" name="Category/Aisle" autocomplete="off" disabled="true" id="ShoppingListCategory"
                                 value="" placeholder="Category/Aisle" onkeypress="saveItemOnEnter(event)">
                         </div> -->
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="Quantity" autocomplete="off" disabled="true" id="ShoppingListQuantity" value=""
-                                placeholder="Quantity" onkeypress="saveItemOnEnter(event)">
+                        <div class="form-group" style = "padding-top: 10px">
+                            <input type="text" class="form-control" name="Quantity" autocomplete="off" disabled="true" id="ShoppingListQuantity" value="" placeholder="Quantity" onkeypress="saveItemOnEnter(event)">
                         </div>
                         <div class="form-control">
                             List Colour

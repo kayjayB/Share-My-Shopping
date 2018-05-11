@@ -142,6 +142,7 @@ hr.hr-style {
 
 .shoppingListItem {
     font-size: 25px;
+    padding-top: 3px;
 }
 
 .shoppingListQuantity {
@@ -261,10 +262,9 @@ hr.hr-style {
 }
 
 .dropbtn {
+    
     background-color: #ffffff;
     color: #555;
-    /* color: #333; */
-    /* color:  #000000; */
     cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -275,14 +275,19 @@ hr.hr-style {
           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
-/* .dropbtn:hover, .dropbtn:focus {
-    background-color: hsl(0, 0%, 100%);
-} */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: rgb(223, 223, 223);
 
+}
+
+.dropbtn:focusout {
+    background-color: hsl(0, 0%, 100%);
+}
 .dropdown {
+    margin-top: 5px;
     position: relative;
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .dropdown-content {
