@@ -254,6 +254,10 @@ hr.hr-style {
     margin-top: 10px !important;
 }
 
+#actionsDropdown {
+    margin-top: 22px;
+}
+
 
 /* .sidenav {
     height: 100%;
