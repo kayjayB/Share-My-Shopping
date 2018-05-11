@@ -429,7 +429,6 @@ function toggleLinkSubmit() {
 
 function viewList(listName) {
     token = document.getElementById("viewListFromLink").value;
-    console.log(listName)
     if (token.match(/^[0-9]+$/) != null) {
         removeList();
         $.ajax({
@@ -655,7 +654,6 @@ function getListName() {
             if (name.length === 0) {
                 name[0] = null;
             }
-            console.log(name)
             viewList(name[0]);
         }
     });
@@ -676,9 +674,7 @@ function getNotes() {
             if (notes.length === 0) {
                 notes[0] = "";
             }
-            console.log(notes[0])
             document.getElementById("notesBox").value = notes[0];
-            console.log(document.getElementById("notesBox").value);
         }
     });
 }
