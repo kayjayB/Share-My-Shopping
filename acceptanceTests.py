@@ -11,9 +11,9 @@ class WebPageTesting(unittest.TestCase):
 	def setUp(self):
 		chrome_options = Options()
 		chrome_options.add_argument("--headless")
-		self.browser = webdriver.Chrome(options=chrome_options)
+		#self.browser = webdriver.Chrome(options=chrome_options)
 		#Lara Config
-		#self.browser = webdriver.Chrome(executable_path=r'C:/ChromeDriver/chromedriver.exe', options=chrome_options)
+		self.browser = webdriver.Chrome(executable_path=r'C:/ChromeDriver/chromedriver.exe', options=chrome_options)
 		self.browser.get("http://127.0.0.1:3000")
 
 	def test_add_item(self):
@@ -788,6 +788,73 @@ class WebPageTesting(unittest.TestCase):
 		self.browser.find_element_by_id('navigateToLink').click()
 		time.sleep(0.1)
 		assert self.browser.find_element_by_id("emailShareClass_0").text == "test2@mail.com"
+
+	def test_category_is_selected_from_dropdown_upon_addition_and_is_persistent(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Chocolate")
+		self.browser.find_element_by_id('dropdownButton').click()
+		self.browser.find_element_by_id('categoryDropdown_Base_Item_0').click()
+		assert self.browser.find_element_by_id('dropdownButton').get_attribute('innerHTML') == "Beverages"
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Chocolate"
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Beverages"
+
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+		time.sleep(0.1)
+
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Chocolate"
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Beverages"
+
+	def test_category_is_editable_from_card_dropdown_and_is_persistent(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Chicken")
+		self.browser.find_element_by_id('dropdownButton').click()
+		self.browser.find_element_by_id('categoryDropdown_Base_Item_0').click()
+		assert self.browser.find_element_by_id('dropdownButton').get_attribute('innerHTML') == "Beverages"
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Chicken"
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Beverages"
+		
+		self.browser.find_element_by_id('dropdownButton_0').click()
+		self.browser.find_element_by_id('categoryDropdown_0_Item_6').click()
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Meat"
+
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+		time.sleep(0.1)
+		
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Chicken"
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Meat"
 
 	def tearDown(self):
 		self.browser.close()

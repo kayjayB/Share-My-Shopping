@@ -286,7 +286,7 @@ hr.hr-style {
 .dropdown {
     margin-top: 5px;
     position: relative;
-    display: block;
+    /* display: block; */
     margin-bottom: 5px;
 }
 
@@ -294,7 +294,8 @@ hr.hr-style {
     display: none;
     position: absolute;
     background-color: #f1f1f1;
-    min-width: 160px;
+    min-width: 130px;
+    max-width: 150px;
     overflow: auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;

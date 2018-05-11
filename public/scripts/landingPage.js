@@ -188,7 +188,7 @@ function addItem(name, category, status, quantity) {
     itemCompletionStatus.push(initialCompletionStatus);
     // Clear input text field once the item has been saved to the array
     document.getElementById("ShoppingListItem").value = "";
-    document.getElementById("dropdownButton").innerHTML = "Category &#11167";
+    document.getElementById("dropdownButton").innerHTML = "Category";// &#11167";
     dropdownText = "Category";
     document.getElementById("ShoppingListQuantity").value = "";
 
@@ -262,7 +262,7 @@ function categoryDropdownShow(ID) {
     else
     {
         document.getElementById("categoryDropdown").classList.toggle("show");
-        document.getElementById("dropdownButton").innerHTML = dropdownText + " &#11165";
+        document.getElementById("dropdownButton").innerHTML = dropdownText;// + " &#11165";
     }
 }
 
@@ -291,11 +291,11 @@ window.onclick = function(e) {
             }
             else {
                 dropdownText = e.target.innerHTML
-                document.getElementById("dropdownButton").innerHTML = dropdownText + ' &#11167';
+                document.getElementById("dropdownButton").innerHTML = dropdownText;// + ' &#11167';
             }
         }
         else {
-            document.getElementById("dropdownButton").innerHTML = dropdownText + ' &#11167';
+            document.getElementById("dropdownButton").innerHTML = dropdownText;// + ' &#11167';
         }
         categoryDropdownHide();
     }
@@ -316,46 +316,62 @@ function createCardCategoryDropdown(i) {
         let categoryElementDropdown = document.createElement("div");
         categoryElementDropdown.className = "dropdown-content";
         categoryElementDropdown.id = "categoryDropdown_"+i;
+        categoryElementDropdown.style.left = "33%";
+        //categoryElementDropdown.align = "middle";
 
-        let dropdownItem0 = document.createElement("a");
-        let dropdownItem1 = document.createElement("a");
-        let dropdownItem2 = document.createElement("a");
-        let dropdownItem3 = document.createElement("a");
-        let dropdownItem4 = document.createElement("a");
-        let dropdownItem5 = document.createElement("a");
-        let dropdownItem6 = document.createElement("a");
-        let dropdownItem7 = document.createElement("a");
-        let dropdownItem8 = document.createElement("a");
+        var dropdownItemArray = [];
+
+        for(let j=0; j<9; j++)
+        {
+            dropdownItemArray[j] = (document.createElement("a"));
+            dropdownItemArray[j].style.textAlign = "left";
+            dropdownItemArray[j].id = "categoryDropdown_"+i+"_Item_"+j;
+        }
+
+        // let dropdownItem0 = document.createElement("a");
+        // let dropdownItem1 = document.createElement("a");
+        // let dropdownItem2 = document.createElement("a");
+        // let dropdownItem3 = document.createElement("a");
+        // let dropdownItem4 = document.createElement("a");
+        // let dropdownItem5 = document.createElement("a");
+        // let dropdownItem6 = document.createElement("a");
+        // let dropdownItem7 = document.createElement("a");
+        // let dropdownItem8 = document.createElement("a");
         
-        dropdownItem0.style.textAlign = "left";
-        dropdownItem1.style.textAlign = "left";
-        dropdownItem2.style.textAlign = "left";
-        dropdownItem3.style.textAlign = "left";
-        dropdownItem4.style.textAlign = "left";
-        dropdownItem5.style.textAlign = "left";
-        dropdownItem6.style.textAlign = "left";
-        dropdownItem7.style.textAlign = "left";
-        dropdownItem8.style.textAlign = "left";
+        // dropdownItem0.style.textAlign = "left";
+        // dropdownItem1.style.textAlign = "left";
+        // dropdownItem2.style.textAlign = "left";
+        // dropdownItem3.style.textAlign = "left";
+        // dropdownItem4.style.textAlign = "left";
+        // dropdownItem5.style.textAlign = "left";
+        // dropdownItem6.style.textAlign = "left";
+        // dropdownItem7.style.textAlign = "left";
+        // dropdownItem8.style.textAlign = "left";
 
-        dropdownItem0.innerHTML = "Beverages";
-        dropdownItem1.innerHTML = "Baked Goods";
-        dropdownItem2.innerHTML = "Dairy";
-        dropdownItem3.innerHTML = "Fresh Produce";
-        dropdownItem4.innerHTML = "Frozen Foods";
-        dropdownItem5.innerHTML = "Hygiene";
-        dropdownItem6.innerHTML = "Meat";
-        dropdownItem7.innerHTML = "Non-perishables";
-        dropdownItem8.innerHTML = "Other";
+        dropdownItemArray[0].innerHTML = "Beverages";
+        dropdownItemArray[1].innerHTML = "Baked Goods";
+        dropdownItemArray[2].innerHTML = "Dairy";
+        dropdownItemArray[3].innerHTML = "Fresh Produce";
+        dropdownItemArray[4].innerHTML = "Frozen Foods";
+        dropdownItemArray[5].innerHTML = "Hygiene";
+        dropdownItemArray[6].innerHTML = "Meat";
+        dropdownItemArray[7].innerHTML = "Non-perishables";
+        dropdownItemArray[8].innerHTML = "Other";
 
-        categoryElementDropdown.appendChild(dropdownItem0);
-        categoryElementDropdown.appendChild(dropdownItem1);
-        categoryElementDropdown.appendChild(dropdownItem2);
-        categoryElementDropdown.appendChild(dropdownItem3);
-        categoryElementDropdown.appendChild(dropdownItem4);
-        categoryElementDropdown.appendChild(dropdownItem5);
-        categoryElementDropdown.appendChild(dropdownItem6);
-        categoryElementDropdown.appendChild(dropdownItem7);
-        categoryElementDropdown.appendChild(dropdownItem8);
+        for(let j=0; j<9; j++)
+        {
+            categoryElementDropdown.appendChild(dropdownItemArray[j]);
+        }
+
+        // categoryElementDropdown.appendChild(dropdownItem0);
+        // categoryElementDropdown.appendChild(dropdownItem1);
+        // categoryElementDropdown.appendChild(dropdownItem2);
+        // categoryElementDropdown.appendChild(dropdownItem3);
+        // categoryElementDropdown.appendChild(dropdownItem4);
+        // categoryElementDropdown.appendChild(dropdownItem5);
+        // categoryElementDropdown.appendChild(dropdownItem6);
+        // categoryElementDropdown.appendChild(dropdownItem7);
+        // categoryElementDropdown.appendChild(dropdownItem8);
 
         categoryElement.appendChild(categoryElementButton);
         categoryElement.appendChild(categoryElementDropdown);
