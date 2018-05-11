@@ -123,6 +123,9 @@
                                     <li>
                                         <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()"> Sort By Purchased</button>
                                     </li>
+                                    <li>
+                                        <div class="btn btn-primary colorButton">Change List Color </div><input type="color" id="listColor" value="#fafafa" onChange="setColor()">
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -139,9 +142,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3"></div>
-                    <div class="col-md-6 col-md-offset-3">
-                        <h1 id="printName"></h1>
+                    <div class="col-md-5 col-md-offset-3"></div>
+                    <div class="col-md-5 col-md-offset-3">
+                        <h3 id="printName"></h3>
                         </ul>
                     </div>
                 </div>
@@ -154,13 +157,9 @@
                     <div class="col-md-3 email-container">
                         <p class="notes-text">Notes</p>
                         <div class="notesBoxWrapper">
-                            <textarea rows="6" cols="30" class="notesBox"></textarea>
+                            <textarea rows="6" cols="30" id="notesBox"></textarea>
                         </div>
-                        <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="">Save</button>
-                    </div>
-                    <div class="col-md-3 col-md-offset-5">
-                        <p class="btn btn-primary colorButton">Container Color</p>
-                        <input type="color" id="listColor" value="#fafafa" onChange="setColor()">
+                        <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="saveNotes()">Save</button>
                     </div>
                 </div>
             </form>

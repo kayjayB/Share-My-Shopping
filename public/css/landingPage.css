@@ -206,6 +206,14 @@ hr.hr-style {
     color: #fafafa;
     border: none;
     width: 150px;
+    margin-top: 5px;
+    pointer-events: none;
+    float: left;
+}
+
+#listColor {
+    margin-top: 5px;
+    float: left;
 }
 
 .load-small {
