@@ -10,6 +10,7 @@ $(document).ready(function() {
     document.getElementById("nameOverlay").style.display = "none";
     token = generateToken();
     document.getElementById("printName").textContent = "";
+    document.getElementById("listName").value = "";
 });
 
 function loadExisitingShoppingList() {
@@ -24,6 +25,7 @@ function cancelLoadList() {
 
 function newShoppingList() {
     document.getElementById("overlay").style.display = "none";
+    document.getElementById("printName").textContent = "";
     token = generateToken();
     removeList();
 }
@@ -423,9 +425,9 @@ function toggleLinkSubmit() {
         document.getElementById("navigateToLink").disabled = false;
 }
 
-function viewList() {
+function viewList(listName) {
     token = document.getElementById("viewListFromLink").value;
-    document.getElementById("secondOverlay").style.display = "none";
+    console.log(listName)
     if (token.match(/^[0-9]+$/) != null) {
         removeList();
         $.ajax({
@@ -440,7 +442,15 @@ function viewList() {
                 let categories = nameArray.map(function(a) { return a.category; });
                 let purchaseStatus = nameArray.map(function(a) { return a.completed; });
                 let quantities = nameArray.map(function(a) { return a.quantity; });
-                if (names.length === 0) {
+                console.log(listName);
+                if (listName !== null) {
+                    console.log(listName);
+                    document.getElementById("printName").textContent = "";
+                    printListName(listName);
+                    document.getElementById("viewListFromLink").value = "";
+                    removeList();
+                }
+                if (names.length === 0 && listName === null) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
                 } else if (names.length !== 0) {
@@ -459,6 +469,7 @@ function viewList() {
                     }
                     document.getElementById("viewListFromLink").value = "";
                 }
+
             }
         });
 
@@ -469,7 +480,6 @@ function viewList() {
 }
 
 function removeList() {
-    document.getElementById("printName").textContent = "";
     let listContainer = document.getElementById('list-container')
     shoppingList = [];
     shoppingListCategory = [];
@@ -593,8 +603,8 @@ function saveListName() {
     let name = document.getElementById("listName").value;
     document.getElementById("nameOverlay").style.display = "none";
     document.getElementById("printName").value = name;
-    let printedName = document.createTextNode(name);
-    document.getElementById("printName").appendChild(printedName);
+    document.getElementById("listName").value = "";
+    printListName(name);
     var payload = {
         token: token,
         name: name,
@@ -609,7 +619,35 @@ function saveListName() {
     });
 }
 
+function getListName() {
+    token = document.getElementById("viewListFromLink").value;
+    document.getElementById("secondOverlay").style.display = "none";
+    document.getElementById("printName").textContent = "";
+    $.ajax({
+        url: "/name/" + token.toString(),
+        type: "GET",
+        contentType: "application/json",
+        async: true,
+        success: function(resp) {
+            let nameArray = (resp);
+            let name = nameArray.map(function(a) { return a.name; });
+
+            if (name.length === 0) {
+                name[0] = null;
+            }
+            console.log(name)
+            viewList(name[0]);
+        }
+    });
+}
+
 function cancelAddName() {
     document.getElementById("nameOverlay").style.display = "none";
 
+}
+
+function printListName(name) {
+    document.getElementById("printName").innerHTML = "";
+    let printedName = document.createTextNode(name);
+    document.getElementById("printName").appendChild(printedName);
 }

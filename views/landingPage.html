@@ -66,8 +66,7 @@
             <h2 style="padding-bottom: 30px">Enter the link of the shopping list you wish to view</h2>
             <input type="text" id="viewListFromLink" value=""> </input>
             <p></p>
-            <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
-            <button type="button" class="loadButton" onclick="viewList()" id="navigateToLink"> View</button>
+            <button type="button" class="loadButton" onclick="getListName()" id="navigateToLink"> View</button>
             <p></p>
             <button type="button" class="loadButton" onclick="cancelLoadList()" id="cancel"> Cancel</button>
         </div>
@@ -107,13 +106,13 @@
                         <!-- <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()">Sort By Purchased</button> -->
 
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick="" id="shareDropdown">Actions
+                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick="" id="actionsDropdown">Actions
                                     <span class="caret"></span>                   
                             </button>
 
                             <ul class="dropdown-menu">
                                 <li>
-                                    <button type="button" class="btn main-btn shareButton" onclick="addListName()"> Add Shopping List Name</button>
+                                    <button type="button" class="btn main-btn shareButton" onclick="addListName()" id="addName"> Add Shopping List Name</button>
                                 </li>
                                 <li>
                                     <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()"> Sort By Purchased</button>
