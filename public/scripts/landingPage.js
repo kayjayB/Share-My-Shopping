@@ -11,6 +11,7 @@ $(document).ready(function() {
     token = generateToken();
     document.getElementById("printName").textContent = "";
     document.getElementById("listName").value = "";
+    document.getElementById("notesBox").value = "";
 });
 
 function loadExisitingShoppingList() {
@@ -26,6 +27,7 @@ function cancelLoadList() {
 function newShoppingList() {
     document.getElementById("overlay").style.display = "none";
     document.getElementById("printName").textContent = "";
+    document.getElementById("notesBox").value = "";
     token = generateToken();
     removeList();
 }
@@ -437,14 +439,13 @@ function viewList(listName) {
             async: true,
             success: function(resp) {
                 loadSharedEmails();
+                getNotes();
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
                 let categories = nameArray.map(function(a) { return a.category; });
                 let purchaseStatus = nameArray.map(function(a) { return a.completed; });
                 let quantities = nameArray.map(function(a) { return a.quantity; });
-                console.log(listName);
                 if (listName !== null) {
-                    console.log(listName);
                     document.getElementById("printName").textContent = "";
                     printListName(listName);
                     document.getElementById("viewListFromLink").value = "";
@@ -599,15 +600,34 @@ function addListName() {
     document.getElementById("nameOverlay").style.display = "block";
 }
 
+function saveNotes() {
+    let notes = document.getElementById("notesBox").value;
+    var payload = {
+        token: token,
+        name: name,
+        notes: notes,
+    };
+    $.ajax({
+        url: "/add-notes",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {}
+    });
+}
+
 function saveListName() {
     let name = document.getElementById("listName").value;
     document.getElementById("nameOverlay").style.display = "none";
     document.getElementById("printName").value = name;
     document.getElementById("listName").value = "";
+    let notes = document.getElementById("notesBox").value;
     printListName(name);
     var payload = {
         token: token,
         name: name,
+        notes: notes,
     };
     $.ajax({
         url: "/add-name",
@@ -637,6 +657,28 @@ function getListName() {
             }
             console.log(name)
             viewList(name[0]);
+        }
+    });
+}
+
+function getNotes() {
+    token = document.getElementById("viewListFromLink").value;
+    document.getElementById("notesBox").value = "";
+    $.ajax({
+        url: "/notes/" + token.toString(),
+        type: "GET",
+        contentType: "application/json",
+        async: true,
+        success: function(resp) {
+            let notesArray = (resp);
+            let notes = notesArray.map(function(a) { return a.notes; });
+
+            if (notes.length === 0) {
+                notes[0] = "";
+            }
+            console.log(notes[0])
+            document.getElementById("notesBox").value = notes[0];
+            console.log(document.getElementById("notesBox").value);
         }
     });
 }
