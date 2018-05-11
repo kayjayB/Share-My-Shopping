@@ -76,7 +76,8 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
             connection.query('CREATE TABLE IF NOT EXISTS listNames(' +
                 'id VARCHAR(50),' +
                 'PRIMARY KEY(id),' +
-                'name VARCHAR(100)' +
+                'name VARCHAR(100),' +
+                'notes VARCHAR(1000)' +
                 ')',
                 function(err) {
                     if (err) throw err;
@@ -185,9 +186,27 @@ mainRouter.post('/add-name', function(req, res) {
     );
 });
 
+mainRouter.post('/add-notes', function(req, res) {
+    connection.query('INSERT INTO listNames (id, notes) VALUES (?,?) ON DUPLICATE KEY UPDATE notes = ?', [req.body.token, req.body.notes, req.body.notes],
+        function(err, result) {
+            if (err) throw err;
+        }
+    );
+});
+
 mainRouter.get('/name/:token', function(req, res) {
     var token = req.params.token;
     connection.query('SELECT name FROM listNames WHERE id = ' + token, [req.body],
+        function(err, result) {
+            if (err) throw err;
+            res.send(result);
+        }
+    );
+});
+
+mainRouter.get('/notes/:token', function(req, res) {
+    var token = req.params.token;
+    connection.query('SELECT notes FROM listNames WHERE id = ' + token, [req.body],
         function(err, result) {
             if (err) throw err;
             res.send(result);

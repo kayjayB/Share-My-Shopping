@@ -747,6 +747,7 @@ class WebPageTesting(unittest.TestCase):
 		time.sleep(0.1)
 		assert self.browser.find_element_by_id('purchaseStatus_1').is_selected() == True
 
+		self.browser.find_element_by_id('actionsDropdown').click()
 		self.browser.find_element_by_id('sortButton').click()
 		time.sleep(0.1)
 		
@@ -919,6 +920,76 @@ class WebPageTesting(unittest.TestCase):
 
 		assert self.browser.find_element_by_id("printName").text == "My List"
 		assert self.browser.find_element_by_id("shoppingList_0").text == "Astros"
+
+	def test_notes_can_be_added(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+
+		self.browser.find_element_by_id('notesBox').send_keys("These are the notes for my list")
+		self.browser.find_element_by_id('saveNotesButton').click()
+		time.sleep(0.1)
+
+		assert self.browser.find_element_by_id("notesBox").get_attribute('value') == "These are the notes for my list"
+
+	def test_notes_can_be_saved(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+
+		self.browser.find_element_by_id('notesBox').send_keys("These are the notes for my list")
+		self.browser.find_element_by_id('saveNotesButton').click()
+		time.sleep(0.1)
+
+		assert self.browser.find_element_by_id("notesBox").get_attribute('value') == "These are the notes for my list"
+
+		newItem = self.browser.find_element_by_id('ShoppingListItem')
+		newItem.send_keys("Astros")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(1000)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+
+		assert self.browser.find_element_by_id("notesBox").get_attribute('value') == "These are the notes for my list"
+
+	def test_notes_can_be_edited_and_saved(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+
+		self.browser.find_element_by_id('notesBox').send_keys("These are the notes for my list")
+		self.browser.find_element_by_id('saveNotesButton').click()
+		time.sleep(0.1)
+
+		assert self.browser.find_element_by_id("notesBox").get_attribute('value') == "These are the notes for my list"
+
+		newItem = self.browser.find_element_by_id('ShoppingListItem')
+		newItem.send_keys("Astros")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(1000)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		self.browser.find_element_by_id('notesBox').send_keys(". Here are the things I want to say.")
+		self.browser.find_element_by_id('saveNotesButton').click()
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+
+		assert self.browser.find_element_by_id("notesBox").get_attribute('value') == "These are the notes for my list. Here are the things I want to say."
 
 	def tearDown(self):
 		self.browser.close()

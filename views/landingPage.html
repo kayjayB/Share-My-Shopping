@@ -103,28 +103,34 @@
                             List Colour
                             <input class="pull-right" type="color" id="itemColor" value="#fafafa">
                         </div>
-                        <!-- <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()">Sort By Purchased</button> -->
+                        <div class="row">
+                            <div class="col-md-offset-1"> </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn main-btn" onclick="storeItem(); setColor();" disabled="true" id="SubmitButton" style="background-color: Transparent">
+                                <i class="fa fa-plus-square fa-4x" style="color:#40e0d0"></i>
+                                </button>
+                            </div>
 
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick="" id="actionsDropdown">Actions
+                            <div class="dropdown col-md-offset-7 col-md-2">
+                                <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick="" id="actionsDropdown">Actions
                                     <span class="caret"></span>                   
                             </button>
 
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <button type="button" class="btn main-btn shareButton" onclick="addListName()" id="addName"> Add Shopping List Name</button>
-                                </li>
-                                <li>
-                                    <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()"> Sort By Purchased</button>
-                                </li>
-                            </ul>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button type="button" class="btn main-btn shareButton" onclick="addListName()" id="addName"> Add Shopping List Name</button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()"> Sort By Purchased</button>
+                                    </li>
+                                    <li>
+                                        <div class="btn btn-primary colorButton">Change List Color </div><input type="color" id="listColor" value="#fafafa" onChange="setColor()">
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn main-btn" onclick="storeItem(); setColor();" disabled="true" id="SubmitButton" style="background-color: Transparent">
-                            <i class="fa fa-plus-square fa-4x" style="color:#40e0d0"></i>
-                        </button>
-                    </div>
+                    <div class="col-md-1"></div>
                     <div class="col-md-3 email-container">
                         <p class="email-share-text">Enter the email which you want to share your shopping list with:</p>
                         <input type="text" id="email-share" value=""> </input>
@@ -136,21 +142,24 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3"></div>
-                    <div class="col-md-6 col-md-offset-3">
-                        <h1 id="printName"></h1>
+                    <div class="col-md-5 col-md-offset-3"></div>
+                    <div class="col-md-5 col-md-offset-3">
+                        <h3 id="printName"></h3>
                         </ul>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3"></div>
-                    <div class="col-md-6 col-md-offset-3">
+                    <div class="col-md-5 col-md-offset-3">
                         <ul class="form-group" id="list-container">
                         </ul>
                     </div>
-                    <div class="col-md-3 col-md-offset-5">
-                        <p class="btn btn-primary colorButton">Container Color</p>
-                        <input type="color" id="listColor" value="#fafafa" onChange="setColor()">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3 email-container">
+                        <p class="notes-text">Notes</p>
+                        <div class="notesBoxWrapper">
+                            <textarea rows="5" cols="30" id="notesBox"></textarea>
+                        </div>
+                        <button type="button" class="btn main-btn shareButton" id="saveNotesButton" onclick="saveNotes()">Save</button>
                     </div>
                 </div>
             </form>

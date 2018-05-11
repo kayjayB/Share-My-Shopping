@@ -206,6 +206,14 @@ hr.hr-style {
     color: #fafafa;
     border: none;
     width: 150px;
+    margin-top: 5px;
+    pointer-events: none;
+    float: left;
+}
+
+#listColor {
+    margin-top: 5px;
+    float: left;
 }
 
 .load-small {
@@ -252,6 +260,32 @@ hr.hr-style {
 
 #list-container {
     margin-top: 10px !important;
+}
+
+#actionsDropdown {
+    margin-top: 22px;
+}
+
+.notesBoxWrapper {
+    padding: 10px;
+    background-color: #f4f4f4;
+    width: 272px;
+}
+
+.notesBoxWrapper textarea {
+    min-height: 100px;
+    max-height: 100px;
+    min-width: 252px;
+    width: 252px;
+    max-width: 100%;
+}
+
+#textarea-wrapper textarea.vertical {
+    resize: vertical;
+}
+
+.notes-text {
+    text-align: center;
 }
 
 
