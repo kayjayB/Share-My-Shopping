@@ -258,6 +258,28 @@ hr.hr-style {
     margin-top: 22px;
 }
 
+.notesBoxWrapper {
+    padding: 10px;
+    background-color: #f4f4f4;
+    width: 272px;
+}
+
+.notesBoxWrapper textarea {
+    min-height: 50px;
+    max-height: 120px;
+    min-width: 252px;
+    width: 252px;
+    max-width: 100%;
+}
+
+#textarea-wrapper textarea.vertical {
+    resize: vertical;
+}
+
+.notes-text {
+    text-align: center;
+}
+
 
 /* .sidenav {
     height: 100%;
