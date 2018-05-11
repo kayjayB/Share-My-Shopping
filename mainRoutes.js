@@ -9,7 +9,8 @@ sgMail.setApiKey('SG.IE2FUox_SVaYiIPjOWrIBA.PyZclKI6NzoMSS31_0ebIrG_j9lygonhhEge
 // let connection = mysql.createConnection({
 //     host: 'localhost',
 //     user: 'root',
-//     password: 'password',
+//     password: '',
+//     port: 3306,
 // });
 
 let connnect_config = function() {
@@ -194,9 +195,10 @@ mainRouter.post('/add-notes', function(req, res) {
     );
 });
 
-mainRouter.get('/name/:token', function(req, res) {
+
+mainRouter.get('/notes/:token', function(req, res) {
     var token = req.params.token;
-    connection.query('SELECT name FROM listNames WHERE id = ' + token, [req.body],
+    connection.query('SELECT notes FROM listNames WHERE id = ' + token, [req.body],
         function(err, result) {
             if (err) throw err;
             res.send(result);
@@ -204,9 +206,9 @@ mainRouter.get('/name/:token', function(req, res) {
     );
 });
 
-mainRouter.get('/notes/:token', function(req, res) {
+mainRouter.get('/name/:token', function(req, res) {
     var token = req.params.token;
-    connection.query('SELECT notes FROM listNames WHERE id = ' + token, [req.body],
+    connection.query('SELECT name FROM listNames WHERE id = ' + token, [req.body],
         function(err, result) {
             if (err) throw err;
             res.send(result);

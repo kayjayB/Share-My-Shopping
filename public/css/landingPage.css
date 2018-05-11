@@ -133,6 +133,7 @@ hr.hr-style {
 
 .shoppingListItem {
     font-size: 25px;
+    padding-top: 3px;
 }
 
 .shoppingListQuantity {
@@ -262,6 +263,52 @@ hr.hr-style {
     margin-top: 10px !important;
 }
 
+.dropdownButton {
+    background-color: #40e0d0;
+    color: #fafafa;
+    cursor: pointer;
+}
+
+.dropbtn {
+    
+    background-color: #ffffff;
+    color: #555;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: rgb(223, 223, 223);
+
+}
+
+.dropbtn:focusout {
+    background-color: hsl(0, 0%, 100%);
+}
+.dropdown {
+    margin-top: 5px;
+    position: relative;
+    /* display: block; */
+    margin-bottom: 5px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 130px;
+    max-width: 150px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
 #actionsDropdown {
     margin-top: 22px;
 }
@@ -287,6 +334,17 @@ hr.hr-style {
 .notes-text {
     text-align: center;
 }
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #ddd}
+
+.show {display:block;}
 
 
 /* .sidenav {
