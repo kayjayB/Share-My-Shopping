@@ -7,7 +7,10 @@ var token;
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
     document.getElementById("overlay").style.display = "block";
+    document.getElementById("nameOverlay").style.display = "none";
     token = generateToken();
+    document.getElementById("printName").textContent = "";
+    document.getElementById("listName").value = "";
 });
 
 function loadExisitingShoppingList() {
@@ -22,6 +25,7 @@ function cancelLoadList() {
 
 function newShoppingList() {
     document.getElementById("overlay").style.display = "none";
+    document.getElementById("printName").textContent = "";
     token = generateToken();
     removeList();
 }
@@ -123,7 +127,7 @@ function saveItemOnEnter(e) {
 
 function deleteItem(itemID) {
     let ID = itemID.toString().split("_")[1];
-    let itemName = document.getElementById("shoppingList_"+ID).innerHTML;
+    let itemName = document.getElementById("shoppingList_" + ID).innerHTML;
 
     var payload = {
         name: itemName,
@@ -140,7 +144,7 @@ function deleteItem(itemID) {
 
     shoppingList.splice(ID, 1);
 
-    var card = document.getElementById("list-entry_"+ID);
+    var card = document.getElementById("list-entry_" + ID);
     return card.parentNode.removeChild(card);
 }
 
@@ -195,8 +199,7 @@ function addItem(name, category, status, quantity) {
     renderCards();
 }
 
-function orderByPurchased()
-{
+function orderByPurchased() {
     //token = document.getElementById("viewListFromLink").innerHTML;
     document.getElementById("secondOverlay").style.display = "none";
     if (token.match(/^[0-9]+$/) != null) {
@@ -227,8 +230,7 @@ function orderByPurchased()
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
-                }
-                else if (names.length != 0) {
+                } else if (names.length != 0) {
                     removeList();
                     for (let i = 0; i < names.length; i++) {
                         shoppingList.push(names[i]);
@@ -240,8 +242,7 @@ function orderByPurchased()
                         } else if (itemCompletionStatus[i] === 1) {
                             itemCompletionStatus[i] = true;
                         }
-                        if (shoppingListCategory[i] == null || shoppingListCategory[i].length == 0)
-                        {
+                        if (shoppingListCategory[i] == null || shoppingListCategory[i].length == 0) {
                             shoppingListCategory[i] = "Category/Aisle";
                         }
                         //addItem(item_name, item_category, item_status, item_quantity);
@@ -329,10 +330,10 @@ function renderCards() {
         let deleteButton = document.createElement("button");
 
         deleteButton.type = "button";
-        deleteButton.id = "deleteButton_"+i;
+        deleteButton.id = "deleteButton_" + i;
         deleteButton.setAttribute("onclick", "deleteItem(id)");
         deleteButton.className = "fa fa-times";
-        
+
         deleteDiv.align = "right";
         deleteDiv.appendChild(deleteButton);
 
@@ -424,9 +425,9 @@ function toggleLinkSubmit() {
         document.getElementById("navigateToLink").disabled = false;
 }
 
-function viewList() {
+function viewList(listName) {
     token = document.getElementById("viewListFromLink").value;
-    document.getElementById("secondOverlay").style.display = "none";
+    console.log(listName)
     if (token.match(/^[0-9]+$/) != null) {
         removeList();
         $.ajax({
@@ -441,7 +442,15 @@ function viewList() {
                 let categories = nameArray.map(function(a) { return a.category; });
                 let purchaseStatus = nameArray.map(function(a) { return a.completed; });
                 let quantities = nameArray.map(function(a) { return a.quantity; });
-                if (names.length === 0) {
+                console.log(listName);
+                if (listName !== null) {
+                    console.log(listName);
+                    document.getElementById("printName").textContent = "";
+                    printListName(listName);
+                    document.getElementById("viewListFromLink").value = "";
+                    removeList();
+                }
+                if (names.length === 0 && listName === null) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
                 } else if (names.length !== 0) {
@@ -460,6 +469,7 @@ function viewList() {
                     }
                     document.getElementById("viewListFromLink").value = "";
                 }
+
             }
         });
 
@@ -496,7 +506,7 @@ function removeEmail(index, ID) {
         contentType: "application/json",
         processData: false,
         data: JSON.stringify(payload),
-        complete: function (data) {
+        complete: function(data) {
             removeList();
         }
     });
@@ -511,11 +521,11 @@ function renderSharedEmail(email, ID) {
     let cross_node = document.createElement("I");
     cross_node.className = "fa fa-times-circle";
     cross_node.id = "emailDelete_" + ID.toString();
-    cross_node.onclick = function () {removeEmail(ID.toString(), node.id);};
+    cross_node.onclick = function() { removeEmail(ID.toString(), node.id); };
     email_node.appendChild(textnode)
     node.appendChild(email_node);
     node.appendChild(cross_node);
-    document.getElementById("email-list").appendChild(node); 
+    document.getElementById("email-list").appendChild(node);
 }
 
 function loadSharedEmails() {
@@ -526,9 +536,9 @@ function loadSharedEmails() {
         type: "GET",
         contentType: "application/json",
         async: true,
-        success: function (resp) {
+        success: function(resp) {
             let emailArray = (resp);
-            let emails = emailArray.map(function (a) { return a.email; });
+            let emails = emailArray.map(function(a) { return a.email; });
             let uniqueEmails = [...new Set(emails)]
             for (let i = 0; i < uniqueEmails.length; i++) {
                 renderSharedEmail(uniqueEmails[i], i);
@@ -552,7 +562,7 @@ function shareEmail() {
         contentType: "application/json",
         processData: false,
         data: JSON.stringify(payload),
-        complete: function (data) {
+        complete: function(data) {
             loadSharedEmails();
         }
     });
@@ -583,4 +593,61 @@ function on() {
 
 function off() {
     document.getElementById("overlay").style.display = "none";
+}
+
+function addListName() {
+    document.getElementById("nameOverlay").style.display = "block";
+}
+
+function saveListName() {
+    let name = document.getElementById("listName").value;
+    document.getElementById("nameOverlay").style.display = "none";
+    document.getElementById("printName").value = name;
+    document.getElementById("listName").value = "";
+    printListName(name);
+    var payload = {
+        token: token,
+        name: name,
+    };
+    $.ajax({
+        url: "/add-name",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {}
+    });
+}
+
+function getListName() {
+    token = document.getElementById("viewListFromLink").value;
+    document.getElementById("secondOverlay").style.display = "none";
+    document.getElementById("printName").textContent = "";
+    $.ajax({
+        url: "/name/" + token.toString(),
+        type: "GET",
+        contentType: "application/json",
+        async: true,
+        success: function(resp) {
+            let nameArray = (resp);
+            let name = nameArray.map(function(a) { return a.name; });
+
+            if (name.length === 0) {
+                name[0] = null;
+            }
+            console.log(name)
+            viewList(name[0]);
+        }
+    });
+}
+
+function cancelAddName() {
+    document.getElementById("nameOverlay").style.display = "none";
+
+}
+
+function printListName(name) {
+    document.getElementById("printName").innerHTML = "";
+    let printedName = document.createTextNode(name);
+    document.getElementById("printName").appendChild(printedName);
 }
