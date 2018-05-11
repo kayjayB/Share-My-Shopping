@@ -11,9 +11,9 @@ class WebPageTesting(unittest.TestCase):
 	def setUp(self):
 		chrome_options = Options()
 		chrome_options.add_argument("--headless")
-		#self.browser = webdriver.Chrome(options=chrome_options)
+		self.browser = webdriver.Chrome(options=chrome_options)
 		#Lara Config
-		self.browser = webdriver.Chrome(executable_path=r'C:/ChromeDriver/chromedriver.exe', options=chrome_options)
+		# self.browser = webdriver.Chrome(executable_path=r'C:/ChromeDriver/chromedriver.exe', options=chrome_options)
 		self.browser.get("http://127.0.0.1:3000")
 
 	def test_add_item(self):
