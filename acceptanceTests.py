@@ -11,9 +11,9 @@ class WebPageTesting(unittest.TestCase):
 	def setUp(self):
 		chrome_options = Options()
 		chrome_options.add_argument("--headless")
-		self.browser = webdriver.Chrome(options=chrome_options)
+		#self.browser = webdriver.Chrome(options=chrome_options)
 		#Lara Config
-		#self.browser = webdriver.Chrome(executable_path=r'C:/ChromeDriver/chromedriver.exe', options=chrome_options)
+		self.browser = webdriver.Chrome(executable_path=r'C:/ChromeDriver/chromedriver.exe', options=chrome_options)
 		self.browser.get("http://127.0.0.1:3000")
 
 	def test_add_item(self):
@@ -712,8 +712,7 @@ class WebPageTesting(unittest.TestCase):
 		assert self.browser.find_element_by_id("emailShare_0").text == "test1@mail.com"
 		assert self.browser.find_element_by_id("emailShare_1").text == "test2@mail.com"
 
-	# Test that items can be sorted by their purchased status
-	def test_multiple_item_sort(self):
+	def test_multiple_item_sort_by_purchased(self):
 		remove_overlay = self.browser.find_element_by_id("CreateListButton")
 		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
@@ -932,7 +931,7 @@ class WebPageTesting(unittest.TestCase):
 		elem.send_keys("Chocolate")
 		self.browser.find_element_by_id('dropdownButton').click()
 		self.browser.find_element_by_id('categoryDropdown_Base_Item_0').click()
-		assert self.browser.find_element_by_id('dropdownButton').get_attribute('innerHTML') == "Beverages"
+		assert self.browser.find_element_by_id('dropdownButton').get_attribute('innerHTML') == "Baked Goods"
 		quant = self.browser.find_element_by_id('ShoppingListQuantity')
 		quant.send_keys(123)
 		button = self.browser.find_element_by_id('SubmitButton')
@@ -940,7 +939,7 @@ class WebPageTesting(unittest.TestCase):
 		time.sleep(0.1)
 
 		assert self.browser.find_element_by_id('shoppingList_0').text == "Chocolate"
-		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Beverages"
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Baked Goods"
 
 		self.browser.find_element_by_id('shareDropdown').click()
 		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
@@ -951,7 +950,7 @@ class WebPageTesting(unittest.TestCase):
 		time.sleep(0.1)
 
 		assert self.browser.find_element_by_id('shoppingList_0').text == "Chocolate"
-		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Beverages"
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Baked Goods"
 
 	def test_notes_can_be_added(self):
 		remove_overlay = self.browser.find_element_by_id("CreateListButton")
@@ -1003,7 +1002,7 @@ class WebPageTesting(unittest.TestCase):
 		elem.send_keys("Chicken")
 		self.browser.find_element_by_id('dropdownButton').click()
 		self.browser.find_element_by_id('categoryDropdown_Base_Item_0').click()
-		assert self.browser.find_element_by_id('dropdownButton').get_attribute('innerHTML') == "Beverages"
+		assert self.browser.find_element_by_id('dropdownButton').get_attribute('innerHTML') == "Baked Goods"
 		quant = self.browser.find_element_by_id('ShoppingListQuantity')
 		quant.send_keys(123)
 		button = self.browser.find_element_by_id('SubmitButton')
@@ -1011,7 +1010,7 @@ class WebPageTesting(unittest.TestCase):
 		time.sleep(0.1)
 
 		assert self.browser.find_element_by_id('shoppingList_0').text == "Chicken"
-		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Beverages"
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Baked Goods"
 		
 		self.browser.find_element_by_id('dropdownButton_0').click()
 		self.browser.find_element_by_id('categoryDropdown_0_Item_6').click()
@@ -1058,6 +1057,57 @@ class WebPageTesting(unittest.TestCase):
 		self.browser.find_element_by_id('navigateToLink').click()
 
 		assert self.browser.find_element_by_id("notesBox").get_attribute('value') == "These are the notes for my list. Here are the things I want to say."
+
+	def test_multiple_item_sort_by_category(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+
+		newItem = self.browser.find_element_by_id('ShoppingListItem')
+		newItem.send_keys("Chicken")
+		categoryBase = self.browser.find_element_by_id('dropdownButton')
+		categoryBase.click()
+		self.browser.find_element_by_id('categoryDropdown_Base_Item_6').click()
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(1000)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		
+		newItem.send_keys("Shampoo")
+		categoryBase.click()
+		self.browser.find_element_by_id('categoryDropdown_Base_Item_5').click()
+		quant.send_keys(2000)
+		button.click()
+		time.sleep(0.1)
+		
+		newItem.send_keys("Pizza")
+		categoryBase.click()
+		self.browser.find_element_by_id('categoryDropdown_Base_Item_4').click()
+		quant.send_keys(3001)
+		button.click()
+		time.sleep(0.1)
+		
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Meat"
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Chicken"
+		assert self.browser.find_element_by_id('dropdownButton_1').get_attribute('innerHTML') == "Hygiene"
+		assert self.browser.find_element_by_id('shoppingList_1').text == "Shampoo"
+		assert self.browser.find_element_by_id('dropdownButton_2').get_attribute('innerHTML') == "Frozen Foods"
+		assert self.browser.find_element_by_id('shoppingList_2').text == "Pizza"
+		time.sleep(0.1)
+
+		self.browser.find_element_by_id('actionsDropdown').click()
+		time.sleep(0.1)
+		self.browser.find_element_by_id('sortButtonCategory').click()
+		time.sleep(0.1)
+		
+		assert self.browser.find_element_by_id('dropdownButton_0').get_attribute('innerHTML') == "Frozen Foods"
+		assert self.browser.find_element_by_id('shoppingList_0').text == "Pizza"
+		assert self.browser.find_element_by_id('dropdownButton_1').get_attribute('innerHTML') == "Hygiene"
+		assert self.browser.find_element_by_id('shoppingList_1').text == "Shampoo"
+		assert self.browser.find_element_by_id('dropdownButton_2').get_attribute('innerHTML') == "Meat"
+		assert self.browser.find_element_by_id('shoppingList_2').text == "Chicken"
 
 	def tearDown(self):
 		self.browser.close()

@@ -6,35 +6,35 @@ var sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey('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');
 
-// let connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '',
-//     port: 3306,
-// });
+let connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    port: 3306,
+});
 
-let connnect_config = function() {
-    // Process the environment variable defining the MySQL connection parameters
-    let str = process.env.MYSQLCONNSTR_localdb
-    let reg = str.split(';');
-    let database = reg[0].split('=')[1]
-    let source = reg[1].split('=')[1]
-    let [host, port] = source.split(':')
-    let user = reg[2].split('=')[1]
-    let password = reg[3].split('=')[1]
+// let connnect_config = function() {
+//     // Process the environment variable defining the MySQL connection parameters
+//     let str = process.env.MYSQLCONNSTR_localdb
+//     let reg = str.split(';');
+//     let database = reg[0].split('=')[1]
+//     let source = reg[1].split('=')[1]
+//     let [host, port] = source.split(':')
+//     let user = reg[2].split('=')[1]
+//     let password = reg[3].split('=')[1]
 
-    // Create the connection and return
-    let auth = {
-        host: host,
-        user: user,
-        password: password,
-        database: database,
-        port: parseInt(port)
-    }
-    return mysql.createConnection(auth)
-}
+//     // Create the connection and return
+//     let auth = {
+//         host: host,
+//         user: user,
+//         password: password,
+//         database: database,
+//         port: parseInt(port)
+//     }
+//     return mysql.createConnection(auth)
+// }
 
-let connection = connnect_config();
+// let connection = connnect_config();
 
 connection.connect((err) => {
     if (err) throw err;
@@ -107,10 +107,26 @@ mainRouter.get('/items/:tokens', function(req, res) {
 
 });
 
-mainRouter.get('/itemsordered/:token', function(req, res) {
+mainRouter.get('/itemsorderedbypurchased/:token', function(req, res) {
     if (req.params.token) {
         var token = req.params.token;
         connection.query("SELECT * FROM items WHERE token = " + token + " ORDER BY completed ASC", req.body,
+            function(err, result) {
+                if (err) throw err;
+                res.send(result);
+            }
+        );
+    } else {
+        let result = [];
+        res.send(result);
+    }
+
+});
+
+mainRouter.get('/itemsorderedbycategory/:token', function(req, res) {
+    if (req.params.token) {
+        var token = req.params.token;
+        connection.query("SELECT * FROM items WHERE token = " + token + " ORDER BY category ASC", req.body,
             function(err, result) {
                 if (err) throw err;
                 res.send(result);
