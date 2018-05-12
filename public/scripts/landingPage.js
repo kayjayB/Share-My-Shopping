@@ -3,7 +3,7 @@ let shoppingListCategory = [];
 let itemCompletionStatus = [];
 let shoppingListQuantity = [];
 var token;
-var dropdownText;
+let dropdownText;
 
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
@@ -209,10 +209,57 @@ function orderByPurchased() {
         removeList();
 
         $.ajax({
-            url: "/itemsordered/" + token.toString(),
+            url: "/itemsorderedbypurchased/" + token.toString(),
             type: "GET",
             contentType: "application/json",
-            async: false,
+            async: true,
+            success: function(resp) {
+                let nameArray = (resp);
+                let names = nameArray.map(function(a) { return a.name; });
+                let categories = nameArray.map(function(a) { return a.category; });
+                let purchaseStatus = nameArray.map(function(a) { return a.completed; });
+                let quantities = nameArray.map(function(a) { return a.quantity; });
+                if (names.length === 0) {
+                    alert("No shopping list found");
+                    document.getElementById("viewListFromLink").value = "";
+                } 
+                else if (names.length != 0) {
+                    removeList();
+                    for (let i = 0; i < names.length; i++) {
+                        shoppingList.push(names[i]);
+                        shoppingListCategory.push(categories[i]);
+                        itemCompletionStatus.push(purchaseStatus[i]);
+                        shoppingListQuantity.push(quantities[i]);
+                        if (itemCompletionStatus[i] === 0) {
+                            itemCompletionStatus[i] = false;
+                        } else if (itemCompletionStatus[i] === 1) {
+                            itemCompletionStatus[i] = true;
+                        }
+                    }
+                    document.getElementById("viewListFromLink").value = "";
+
+                    renderCards();
+                }
+            }
+        });
+
+    } else {
+        alert("Token should only contain numbers: " + document.getElementById("viewListFromLink").innerHTML);
+        document.getElementById("viewListFromLink").value = "";
+    }
+}
+
+function orderByCategory() {
+    //token = document.getElementById("viewListFromLink").innerHTML;
+    document.getElementById("secondOverlay").style.display = "none";
+    if (token.match(/^[0-9]+$/) != null) {
+        removeList();
+
+        $.ajax({
+            url: "/itemsorderedbycategory/" + token.toString(),
+            type: "GET",
+            contentType: "application/json",
+            async: true,
             success: function(resp) {
                 let nameArray = (resp);
                 let names = nameArray.map(function(a) { return a.name; });
@@ -251,7 +298,7 @@ function orderByPurchased() {
 
 function categoryDropdownShow(ID) {
     if(ID.includes("_")) {
-        var index = ID.split("_")[1];
+        let index = ID.split("_")[1];
         document.getElementById("categoryDropdown_"+index).classList.toggle("show");
         document.getElementById(ID).innerHTML = shoppingListCategory[index];
     }
@@ -263,7 +310,7 @@ function categoryDropdownShow(ID) {
 }
 
 function categoryDropdownHide() {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
+    let dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
     for (i = 0; i < dropdowns.length; i++) {
       var openDropdown = dropdowns[i];
@@ -324,8 +371,9 @@ function createCardCategoryDropdown(i) {
             dropdownItemArray[j].id = "categoryDropdown_"+i+"_Item_"+j;
         }
 
-        dropdownItemArray[0].innerHTML = "Beverages";
-        dropdownItemArray[1].innerHTML = "Baked Goods";
+        
+        dropdownItemArray[0].innerHTML = "Baked Goods";
+        dropdownItemArray[1].innerHTML = "Beverages";
         dropdownItemArray[2].innerHTML = "Dairy";
         dropdownItemArray[3].innerHTML = "Fresh Produce";
         dropdownItemArray[4].innerHTML = "Frozen Foods";

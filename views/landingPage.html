@@ -97,8 +97,8 @@
                                 <!--  &#11167; -->
                             <button onclick="categoryDropdownShow(id)" id = "dropdownButton" type = "button" class="btn dropbtn" disabled = "true">Category</button>
                               <div id="categoryDropdown" class="dropdown-content">
-                                <a id="categoryDropdown_Base_Item_0">Beverages</a>
-                                <a id="categoryDropdown_Base_Item_1">Baked Goods</a>
+                                <a id="categoryDropdown_Base_Item_0">Baked Goods</a>
+                                <a id="categoryDropdown_Base_Item_1">Beverages</a>
                                 <a id="categoryDropdown_Base_Item_2">Dairy</a>
                                 <a id="categoryDropdown_Base_Item_3">Fresh Produce</a>
                                 <a id="categoryDropdown_Base_Item_4">Frozen Foods</a>
@@ -134,6 +134,9 @@
                                     </li>
                                     <li>
                                         <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()"> Sort By Purchased</button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn main-btn shareButton" id="sortButtonCategory" onclick="orderByCategory()"> Sort By Category</button>
                                     </li>
                                     <li>
                                         <div class="btn btn-primary colorButton">Change List Color </div><input type="color" id="listColor" value="#fafafa" onChange="setColor()">

@@ -6,13 +6,6 @@ var sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey('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');
 
-// let connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '',
-//     port: 3306,
-// });
-
 let connnect_config = function() {
     // Process the environment variable defining the MySQL connection parameters
     let str = process.env.MYSQLCONNSTR_localdb
@@ -107,10 +100,26 @@ mainRouter.get('/items/:tokens', function(req, res) {
 
 });
 
-mainRouter.get('/itemsordered/:token', function(req, res) {
+mainRouter.get('/itemsorderedbypurchased/:token', function(req, res) {
     if (req.params.token) {
         var token = req.params.token;
         connection.query("SELECT * FROM items WHERE token = " + token + " ORDER BY completed ASC", req.body,
+            function(err, result) {
+                if (err) throw err;
+                res.send(result);
+            }
+        );
+    } else {
+        let result = [];
+        res.send(result);
+    }
+
+});
+
+mainRouter.get('/itemsorderedbycategory/:token', function(req, res) {
+    if (req.params.token) {
+        var token = req.params.token;
+        connection.query("SELECT * FROM items WHERE token = " + token + " ORDER BY category ASC", req.body,
             function(err, result) {
                 if (err) throw err;
                 res.send(result);
