@@ -3,7 +3,7 @@ let shoppingListCategory = [];
 let itemCompletionStatus = [];
 let shoppingListQuantity = [];
 var token;
-var dropdownText;
+let dropdownText;
 
 $(document).ready(function() {
     document.getElementById("viewListFromLink").value = "";
@@ -298,7 +298,7 @@ function orderByCategory() {
 
 function categoryDropdownShow(ID) {
     if(ID.includes("_")) {
-        var index = ID.split("_")[1];
+        let index = ID.split("_")[1];
         document.getElementById("categoryDropdown_"+index).classList.toggle("show");
         document.getElementById(ID).innerHTML = shoppingListCategory[index];
     }
@@ -310,7 +310,7 @@ function categoryDropdownShow(ID) {
 }
 
 function categoryDropdownHide() {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
+    let dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
     for (i = 0; i < dropdowns.length; i++) {
       var openDropdown = dropdowns[i];
