@@ -63,11 +63,34 @@ function submitEditedItem(ID, oldName) {
         newName: shoppingList[ID],
         category: shoppingListCategory[ID],
         completed: itemCompletionStatus[ID],
+        quantity: shoppingListQuantity[ID],
         arrayIndex: index.toString(),
-        token: token
+        token: token 
     };
     $.ajax({
         url: "/edititem",
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(payload),
+        complete: function(data) {}
+    });
+}
+
+function submitEditedQuantity(ID, oldQuantity) {
+    var index = parseInt(ID) + 1; //make an integer so that it can be incremented
+    var payload = {
+        id: index.toString(),
+        oldQuantity: oldQuantity,
+        name: shoppingList[ID],
+        category: shoppingListCategory[ID],
+        completed: itemCompletionStatus[ID],
+        newQuantity: shoppingListQuantity[ID],
+        arrayIndex: index.toString(),
+        token: token 
+    };
+    $.ajax({
+        url: "/editQuantity",
         type: "POST",
         contentType: "application/json",
         processData: false,
@@ -93,6 +116,17 @@ function editCategory(itemID) {
     submitEditedItem(ID, shoppingList[ID]);
 }
 
+function editQuantity(itemID) {
+
+    let ID = itemID.toString().split("_")[1];
+    let oldQuantity = shoppingListQuantity[ID];
+
+    shoppingListQuantity[ID] = document.getElementById(itemID.toString()).innerHTML;
+
+    submitEditedQuantity(ID, oldQuantity);
+    document.getElementById(itemID).setAttribute("contenteditable", "false")
+}
+
 function editPurchaseStatus(itemID) {
 
     let ID = itemID.toString().split("_")[1];
@@ -107,6 +141,13 @@ function submitNameChangesOnEnter(e, ID) {
     }
 }
 
+function submitQuantityChangesOnEnter(e, ID) {
+    let enterKey = 13;
+    if (e.keyCode === enterKey) {
+        editQuantity(ID);
+    }
+}
+
 function submitCategoryChangesOnEnter(e, ID) {
     let enterKey = 13;
     if (e.keyCode === enterKey) {
@@ -116,6 +157,19 @@ function submitCategoryChangesOnEnter(e, ID) {
 
 // allows user to submit an item on press of the enter button
 function saveItemOnEnter(e) {
+    let enterKey = 13;
+    if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
+        let quantity_value = document.getElementById("ShoppingListQuantity").value;
+        if (quantity_value.match(/^[0-9]+$/) != null) {
+            storeItem();
+        } else {
+            alert("Quantity should only contain numbers");
+            document.getElementById("ShoppingListQuantity").value = "";
+        }
+    }
+}
+
+function saveQuantityOnEnter(e) {
     let enterKey = 13;
     if (e.keyCode === enterKey) { // makes sure that enter is the button being pressed
         let quantity_value = document.getElementById("ShoppingListQuantity").value;
@@ -436,6 +490,10 @@ function renderCards() {
         let quantityMultiplier = document.createElement("span");
         quantityMultiplier.className = "multiplier";
         let quantityText = document.createTextNode("X");
+
+        quantityElement.setAttribute("onmouseover", "makeEditable(id, true)");
+        quantityElement.setAttribute("onfocusout", "editQuantity(id)");
+        quantityElement.setAttribute("onkeydown", "submitQuantityChangesOnEnter(event, id)");
 
         itemElement.appendChild(itemName);
         quantityElement.appendChild(quantityAmount);

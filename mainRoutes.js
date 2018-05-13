@@ -6,34 +6,34 @@ var sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey('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');
 
-// let connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'Password',
-// });
+let connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'Password',
+});
 
-let connnect_config = function() {
-    // Process the environment variable defining the MySQL connection parameters
-    let str = process.env.MYSQLCONNSTR_localdb
-    let reg = str.split(';');
-    let database = reg[0].split('=')[1]
-    let source = reg[1].split('=')[1]
-    let [host, port] = source.split(':')
-    let user = reg[2].split('=')[1]
-    let password = reg[3].split('=')[1]
+// let connnect_config = function() {
+//     // Process the environment variable defining the MySQL connection parameters
+//     let str = process.env.MYSQLCONNSTR_localdb
+//     let reg = str.split(';');
+//     let database = reg[0].split('=')[1]
+//     let source = reg[1].split('=')[1]
+//     let [host, port] = source.split(':')
+//     let user = reg[2].split('=')[1]
+//     let password = reg[3].split('=')[1]
 
-    // Create the connection and return
-    let auth = {
-        host: host,
-        user: user,
-        password: password,
-        database: database,
-        port: parseInt(port)
-    }
-    return mysql.createConnection(auth)
-}
+//     // Create the connection and return
+//     let auth = {
+//         host: host,
+//         user: user,
+//         password: password,
+//         database: database,
+//         port: parseInt(port)
+//     }
+//     return mysql.createConnection(auth)
+// }
 
-let connection = connnect_config();
+// let connection = connnect_config();
 
 connection.connect((err) => {
     if (err) throw err;
@@ -159,6 +159,14 @@ mainRouter.post('/items', function(req, res) {
 
 mainRouter.post('/edititem', function(req, res) {
     connection.query('UPDATE items SET name = ?, category = ?, completed = ? WHERE name = ? AND token = ?', [req.body.newName, req.body.category, req.body.completed, req.body.oldName, req.body.token],
+        function(err, result) {
+            if (err) throw err;
+        }
+    );
+});
+
+mainRouter.post('/editQuantity', function(req, res) {
+    connection.query('UPDATE items SET name = ?, category = ?, completed = ?, quantity = ? WHERE quantity = ? AND token = ?', [req.body.name, req.body.category, req.body.completed, req.body.newQuantity, req.body.oldQuantity, req.body.token],
         function(err, result) {
             if (err) throw err;
         }
