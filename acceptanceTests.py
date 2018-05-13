@@ -14,7 +14,8 @@ class WebPageTesting(unittest.TestCase):
 		self.browser = webdriver.Chrome(options=chrome_options)
 		self.browser.get("http://127.0.0.1:3000")
 
-	def test_add_item(self):
+# #Tests that an item is added and displayed on the list correctly
+	def test_add_item_name(self):
 		remove_overlay = self.browser.find_element_by_id("CreateListButton")
 		remove_overlay.click()
 		delete = self.browser.find_element_by_id('deleteButton')
@@ -27,6 +28,64 @@ class WebPageTesting(unittest.TestCase):
 		button.click()
 		time.sleep(0.1)
 		assert self.browser.find_element_by_id("shoppingList_0").text == "Apple"
+
+	def test_blank_item_category_gives_default_value(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id('dropdownButton').get_attribute('innerHTML') == "Category"
+
+	def test_edit_item_name(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		editItem = self.browser.find_element_by_id("shoppingList_0")
+		editItem.click()
+		editItem.clear()
+		editItem.send_keys("Banana")
+		editItem.send_keys("\n")
+		
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("shoppingList_0").text == "Banana"
+
+	def test_add_multiple_items(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Banana")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(238049)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("shoppingList_0").text == "Apple"
+		assert self.browser.find_element_by_id("shoppingList_1").text == "Banana"
 
 	def test_mark_as_completed(self):
 		remove_overlay = self.browser.find_element_by_id("CreateListButton")
@@ -458,13 +517,12 @@ class WebPageTesting(unittest.TestCase):
 		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
 		loadFromToken.send_keys(token)
 		self.browser.find_element_by_id('navigateToLink').click()
-
+		time.sleep(0.1)
 		editBox = self.browser.find_element_by_id("shoppingList_0")
 		editBox.click()
 		editBox.clear()
 		editBox.send_keys("Chocolate")
 		editBox.send_keys("\n")
-		editBoxCheck = self.browser.find_element_by_id("shoppingList_0").text
 		
 		time.sleep(0.1)
 		assert self.browser.find_element_by_id("shoppingList_0").text == "Chocolate"
@@ -829,6 +887,15 @@ class WebPageTesting(unittest.TestCase):
 
 		assert self.browser.find_element_by_id("printName").text == "My List"
 
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+
+		assert self.browser.find_element_by_id("printName").text == "My List"
+
 	def test_shopping_list_name_can_be_edited(self):
 		remove_overlay = self.browser.find_element_by_id("CreateListButton")
 		remove_overlay.click()
@@ -898,8 +965,6 @@ class WebPageTesting(unittest.TestCase):
 		time.sleep(0.1)
 		self.browser.find_element_by_id('listName').send_keys("My List")
 		self.browser.find_element_by_id('saveListName').click()
-
-		assert self.browser.find_element_by_id("printName").text == "My List"
 
 		newItem = self.browser.find_element_by_id('ShoppingListItem')
 		newItem.send_keys("Astros")
@@ -1107,6 +1172,60 @@ class WebPageTesting(unittest.TestCase):
 		assert self.browser.find_element_by_id('dropdownButton_2').get_attribute('innerHTML') == "Meat"
 		assert self.browser.find_element_by_id('shoppingList_2').text == "Chicken"
 
+	def test_item_colour_change(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		newItem = self.browser.find_element_by_id('ShoppingListItem')
+		newItem.send_keys("Astros")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(1000)
+		self.browser.execute_script("document.getElementById('itemColor').value = 'rgba(0, 0, 0, 1)';")
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("list-entry_0").value_of_css_property('background-color') == 'rgba(0, 0, 0, 1)'
+
+	def test_list_colour_change(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		self.browser.execute_script("document.getElementById('listColor').value = 'rgba(250, 250, 250, 1)';")
+		time.sleep(5)
+		assert self.browser.find_element_by_id("list-container").value_of_css_property('background-color') == 'rgba(250, 250, 250, 1)'
+
+	def test_item_colour_can_be_saved_in_db(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		self.browser.execute_script("document.getElementById('itemColor').value = 'rgba(0, 0, 0, 1)';")
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+
+		remove_overlay = self.browser.find_element_by_id("createList")
+		remove_overlay.click()
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple2")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(238049)
+		self.browser.execute_script("document.getElementById('itemColor').value = 'rgba(0, 0, 0, 1)';")
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+		
 	def tearDown(self):
 		self.browser.close()
 

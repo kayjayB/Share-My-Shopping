@@ -6,6 +6,12 @@ var sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey('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');
 
+// let connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'Password',
+// });
+
 let connnect_config = function() {
     // Process the environment variable defining the MySQL connection parameters
     let str = process.env.MYSQLCONNSTR_localdb
@@ -47,7 +53,8 @@ connection.query('CREATE DATABASE IF NOT EXISTS list_db', function(err) {
                 'token VARCHAR(50),' +
                 'completed VARCHAR(50),' +
                 'quantity INT(20),' +
-                'arrayIndex INT(20)' +
+                'arrayIndex INT(20),' +
+                'colour VARCHAR(10)' +
                 ')',
                 function(err) {
                     if (err) throw err;

@@ -2,6 +2,7 @@ let shoppingList = [];
 let shoppingListCategory = [];
 let itemCompletionStatus = [];
 let shoppingListQuantity = [];
+let shoppingListColour = [];
 var token;
 let dropdownText;
 
@@ -150,12 +151,13 @@ function deleteItem(itemID) {
     return card.parentNode.removeChild(card);
 }
 
-function addItem(name, category, status, quantity) {
+function addItem(name, category, status, quantity,colour) {
 
     let item_name = name;
     let item_category = category;
     let initialCompletionStatus = status;
     let item_quantity = quantity;
+    let item_colour = colour;
 
     if (item_name == "none") {
         item_name = document.getElementById("ShoppingListItem").value;
@@ -186,6 +188,7 @@ function addItem(name, category, status, quantity) {
     shoppingList.push(item_name);
     shoppingListCategory.push(item_category);
     shoppingListQuantity.push(item_quantity);
+    shoppingListColour.push(item_colour);
 
     itemCompletionStatus.push(initialCompletionStatus);
     // Clear input text field once the item has been saved to the array
@@ -219,6 +222,7 @@ function orderByPurchased() {
                 let categories = nameArray.map(function(a) { return a.category; });
                 let purchaseStatus = nameArray.map(function(a) { return a.completed; });
                 let quantities = nameArray.map(function(a) { return a.quantity; });
+                let colours = nameArray.map(function(a) { return a.colour; });
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
@@ -230,6 +234,7 @@ function orderByPurchased() {
                         shoppingListCategory.push(categories[i]);
                         itemCompletionStatus.push(purchaseStatus[i]);
                         shoppingListQuantity.push(quantities[i]);
+                        shoppingListColour.push(colours[i]);
                         if (itemCompletionStatus[i] === 0) {
                             itemCompletionStatus[i] = false;
                         } else if (itemCompletionStatus[i] === 1) {
@@ -266,6 +271,7 @@ function orderByCategory() {
                 let categories = nameArray.map(function(a) { return a.category; });
                 let purchaseStatus = nameArray.map(function(a) { return a.completed; });
                 let quantities = nameArray.map(function(a) { return a.quantity; });
+                let colours = nameArray.map(function(a) { return a.colour; });
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
@@ -277,6 +283,7 @@ function orderByCategory() {
                         shoppingListCategory.push(categories[i]);
                         itemCompletionStatus.push(purchaseStatus[i]);
                         shoppingListQuantity.push(quantities[i]);
+                        shoppingListColour.push(colours[i]);
                         if (itemCompletionStatus[i] === 0) {
                             itemCompletionStatus[i] = false;
                         } else if (itemCompletionStatus[i] === 1) {
@@ -406,8 +413,6 @@ function renderCards() {
 
     for (let i = 0; i < shoppingList.length; i++) {
 
-        let itemColour = document.getElementById("itemColor").value;
-
         let cardDiv = document.createElement("div");
         cardDiv.className = "card";
         cardDiv.id = "list-entry_" + i.toString();
@@ -470,7 +475,7 @@ function renderCards() {
 
         container.appendChild(cardDiv);
 
-        document.getElementById(cardDiv.id).style.backgroundColor = itemColour;
+        document.getElementById(cardDiv.id).style.backgroundColor = shoppingListColour[i];
     }
 }
 
@@ -478,6 +483,7 @@ function storeItem() {
     let completedStatus = false;
     let quantity_value = document.getElementById("ShoppingListQuantity").value;
     let listIndex = shoppingList.length + 1; // Add 1 because the new item hasn't been added yet 
+    let item_colour = document.getElementById("itemColor").value;
     if (quantity_value.match(/^[0-9]+$/) != null) {
         var payload = {
             name: document.getElementById("ShoppingListItem").value,
@@ -485,7 +491,8 @@ function storeItem() {
             quantity: quantity_value,
             token: token,
             completed: completedStatus,
-            arrayIndex: listIndex
+            arrayIndex: listIndex,
+            colour: item_colour,
         };
 
         $.ajax({
@@ -495,7 +502,7 @@ function storeItem() {
             processData: false,
             data: JSON.stringify(payload),
             complete: function(data) {
-                addItem('none', 'none', false, quantity_value);
+                addItem('none', 'none', false, quantity_value, item_colour);
             }
         });
     } else {
@@ -566,6 +573,7 @@ function viewList(listName) {
                 let categories = nameArray.map(function(a) { return a.category; });
                 let purchaseStatus = nameArray.map(function(a) { return a.completed; });
                 let quantities = nameArray.map(function(a) { return a.quantity; });
+                let colours = nameArray.map(function(a) { return a.colour; });
                 if (listName !== null) {
                     document.getElementById("printName").textContent = "";
                     printListName(listName);
@@ -582,12 +590,13 @@ function viewList(listName) {
                         let item_category = categories[i];
                         let item_status = purchaseStatus[i];
                         let item_quantity = quantities[i];
+                        let item_colour = colours[i];
                         if (item_status === 0) {
                             item_status = false;
                         } else if (item_status === 1) {
                             item_status = true;
                         }
-                        addItem(item_name, item_category, item_status, item_quantity);
+                        addItem(item_name, item_category, item_status, item_quantity, item_colour);
                     }
                     document.getElementById("viewListFromLink").value = "";
                 }
@@ -607,6 +616,7 @@ function removeList() {
     shoppingListCategory = [];
     itemCompletionStatus = [];
     shoppingListQuantity = [];
+    shoppingListColour = [];
     while (listContainer.hasChildNodes()) {
         listContainer.removeChild(listContainer.firstChild);
     }
@@ -707,6 +717,10 @@ function clearDB() {
 function setColor() {
     var x = document.getElementById("listColor").value;
     document.getElementById("list-container").style.backgroundColor = x;
+}
+
+function setDefaultColor() {
+    document.getElementById('itemColor').value = "#fafafa";
 }
 
 function on() {
