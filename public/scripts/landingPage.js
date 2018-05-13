@@ -227,6 +227,7 @@ function orderByPurchased()
                 let categories = nameArray.map(function(a) { return a.category; });
                 let purchaseStatus = nameArray.map(function(a) { return a.completed; });
                 let quantities = nameArray.map(function(a) { return a.quantity; });
+                let colours = nameArray.map(function(a) { return a.colour; });
                 if (names.length === 0) {
                     alert("No shopping list found");
                     document.getElementById("viewListFromLink").value = "";
@@ -250,7 +251,6 @@ function orderByPurchased()
                         }
                         //addItem(item_name, item_category, item_status, item_quantity);
                     }
-                    let colours = nameArray.map(function(a) { return a.colour; });
                     document.getElementById("viewListFromLink").value = "";
 
                     renderCards();
@@ -482,6 +482,7 @@ function removeList() {
     shoppingListCategory = [];
     itemCompletionStatus = [];
     shoppingListQuantity = [];
+    shoppingListColour = [];
     while (listContainer.hasChildNodes()) {
         listContainer.removeChild(listContainer.firstChild);
     }
@@ -552,6 +553,10 @@ function clearDB() {
 function setColor() {
     var x = document.getElementById("listColor").value;
     document.getElementById("list-container").style.backgroundColor = x;
+}
+
+function setDefaultColor() {
+    document.getElementById('itemColor').value = "#fafafa";
 }
 
 function on() {

@@ -101,13 +101,13 @@
                                 placeholder="Quantity" onkeypress="saveItemOnEnter(event)">
                         </div>
                         <div class="form-control">
-                            List Colour
+                            Item Colour
                             <input class="pull-right" type="color" id="itemColor" value="#fafafa">
                         </div>
                         <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()">Sort By Purchased</button>
                     </div>
                     <div class="col-md-1">
-                        <button type="button" class="btn main-btn" onclick="storeItem(); setColor();" disabled="true" id="SubmitButton" style="background-color: Transparent">
+                        <button type="button" class="btn main-btn" onclick="storeItem(); setDefaultColor();" disabled="true" id="SubmitButton" style="background-color: Transparent">
                             <i class="fa fa-plus-square fa-4x" style="color:#40e0d0"></i>
                         </button>
                     </div>
@@ -127,7 +127,7 @@
                         <ul class="form-group" id="list-container"></ul>
                     </div>
                     <div class="col-md-3 col-md-offset-5">
-                        <p class="btn btn-primary colorButton">Container Color</p>
+                        <p class="btn btn-primary colorButton">List Color</p>
                         <input type="color" id="listColor" value="#fafafa" onChange="setColor()">
                     </div>
                 </div>
