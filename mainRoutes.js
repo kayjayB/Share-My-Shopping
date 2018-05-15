@@ -165,6 +165,14 @@ mainRouter.post('/edititem', function(req, res) {
     );
 });
 
+mainRouter.post('/editQuantity', function(req, res) {
+    connection.query('UPDATE items SET name = ?, category = ?, completed = ?, quantity = ? WHERE quantity = ? AND token = ?', [req.body.name, req.body.category, req.body.completed, req.body.newQuantity, req.body.oldQuantity, req.body.token],
+        function(err, result) {
+            if (err) throw err;
+        }
+    );
+});
+
 mainRouter.post('/deleteitem', function(req, res) {
     connection.query('DELETE FROM items WHERE name = ? AND token = ?', [req.body.name, req.body.token],
         function(err, result) {
