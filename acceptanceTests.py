@@ -149,6 +149,65 @@ class WebPageTesting(unittest.TestCase):
 		time.sleep(0.1)
 		assert self.browser.find_element_by_id("shoppingList_0").text == "Apple"
 		assert self.browser.find_element_by_id("shoppingList_1").text == "Banana"
+		
+	def test_multiple_items_can_be_added_and_stored_in_db(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Banana")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(238049)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("shoppingList_0").text == "Apple"
+		assert self.browser.find_element_by_id("shoppingList_1").text == "Banana"
+
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("shoppingList_0").text == "Apple"
+		assert self.browser.find_element_by_id("shoppingList_1").text == "Banana"
+
+	def test_items_can_be_added_and_stored_in_db(self):
+		remove_overlay = self.browser.find_element_by_id("CreateListButton")
+		remove_overlay.click()
+		delete = self.browser.find_element_by_id('deleteButton')
+		delete.send_keys("\n")
+		elem = self.browser.find_element_by_id('ShoppingListItem')
+		elem.send_keys("Apple")
+		quant = self.browser.find_element_by_id('ShoppingListQuantity')
+		quant.send_keys(123)
+		button = self.browser.find_element_by_id('SubmitButton')
+		button.click()
+		
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("shoppingList_0").text == "Apple"
+
+		self.browser.find_element_by_id('shareDropdown').click()
+		token = self.browser.find_element_by_id('sharingLink').get_attribute('value')
+		self.browser.find_element_by_id('loadList').click()
+		loadFromToken= self.browser.find_element_by_id('viewListFromLink')
+		loadFromToken.send_keys(token)
+		self.browser.find_element_by_id('navigateToLink').click()
+
+		time.sleep(0.1)
+		assert self.browser.find_element_by_id("shoppingList_0").text == "Apple"
 
 	def test_mark_as_completed(self):
 		remove_overlay = self.browser.find_element_by_id("CreateListButton")
