@@ -1,9 +1,12 @@
 \documentclass[10pt,onecolumn]{witseiepaper}
 \usepackage{KJN}
-\usepackage{graphicx}
-\usepackage{url}
+\usepackage{listings} % for code listings
+\usepackage{xcolor} % for the listings
+\usepackage{verbatim}
+\usepackage{courier} % for the courier font for the code listings
 
 \newcommand{\ttt}{\texttt}
+
 
 \title{ELEN4010 - CODE STYLING GUIDE}
 
@@ -18,7 +21,76 @@ Witwatersrand, Private Bag 3, 2050, Johannesburg, South Africa}
 \pagestyle{plain}
 \setcounter{page}{1}
 
+\section{JAVASCRIPT}
 
+
+Do not place spaces around unary operators
+Do place spaces around binary and ternary operators.
+Do not place spaces before comma and semicolon.
+Tabs are preferred over spaces
+Place spaces between control statements and their parentheses.
+Do not place spaces between a function and its parentheses, or between a parenthesis and its content.
+prefer double quoted over single
+Each statement should get its own line.
+An else statement should go on the same line as a preceding close brace if one is present, else it should line up with the if statement.
+Other braces: place the open brace on the line preceding the code block; place the close brace on its own line.
+One-line control clauses should not use braces unless comments are included or a single statement spans multiple lines.
+Use CamelCase. Capitalize the first letter, including all letters in an acronym, in a class, struct, protocol, or namespace name. Lower-case the first letter, including all letters in an acronym, in a variable or function name.
+
+\section{HTML}
+\lstset{language=HTML, basicstyle=\ttfamily}
+
+\subsection{\textbf{Nesting and Indentation}}
+
+When tags contain other tags in their body, the nested tags should be placed on a new line. All new levels of nesting should be indented by another level.
+
+\begin{lstlisting}[backgroundcolor=\color{green!20}]
+<html>
+  <head>
+    <title>Example of good nesting and indentation</title>
+  </head>
+</html>
+\end{lstlisting}
+
+\begin{lstlisting}[backgroundcolor=\color{red!20}]
+<html><head><title>Example of bad nesting</title></head></html>
+
+<html>
+<head>
+<title>Example of bad indentation</title>
+</head>
+</html>
+\end{lstlisting}
+
+\subsection{\textbf{Tags}}
+
+Tags should all be lower-case.
+
+\begin{lstlisting}[backgroundcolor=\color{green!20}]
+<div>
+  <p>Lower-case tags are better</p>
+</div>
+\end{lstlisting}
+
+\begin{lstlisting}[backgroundcolor=\color{red!20}]
+<DIV>
+<P>Uppercase tags are not ideal</p>
+</Div>
+\end{lstlisting}
+
+All tags should be closed unless they are non-container tags.
+
+\begin{lstlisting}[backgroundcolor=\color{green!20}]
+<div>Container tags</div>
+<p>must be closed</p>
+<br>This doesnt have to be closed
+\end{lstlisting}
+
+\begin{lstlisting}[backgroundcolor=\color{red!20}]
+<div>Example of bad 
+<p>HTML style
+<br>Closing this is unnecessary</br>
+\end{lstlisting}
 
 
 \end{document}
