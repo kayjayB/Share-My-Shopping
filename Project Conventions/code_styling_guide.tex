@@ -1,11 +1,30 @@
 \documentclass[10pt,onecolumn]{witseiepaper}
 \usepackage{KJN}
 \usepackage{listings} % for code listings
-\usepackage{xcolor} % for the listings
+\usepackage[dvipsnames]{xcolor} % for the listings
 \usepackage{verbatim}
 \usepackage{courier} % for the courier font for the code listings
 
 \newcommand{\ttt}{\texttt}
+
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+	keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, let},
+	keywordstyle=\color{NavyBlue}\bfseries,
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	ndkeywordstyle=\color{darkgray}\bfseries,
+	identifierstyle=\color{black},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{purple}\ttfamily,
+	stringstyle=\color{BrickRed}\ttfamily,
+	morestring=[b]',
+	morestring=[b]"
+}
 
 
 \title{ELEN4010 - CODE STYLING GUIDE}
@@ -21,30 +40,127 @@ Witwatersrand, Private Bag 3, 2050, Johannesburg, South Africa}
 \pagestyle{plain}
 \setcounter{page}{1}
 
+\section{INTRODUCTION}
+
 \section{JAVASCRIPT}
+\lstset{language=JavaScript, basicstyle=\ttfamily}%, frame=single}
 
+\subsection{\textbf{Variables}}
 
-Do not place spaces around unary operators
-Do place spaces around binary and ternary operators.
-Do not place spaces before comma and semicolon.
-Tabs are preferred over spaces
-Place spaces between control statements and their parentheses.
-Do not place spaces between a function and its parentheses, or between a parenthesis and its content.
-prefer double quoted over single
+Use \texttt{camelCase}  for names of variables and functions. All names should start with a lower-case letter. Acronyms should be upper-case.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
+firstName = "John";
+lastName = "Doe";
+
+index = 0;
+counterValue = 0;
+
+elementHTML = document.getElementById("button_1").innerHTML
+\end{lstlisting}
+
+Prefer declaring variables with \texttt{let} over \texttt{var} for better scoping when appropriate. 
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
+for (let i = 0; i < 10; i++) {
+	doSomthing();
+}
+\end{lstlisting}
+
+\subsection{\textbf{Spacing}}
+
+Do not put spaces around unary operators or before a comma or semi-colon.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
+i++;
+f(x, y);
+\end{lstlisting}
+
+Always put spaces around binary (assignment, equality and boolean) and ternary (arithmetic) operators. Always place a space after a comma.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
+y = m * x + c;
+f(x, y);
+c = !a | b;
+\end{lstlisting}
+
+Tabs are preferred over spaces.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
+function toCelcius(farenheit) {
+    return (5 / 9) * (fahrenheit - 32);
+}
+\end{lstlisting}
+
+Place spaces between control statements and their parentheses. Do not place spaces between a function and its parentheses, or between a parenthesis and its content.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
+for (let i = 0; i < 10; i++) {
+    doSomthing();
+}
+\end{lstlisting}
+
+\subsection{\textbf{Line Breaking \& Braces}}
+
 Each statement should get its own line.
-An else statement should go on the same line as a preceding close brace if one is present, else it should line up with the if statement.
-Other braces: place the open brace on the line preceding the code block; place the close brace on its own line.
-One-line control clauses should not use braces unless comments are included or a single statement spans multiple lines.
-Use CamelCase. Capitalize the first letter, including all letters in an acronym, in a class, struct, protocol, or namespace name. Lower-case the first letter, including all letters in an acronym, in a variable or function name.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
+i++;
+j++;
+if (boolCondition)
+    doSomthing();
+\end{lstlisting}
+
+An \texttt{else} statement should go on the same as a preceding close brace if one is present, otherwise should line up with the \texttt{if} statement.
+
+Open braces should be placed should be placed on the same line as the preceding code block and close braces should be placed on their own line.
+
+One-line control clauses should not use braces (unless comments are included) or a single statement spans multiple lines.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
+if (boolCondition) {
+    ...
+} else {
+    someFunction(veryLongParam1, veryLongParam2, ...
+    veryLongParam5);
+}
+
+if (boolCondition)
+    doSomething();
+else
+    doADifferentThing();
+    
+if (boolCondition)
+    doSomething();
+else {
+    ...
+}    
+\end{lstlisting}
+
+\subsection{\textbf{Strings}}
+
+Prefer double quotes over single quotes for strings.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}, showstringspaces=false]
+console.log("This is how strings should be declared");
+\end{lstlisting}
+
+Use implicit line joining for multi-line strings.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}, showstringspaces=false]
+console.log("This is how strings should be declared\n"
+            "It's really quite nice to look at\n);
+\end{lstlisting}
+
 
 \section{HTML}
-\lstset{language=HTML, basicstyle=\ttfamily}
+\lstset{language=HTML, basicstyle=\ttfamily}%, frame=single}
 
 \subsection{\textbf{Nesting and Indentation}}
 
 When tags contain other tags in their body, the nested tags should be placed on a new line. All new levels of nesting should be indented by another level.
 
-\begin{lstlisting}[backgroundcolor=\color{green!20}]
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
 <html>
   <head>
     <title>Example of good nesting and indentation</title>
@@ -52,45 +168,52 @@ When tags contain other tags in their body, the nested tags should be placed on 
 </html>
 \end{lstlisting}
 
-\begin{lstlisting}[backgroundcolor=\color{red!20}]
-<html><head><title>Example of bad nesting</title></head></html>
+%\begin{lstlisting}[backgroundcolor=\color{red!20}]
+%<html><head><title>Example of bad nesting</title></head></html>
+%
+%<html>
+%<head>
+%<title>Example of bad indentation</title>
+%</head>
+%</html>
+%\end{lstlisting}
 
-<html>
-<head>
-<title>Example of bad indentation</title>
-</head>
-</html>
-\end{lstlisting}
+\subsection{\textbf{Tags \& Attributes}}
 
-\subsection{\textbf{Tags}}
+Tag names should all be lower-case.
 
-Tags should all be lower-case.
-
-\begin{lstlisting}[backgroundcolor=\color{green!20}]
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
 <div>
   <p>Lower-case tags are better</p>
 </div>
 \end{lstlisting}
 
-\begin{lstlisting}[backgroundcolor=\color{red!20}]
-<DIV>
-<P>Uppercase tags are not ideal</p>
-</Div>
-\end{lstlisting}
+%\begin{lstlisting}[backgroundcolor=\color{red!20}]
+%<DIV>
+%<P>Uppercase tags are not ideal</p>
+%</Div>
+%\end{lstlisting}
 
 All tags should be closed unless they are non-container tags.
 
-\begin{lstlisting}[backgroundcolor=\color{green!20}]
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
 <div>Container tags</div>
 <p>must be closed</p>
 <br>This doesnt have to be closed
 \end{lstlisting}
 
-\begin{lstlisting}[backgroundcolor=\color{red!20}]
-<div>Example of bad 
-<p>HTML style
-<br>Closing this is unnecessary</br>
+%\begin{lstlisting}[backgroundcolor=\color{red!20}]
+%<div>Example of bad 
+%<p>HTML style
+%<br>Closing this is unnecessary</br>
+%\end{lstlisting}
+
+Use lower-case attribute names.
+
+\begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
+<div class="dropdown">Dropdown menu</div>
 \end{lstlisting}
+
 
 
 \end{document}
