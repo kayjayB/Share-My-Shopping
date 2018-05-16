@@ -41,13 +41,14 @@ Witwatersrand, Private Bag 3, 2050, Johannesburg, South Africa}
 \setcounter{page}{1}
 
 \section{INTRODUCTION}
+This document presents the code styling guidelines used within the ELEN4010 project, including naming of variables and formatting of code. Two style guides are provided: one for JavaScript and one for HTML.
 
 \section{JAVASCRIPT}
 \lstset{language=JavaScript, basicstyle=\ttfamily}%, frame=single}
 
 \subsection{\textbf{Variables}}
 
-Use \texttt{camelCase}  for names of variables and functions. All names should start with a lower-case letter. Acronyms should be upper-case.
+Use the \texttt{camelCase} convention for names of variables and functions. All names should start with a lower-case letter. Acronyms should be upper-case.
 
 \begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
 firstName = "John";
@@ -59,7 +60,7 @@ counterValue = 0;
 elementHTML = document.getElementById("button_1").innerHTML
 \end{lstlisting}
 
-Prefer declaring variables with \texttt{let} over \texttt{var} for better scoping when appropriate. 
+Prefer declaring variables with \texttt{let} over \texttt{var} for better scoping whenever appropriate. 
 
 \begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
 for (let i = 0; i < 10; i++) {
@@ -84,7 +85,7 @@ f(x, y);
 c = !a | b;
 \end{lstlisting}
 
-Tabs are preferred over spaces.
+Tabs are preferred over spaces for indentations within the code base.
 
 \begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
 function toCelcius(farenheit) {
@@ -96,7 +97,7 @@ Place spaces between control statements and their parentheses. Do not place spac
 
 \begin{lstlisting}[backgroundcolor=\color{lightgray!60}]
 for (let i = 0; i < 10; i++) {
-    doSomthing();
+    doSomething();
 }
 \end{lstlisting}
 
@@ -111,7 +112,7 @@ if (boolCondition)
     doSomthing();
 \end{lstlisting}
 
-An \texttt{else} statement should go on the same as a preceding close brace if one is present, otherwise should line up with the \texttt{if} statement.
+An \texttt{else} statement should go on the same line as the preceding close brace if one is present, otherwise should line up with the \texttt{if} statement.
 
 Open braces should be placed should be placed on the same line as the preceding code block and close braces should be placed on their own line.
 
