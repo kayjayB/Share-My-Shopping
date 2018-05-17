@@ -9,4 +9,4 @@ The user story map used in the project can be accessed [here](https://sharemysho
 MySQL in App service is utilized for server persistence.
 
 ## Share My Shopping Demonstration
-![Website demonstration](./Documentation/Site Demo/demo.png)
+![Website demonstration](Documentation/Site Demo/Demo.png)
