@@ -1,0 +1,35 @@
+\documentclass[10pt,onecolumn]{witseiepaper}
+\usepackage{KJN}
+\usepackage{graphicx}
+\usepackage{url}
+
+\newcommand{\ttt}{\texttt}
+
+\title{ELEN4010 - CODE COVERAGE}
+
+\author{Kayla-Jade Butkow (714227), Jared Ping (704447), Lara Timm (704157) \& Matthew van Rooyen (706612)}
+\thanks{School of Electrical \& Information Engineering, University of the
+Witwatersrand, Private Bag 3, 2050, Johannesburg, South Africa}
+
+
+\begin{document}
+ 
+\maketitle
+\pagestyle{plain}
+\setcounter{page}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Code coverage provides a measure of code which has been covered through the use of unit tests. This highlights areas of code which have not been adequately tested. This is helpful in ensuring the functionality of all application components function as expected.
+
+The following code coverage frameworks were assessed:
+
+\subsection*{\textbf{Coveralls}}
+An issue existed regarding private repository access from Coveralls which prevented the Coveralls tool from being intergrated into the web application.
+
+\subsection*{\textbf{Covert}}
+A compatibility issue exists whereby the Covert framework is unable to provide code coverage on Tape based tests. The framework was found to be compatible with the Mocha testing framework but Tape had already been well utilised by that phase of the application development.
+
+\subsection*{\textbf{Istanbul}}
+A compatibility issue exists whereby the Istanbul framework is unable to generate a code coverage report when assessing Tape based tests. The framework was found to be compatible with the Mocha testing framework but Tape had already been well utilised by that phase of the application development.
+
+\end{document}
