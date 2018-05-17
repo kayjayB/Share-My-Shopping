@@ -1,0 +1,266 @@
+\documentclass[10pt,onecolumn]{witseiepaper}
+\usepackage{KJN}
+\usepackage{graphicx}
+\usepackage{url}
+
+\newcommand{\ttt}{\texttt}
+
+\title{ELEN4010 - PROJECT TESTING}
+
+\author{Kayla-Jade Butkow (714227), Jared Ping (704447), Lara Timm (704157) \& Matthew van Rooyen (706612)}
+\thanks{School of Electrical \& Information Engineering, University of the
+Witwatersrand, Private Bag 3, 2050, Johannesburg, South Africa}
+
+
+\begin{document}
+\maketitle
+\pagestyle{plain}
+\setcounter{page}{1}
+
+\section*{INTRODUCTION}
+This document presents an outline of the unit, acceptance and integration tests associated with each developer story.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+\section*{CURRENTLY IMPLEMENTED UNIT TESTS AND THEIR CORRESPONDING ISSUE NUMBERS}
+
+\textbf{28: Configure test and lint frameworks}
+
+\begin{enumerate}
+	\item Hello world test to ensure testing is working correctly
+\end{enumerate}
+
+\textbf{30: Implement logic to add item name to shopping list}
+
+\begin{enumerate}
+	\item Test that the size of empty shopping list is 0
+	\item Ensure that the size of the shopping list increases when an item is added
+	\item Test that the name of the added item is equal to that of the one appearing in the shopping list
+\end{enumerate}
+
+\textbf{32: Implement logic to add category/aisle}
+
+\begin{enumerate}
+	\item Test that the size of an empty category list is equal to 0
+	\item Ensure that the size of the category list is increased when an item category is added
+	\item Test that the name of the added item category is equal to that of the one appearing in the category list
+\end{enumerate}
+
+\textbf{34: Implement logic to enter multiple items onto a shopping list}
+
+\begin{enumerate}
+	\item Test that multiple items can be added to the shopping list
+\end{enumerate}
+
+\vspace{5mm}
+\section*{CURRENTLY IMPLEMENTED INTEGRATION AND ACCEPTANCE TESTS AND THEIR CORRESPONDING ISSUE NUMBERS}
+
+
+% 33: Render item's category/aisle on shopping list ~\\
+% 35: Render multiple items on shopping list ~\\
+% 82: Allow user to store edited category/aisle in database and render on website ~\\
+% 31: Render item name on shopping list ~\\
+% 76: Store item name in database and render on website ~\\
+% 77: Store item categories in database and render on site ~\\
+% 78: Store multiple items and render on website ~\\
+% 79: Allow editing of item name and render on website ~\\
+% 80: Allow editing of item category/aisle and render on website ~\\
+% 85: Allow user to share shopping list, generate link and render link to user ~\\
+
+
+\textbf{31: Render item name on shopping list}
+
+\begin{enumerate}
+	\item Allow user to render an item on a list
+\end{enumerate}
+
+%%MMMMM%%%%%%%%%%%%%%%%%%
+\textbf{33: Render item's category/aisle on shopping list}
+
+\begin{enumerate}
+	\item Allow user to add and render a category for an item
+	\item Default category appears as "Category" if not selected
+\end{enumerate}
+
+%%MMMMM
+\textbf{35: Render multiple items on shopping list}
+
+\begin{enumerate}
+	\item Multiple items can be added to the list
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+\textbf{76: Store item name in database and render on website}
+
+\begin{enumerate}
+	\item An item can be added and is stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+\textbf{77: Store item categories in database and render on site}
+
+\begin{enumerate}
+	\item An item category can be added and is stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+\textbf{78: Store multiple items and render on website}
+
+\begin{enumerate}
+	\item Multiple items can be added and stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+\textbf{79: Allow editing of item name and render on website}
+
+\begin{enumerate}
+	\item Edited items are rendered correctly on the list
+\end{enumerate}
+
+\textbf{80: Allow editing of item category/aisle and render on website}
+
+\begin{enumerate}
+	\item Edited item categories are rendered correctly on the list
+\end{enumerate}
+
+\textbf{81: Allow user to store edited name in database and render on website}
+
+\begin{enumerate}
+	\item Item name can be edited and stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+
+%%MMMMM%%%%%%%%%%%%%%%%
+\textbf{82: Allow user to store edited category/aisle in database and render on website}
+
+\begin{enumerate}
+	\item Item category can be edited and stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%
+
+\textbf{83: Allow user to add shopping list name, store in database and render on website}
+
+\begin{enumerate}
+	\item A shopping list name can be created and is rendered
+	\item A shopping list name can be added and is stored in the database and can be retrieved and rendered correctly
+	\item The shopping list name can be edited and is rendered
+	\item The shopping list name can be edited and is stored in the database and can be retrieved and rendered correctly
+	\item  A shopping list name can be added, as well as additional items, and the changes are stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+
+\textbf{85: Allow user to share shopping list, generate link and render link to user}
+
+\begin{enumerate}
+	\item Test that shopping list can be shared, a link generated and a user can render the shopping list using the link
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%
+
+
+\textbf{96: Shopping list can be shared with someone via send grid email API}
+\begin{enumerate}
+	\item List can be shared with one user and the list of shared users is checked
+	\item List can be shared with one user and their email is stored in the database and can be retrieved and rendered correctly
+	\item List can be shared with multiple users and the list of shared users is checked
+	\item List can be shared with multiple users and both emails are tested to be stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+
+%\textbf{97: Site interaction flow for users}
+%
+%No new tests added but code to remove the implemented overlay from the screen was implemented to the tests to enable existing tests to pass
+
+\textbf{98: User can create additional shopping list that is stored in database and rendered on website}
+
+\begin{enumerate}
+	\item Two shopping lists are created and the loading of the first list is tested
+	\item Additional items can be added to the loaded shopping list
+	\item Test that additional items can be added to the loaded shopping list and these items are stored in the database and can be retrieved and rendered correctly
+	\item Test that item can be edited in a loaded shopping list and the edits are stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+
+\textbf{100: Users can tick off completed item cards which are saved in database}
+
+\begin{enumerate}
+	\item User is able to check off an item
+	\item User is able to check off multiple items 
+	\item The purchase status of one item is stored in the database and can be retrieved and rendered correctly 
+	\item The purchase status of multiple items is stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+
+\textbf{102: Lists will be sorted based on item completion}
+
+\begin{enumerate}
+	\item Multiple items can be added, one item is marked as purchased, the items are sorted by purchase status and the results are stored in the array and rendered correctly
+\end{enumerate}
+
+\textbf{103: Item card can be deleted with changes saved in database and rendered on website}
+
+\begin{enumerate}
+	\item Item can be added to the item array and subsequently deleted
+	\item Multiple items can be added to the item array and subsequently deleted
+	\item A single item can be added and deleted, these changes are stored in the database and can be retrieved and rendered correctly
+	\item Multiple items can be added and deleted, these changes are stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+
+
+\textbf{104: Item quantities can added to items which is stored in the database and rendered on the website}
+
+\begin{enumerate}
+	\item Quantity can be added for a single item
+	\item Quantity can be added for multiple items
+	\item Quantity of one item can be stored in the database and can be retrieved and rendered correctly
+	\item Quantity of multiple items can be stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+
+\textbf{115: Allow user to edit item quantity, store in database and render on website}
+
+\begin{enumerate}
+	\item Allow user to edit an item quantity
+	\item Edited item quantity is persistent and can be rendered
+	\item Multiple item quantities can be edited with the changes stored in the database and rendered
+\end{enumerate}
+
+%\textbf{116: User can use email template to share their shopping list}
+%
+%\begin{enumerate}
+%	\item 
+%\end{enumerate}
+
+\textbf{117: Allow the user to add notes about their shopping list, store them and render them}
+
+\begin{enumerate}
+	\item Shopping list notes can be added and are rendered correctly
+	\item Shopping list noted can be added and are stored in the database and can be retrieved and rendered correctly
+	\item Shopping list notes can be edited and are rendered correctly
+	\item Shopping list notes can be edited and are stored stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+
+%%MMMMM%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\textbf{120: Shopping list colour changes are saved for when accessed at a later point}
+
+\begin{enumerate}
+\item Card colour can be assigned to individual cards and is rendered correctly
+\item List colour can be assigned and is rendered correctly
+\item Card colours are stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\textbf{121: Shared shopping list access can be revoked}
+
+\begin{enumerate}
+	\item List is shared with two users, the first email is removed. Test that upon reload only the single correct email is loaded
+\end{enumerate}
+
+\textbf{122: Item category is chosen from set of defaults}
+
+\begin{enumerate}
+	\item Item category can be selected from the drop-down menu, the results are stored in the database and can be retrieved and rendered correctly
+	\item Item category can be edited from the drop-down menu on its respective card and the changes are stored in the database and can be retrieved and rendered correctly
+\end{enumerate}
+
+\textbf{123: Sort item cards on shopping list by category (alphabetical)}
+
+\begin{enumerate}
+	\item Multiple items can be added by choosing a category from the drop-down, these items can be sorted alphabetically by category.
+\end{enumerate}
+
+
+\end{document}
