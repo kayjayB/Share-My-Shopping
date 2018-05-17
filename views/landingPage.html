@@ -1,0 +1,188 @@
+<html lang="en">
+
+<head>
+    <title>Shopping List: Create</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/cdn/css/bootstrap.css">
+    <link rel="stylesheet" href="/cdn/css/landingPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="/cdn/libraries/jquery.js"></script>
+    <script src="/cdn/libraries/bootstrap.min.js"></script>
+    <script src="/cdn/scripts/landingPage.js"></script>
+</head>
+
+<body>
+    <div>
+        <nav class="navbar navbar-default">
+            <!-- <div class="row centered"> -->
+            <div class="navbar-header col-md-1 col-md-offset-3" style="padding-left:20ex">
+                <a href="#">
+                    <i class="fa fa-shopping-cart fa-4x"></i>
+                </a>
+            </div>
+            <div class="navbar-header col-md-3" style="padding-left:5ex">
+                <a class="navbar-brand" id="site-title" href="#">SHARE MY SHOPPING</a>
+            </div>
+            <!-- </div> -->
+            <div class="sidenav pull-right">
+                <a href="#" class="load-small pull-right" onclick="loadExisitingShoppingList()" id="loadList">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> Load
+                </a>
+                <a href="#" class="load-small pull-right" onclick="newShoppingList()" id="createList">
+                    <i class="fa fa-shopping-cart"></i> Create
+                </a>
+            </div>
+    </div>
+    </nav>
+    </div>
+    <div id="overlay">
+        <div class="container" id="text">
+            <h1 style="padding-bottom: 30px">Welcome to Share My Shopping</h1>
+            <button class="loadButton" onclick="newShoppingList()" id="CreateListButton">
+                <i class="fa fa-shopping-cart"></i>
+                Create New List
+            </button>
+            <p></p>
+            <button class="loadButton" onclick="loadExisitingShoppingList()" id="LoadListButton">
+                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                Load Existing List </button>
+        </div>
+    </div>
+
+    <div id="nameOverlay">
+        <div class="container" id="text">
+            <h2 style="padding-bottom: 30px">Enter the name of your shopping list</h2>
+            <input type="text" id="listName" value=""> </input>
+            <p></p>
+            <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
+            <button type="button" class="loadButton" onclick="saveListName()" id="saveListName"> Save</button>
+            <p></p>
+            <button type="button" class="loadButton" onclick="cancelAddName()" id="cancel"> Cancel</button>
+        </div>
+    </div>
+
+    <div id="secondOverlay">
+        <div class="container" id="text">
+            <h2 style="padding-bottom: 30px">Enter the link of the shopping list you wish to view</h2>
+            <input type="text" id="viewListFromLink" value=""> </input>
+            <p></p>
+            <button type="button" class="loadButton" onclick="getListName()" id="navigateToLink"> View</button>
+            <p></p>
+            <button type="button" class="loadButton" onclick="cancelLoadList()" id="cancel"> Cancel</button>
+        </div>
+    </div>
+    <div class="container main">
+        <div class="row">
+            <form role="form" id="contact-form" class="contact-form">
+                <div class="row centered">
+                    <div class="col-md-2 token-container">
+                        <div class="dropdown">
+                            <p>Click the button below to save your shopping list</p>
+                            <button class="btn  dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick=printURL() id="shareDropdown">Save List
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>Use this token to access your shopping list:
+                                    <input type="text" id="sharingLink" readonly=""> </input>
+                                    <button type="button" class="btn main-btn shareButton" onclick="copyLink()"> Copy link</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-md-offset-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="Item" autocomplete="off" id="ShoppingListItem" value="" placeholder="Item" oninput="toggleButton()" onkeypress="saveItemOnEnter(event)">
+                        </div>
+                        <div class="dropdown" id = "ddDiv" > 
+                                <!--  &#11167; -->
+                            <button onclick="categoryDropdownShow(id)" id = "dropdownButton" type = "button" class="btn dropbtn" disabled = "true">Category</button>
+                              <div id="categoryDropdown" class="dropdown-content">
+                                <a id="categoryDropdown_Base_Item_0">Baked Goods</a>
+                                <a id="categoryDropdown_Base_Item_1">Beverages</a>
+                                <a id="categoryDropdown_Base_Item_2">Dairy</a>
+                                <a id="categoryDropdown_Base_Item_3">Fresh Produce</a>
+                                <a id="categoryDropdown_Base_Item_4">Frozen Foods</a>
+                                <a id="categoryDropdown_Base_Item_5">Hygiene</a>
+                                <a id="categoryDropdown_Base_Item_6">Meat</a>
+                                <a id="categoryDropdown_Base_Item_7">Non-perishables</a>
+                                <a id="categoryDropdown_Base_Item_8">Other</a>
+                              </div>
+                            </div>
+                        <div class="form-group" style = "padding-top: 10px">
+                            <input type="text" class="form-control" name="Quantity" autocomplete="off" disabled="true" id="ShoppingListQuantity" value="" placeholder="Quantity" onkeypress="saveQuantityOnEnter(event)">
+                        </div>
+                        <div class="form-control">
+                            Item Colour
+                            <input class="pull-right" type="color" id="itemColor" value="#fafafa">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-1"> </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn main-btn" onclick="storeItem(); setDefaultColor();" disabled="true" id="SubmitButton" style="background-color: Transparent">
+                                <i class="fa fa-plus-square fa-4x" style="color:#40e0d0"></i>
+                                </button>
+                            </div>
+
+                            <div class="dropdown col-md-offset-7 col-md-2">
+                                <button class="btn btn-primary dropdown-toggle shareButton" type="button" data-toggle="dropdown" onclick="" id="actionsDropdown">Actions
+                                    <span class="caret"></span>                   
+                            </button>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button type="button" class="btn main-btn shareButton" onclick="addListName()" id="addName"> Add Shopping List Name</button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn main-btn shareButton" id="sortButton" onclick="orderByPurchased()"> Sort By Purchased</button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn main-btn shareButton" id="sortButtonCategory" onclick="orderByCategory()"> Sort By Category</button>
+                                    </li>
+                                    <li>
+                                        <div class="btn btn-primary colorButton">Change List Color </div><input type="color" id="listColor" value="#fafafa" onChange="setColor()">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3 email-container">
+                        <p class="email-share-text">Enter the email which you want to share your shopping list with:</p>
+                        <input type="text" id="email-share" value=""> </input>
+                        <!-- <button type="button" class="btn main-btn" onclick="viewList()" oninput="toggleLinkSubmit()" disabled="true" id="navigateToLink"> View</button> -->
+                        <button type="button" class="btn main-btn shareButton" onclick="shareEmail()" id="share-email-button">Share</button>
+                        <hr class="hr-style">
+                        <p class="email-share-text">List shared with:</p>
+                        <p id="email-list"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-3"></div>
+                    <div class="col-md-5 col-md-offset-3">
+                        <h3 id="printName"></h3>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-3">
+                        <ul class="form-group" id="list-container">
+                        </ul>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3 email-container">
+                        <p class="notes-text">Notes</p>
+                        <div class="notesBoxWrapper">
+                            <textarea rows="5" cols="30" id="notesBox"></textarea>
+                        </div>
+                        <button type="button" class="btn main-btn shareButton" id="saveNotesButton" onclick="saveNotes()">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn main-btn" onclick="clearDB()" id="deleteButton" style="background-color: Transparent"></button>
+        </div>
+    </div>
+</body>
+
+</html>
